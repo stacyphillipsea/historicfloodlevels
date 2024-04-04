@@ -413,7 +413,7 @@ app.layout = dbc.Container([
    
     dbc.Row([
         dbc.Col([
-            html.H4("Not all stations have historic values, thresholds, and peak values", 
+            html.H4("Not all stations have historic values, typical ranges, and peak values", 
                     style={"textAlign":"left", 'font-size': '16px',"color": "green", "fontWeight": "bold"}),
             html.H4("Stations with complete datasets:", 
                     style={"textAlign":"left", 'font-size': '16px',"color": "green"}),
@@ -466,15 +466,14 @@ app.layout = dbc.Container([
                 html.Div(id="output-graph", className="card"),
             ]),
             width=8
-        ),  # Graph column
+        ),  
         dbc.Col(
             html.Div([
                 html.H2("Peaks identified for this station over Winter 23-24", style={"textAlign": "center", 'font-size': '14px'}),
                 html.Div(id="peak-table", className="card"),
             ]),
             width=4
-        ),  # Table column
-        
+        ),  
     ]),
 
     html.Hr(), # line break
@@ -499,7 +498,7 @@ app.layout = dbc.Container([
         ]),
         width=6)
     ]),
-html.Hr(), # line break
+    html.Hr(), # line break
     dbc.Row([
         dbc.Col(
             [
@@ -574,10 +573,6 @@ html.Hr(), # line break
         )
     ]),
 ], fluid=True)
-
-
-
-
 
 ### DEFINE CALLBACKS
 @app.callback(
@@ -674,8 +669,6 @@ def update_graph_peak_table_top_ten(selected_river, selected_station):
                 return dcc.Graph(id='river-level-graph', figure=figure), peak_table, historic_graph, top_10_df.to_dict('records'), station_options
 
     return "No data available for selected station.", "", [], [], station_options
-
-
     
 # Run the app
 if __name__ == '__main__':
