@@ -39,7 +39,7 @@ DATE_FILTERS = {
     'Elin & Fergus': ('2023-11-09', '2023-12-17', 'black'),
     'Gerrit': ('2023-12-26', '2024-01-02', 'pink'),
     'Henk': ('2024-01-02', '2024-01-11', 'green'),
-    'Isha & Jocelyn': ('2024-01-21', '2024-01-23', 'orange'),
+    'Isha & Jocelyn': ('2024-01-21', '2024-01-27', 'orange'),
     'Early February': ('2024-02-09', '2024-02-12', 'cornflowerblue'),
     'Late February': ('2024-02-22', '2024-02-24', 'gray')
 }
