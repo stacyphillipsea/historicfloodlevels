@@ -7,12 +7,15 @@ It calculates peak levels for given storm events over the winetr of 2023-2024, v
 
 I have already done loads of work on this before using Git Hub.
 
-Currently I have a double dropdown menu working as intended, the peak graph and peak table are fine, and all dates throughout are formatted as I want them to be
+## Functionality that is currently working
+1. Double dropdown menu 
+2. Peak graph and peak table
+3. All dates throughout are formatted as I want them to be
+4. The download data button currently works well
 
-The top 10 historic values tables is not formatted, and I would like it to show the colours of the storms
+## Things that could be improved
+1. The top 10 historic values tables is not formatted, and I would like it to show the colours of the storms
+2. The Historic versus winter chart is fine, but it is a different size when it default loads and then is the intended size when the callback update code is triggered
+3. The exceptional levels table and the all peak data table are not formatted
 
-The Historic versus winter chart is fine, but it is a different size when it default loads and then is the intended size when the callback update code is triggered
 
-The exceptional levels table and the all peak data table are not formatted
-
-The download data button currently works well
