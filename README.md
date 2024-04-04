@@ -7,8 +7,8 @@ It calculates peak levels for given storm events over the winetr of 2023-2024, v
 
 I have already done loads of work on this before using Git Hub.
 
-<font color="green">
 ## Functionality that is currently working
+<font color="green">
 * Double dropdown menu 
 * Peak graph and peak table
 * All dates throughout are formatted as I want them to be
