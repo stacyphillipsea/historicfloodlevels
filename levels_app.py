@@ -41,7 +41,7 @@ DATE_FILTERS = {
     'Henk': ('2024-01-02', '2024-01-11', 'green'),
     'Isha & Jocelyn': ('2024-01-21', '2024-01-27', 'orange'),
     'Early February': ('2024-02-09', '2024-02-12', 'cornflowerblue'),
-    'Late February': ('2024-02-22', '2024-02-24', 'gray')
+    'Late February': ('2024-02-22', '2024-02-25', 'gray')
 }
 
 sites_of_interest_merge = pd.read_csv('sites_of_interest_merge.csv')
