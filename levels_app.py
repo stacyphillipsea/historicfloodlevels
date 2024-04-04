@@ -1,0 +1,682 @@
+# WORKS TO CREATE PEAK CHART, PEAK TABLE, HISTORIC TOP 10 TABLE AND PEAK VERSUS HISTORIC CHART
+# HAVEN’T ADDED THE TOP 3 TO THE PEAK CHART, NOT NECESSARY?
+# DATES ALL FORMATTED SAME WAY THROUGHOUT
+# DOUBLE DROPDOWNS BABY!!!
+import requests
+import json
+import pandas as pd
+import dash
+from dash import dash_table
+from dash.dependencies import Input, Output
+import dash_core_components as dcc
+import dash_html_components as html
+import dash_bootstrap_components as dbc
+from datetime import datetime
+import plotly.graph_objects as go
+import numpy as np
+import pandas as pd
+
+
+### GET YOUR DATA BITS
+# Define constants
+BASE_URL = "http://environment.data.gov.uk/hydrology/id"
+BASE_STATIONS_URL = "http://environment.data.gov.uk/hydrology/id/stations"
+WISKI_IDS = ['2175', '2077', '2134', '2180', '2001', '2642', '2085', '2616', '2032', '2087', '2606', '2057', '2071',
+             '2618', '2165', '2102', '2153', '2132', '2008', '2086', '2002', '2128', '055829', '055811', '055807',
+             '055817', '055843', '4143', '4078', '4018', '4703', '4052', '4040', '4083', '4006', '4012', '4019',
+             '4069', '4039', '4066', '4081', '4878', '4003', '2090', '2019', '2091', '2093', '2050', '2049', '2048',
+             '452039', '2092', '2621', '2104']
+# ## WYE WISKI IDS
+# WISKI_IDS =['055002', '055028', '055811', '055040', '055021','055014', '055829', '055041', '055003', '055843',
+#             '055843', '055807', '055039', '055817', '055031', '055013', '055018']
+
+#WISKI_IDS = ['2175', '2077', '2134']
+MIN_DATE = "2023-10-01"
+MAX_DATE = "2024-02-29"
+DATE_FILTERS = {
+    'Babet': ('2023-10-18', '2023-10-31', 'red'),
+    'Ciaran': ('2023-11-01', '2023-11-08', 'blue'),
+    'Elin & Fergus': ('2023-11-09', '2023-12-17', 'black'),
+    'Gerrit': ('2023-12-26', '2024-01-02', 'pink'),
+    'Henk': ('2024-01-02', '2024-01-11', 'green'),
+    'Isha & Jocelyn': ('2024-01-21', '2024-01-23', 'orange'),
+    'Early February': ('2024-02-09', '2024-02-12', 'cornflowerblue'),
+    'Late February': ('2024-02-22', '2024-02-24', 'gray')
+}
+
+sites_of_interest_merge = pd.read_csv('sites_of_interest_merge.csv')
+gaugeboard_data = pd.read_csv('gaugeboard_data.csv')
+threshold_values = sites_of_interest_merge[sites_of_interest_merge['Threshold'].notnull()]
+threshold_values['Threshold'] = threshold_values['Threshold'].astype(float)
+threshold_dict = threshold_values.set_index('Gauge')['Threshold'].to_dict()
+
+
+NAVBAR = dbc.NavbarSimple(
+    brand="FETA Homepage",
+    brand_href="#",
+    color="primary",
+    dark=True,
+    children=[html.A(html.Img(src = "https://visualpharm.com/assets/818/Cheese-595b40b65ba036ed117d2a6c.svg", 
+                              height="50px"))]
+)
+
+### MAKE YOUR FUNCTIONS
+# Fetch data for a single station
+def fetch_station_data(wiski_id):
+    try:
+        url_endpoint = f"{BASE_STATIONS_URL}?wiskiID={wiski_id}"
+        response = requests.get(url_endpoint)
+        response.raise_for_status()
+        data = json.loads(response.content)
+        if 'items' in data and data['items']:
+            label_field = data['items'][0].get('label')
+            name = str(label_field[1] if isinstance(label_field, list) else label_field)
+            river_name = data['items'][0].get('riverName')
+            latitude = data['items'][0].get('lat')
+            longitude = data['items'][0].get('long')
+            measure_url = f"{BASE_URL}/measures?station.wiskiID={wiski_id}&observedProperty=waterLevel&periodName=15min"
+            response = requests.get(measure_url)
+            response.raise_for_status()
+            measure = json.loads(response.content)
+            if 'items' in measure and measure['items']:
+                measure_id = measure['items'][0]['@id']
+                readings_url = f"{measure_id}/readings?mineq-date={MIN_DATE}&maxeq-date={MAX_DATE}"
+                response = requests.get(readings_url)
+                response.raise_for_status()
+                readings = json.loads(response.content)
+                readings_items = readings.get('items', [])
+                if readings_items:
+                    df = pd.DataFrame.from_dict(readings_items)
+                    df['dateTime'] = pd.to_datetime(df['dateTime'])
+                    return {
+                        'name': name,
+                        'date_values': df[['dateTime', 'value']],
+                        'river_name': river_name,
+                        'lat': latitude,
+                        'long': longitude
+                    }
+                else:
+                    print(f"No readings found for {name} ({wiski_id})")
+            else:
+                print(f"No measure items found for WISKI ID {wiski_id}")
+        else:
+            print(f"No station items found for WISKI ID {wiski_id}")
+    except requests.exceptions.RequestException as e:
+        print(f"Error fetching data for WISKI ID {wiski_id}: {e}")
+    return None
+
+# Fetch data for all stations
+def fetch_all_station_data():
+    data_dict = {}
+    for wiski_id in WISKI_IDS:
+        station_data = fetch_station_data(wiski_id)
+        if station_data:
+            data_dict[station_data['name']] = station_data
+    return data_dict
+
+# Find maximum values for each filter
+def find_max_values(df, filters):
+    max_values = {}
+    for filter_name, date_range in filters.items():
+        min_date, max_date, color = date_range
+        condition = (df['dateTime'] >= min_date) & (df['dateTime'] <= max_date)
+        filtered_df = df[condition].dropna()  # Drop rows with NaN values
+        if not filtered_df.empty:
+            max_value_row = filtered_df.loc[filtered_df['value'].idxmax(), ['dateTime', 'value']]
+            max_value_row['value'] = round(max_value_row['value'], 2)  # Round the maximum value to 2 decimal places
+            max_values[filter_name] = max_value_row
+    return max_values
+
+# Find and store maximum values for all stations
+def find_and_store_max_values(data_dict):
+    max_values = {}
+    for station_name, station_data in data_dict.items():
+        df = station_data.get('date_values')
+        if df is not None:
+            max_values[station_name] = find_max_values(df, DATE_FILTERS)
+    return max_values
+
+#Generate storm info for the peak table
+def generate_storm_info():
+    storm_info = []
+    for storm, (start_date, end_date, _) in DATE_FILTERS.items():
+        formatted_start_date = datetime.strptime(start_date, '%Y-%m-%d').strftime('%d %b %Y')
+        formatted_end_date = datetime.strptime(end_date, '%Y-%m-%d').strftime('%d %b %Y')
+        storm_info.append(html.Div([
+            html.P(f"{storm}: {formatted_start_date} to {formatted_end_date}", style={'font-size': '14px'}),
+        ]))
+    return storm_info
+
+# Create a table for all the sites
+def process_peak_table_all(max_values, sites_of_interest_merge):
+    # Create an empty DataFrame
+    df_list = []
+
+    # Iterate through the outer dictionary
+    for station, inner_dict in max_values.items():
+        # Iterate through the inner dictionary
+        for storm, values in inner_dict.items():
+            # Extract dateTime and value from the Series object
+            if values is not None:
+                date_time = values.get('dateTime')
+                value = values.get('value')
+            else:
+                date_time, value = None, None
+
+            # Create a new row as a dictionary
+            row_dict = {'Station': station, 'Storm': storm, 'DateTime': date_time, 'Value': value}
+            # Append the row dictionary to the list
+            df_list.append(row_dict)
+
+    # Create the DataFrame
+    df = pd.DataFrame(df_list)
+
+    # Pivot the DataFrame
+    pivot_df = df.pivot_table(index='Station', columns='Storm', values=['DateTime', 'Value'], aggfunc='first')
+
+    # Flatten the multi-level columns
+    pivot_df.columns = [f'{col[0]}_{col[1]}' for col in pivot_df.columns]
+
+    # Create a new DataFrame with the flat structure
+    flat_df = pd.DataFrame()
+
+    # Iterate through the original DataFrame columns and create flat structure
+    for storm in df['Storm'].unique():
+        flat_df[f'{storm}_DateTime'] = pivot_df[f'DateTime_{storm}'].dt.strftime('%d-%b-%Y %H:%M')
+        flat_df[f'{storm}_Value'] = pivot_df[f'Value_{storm}']
+
+    # Reset index if necessary
+    flat_df.reset_index(inplace=True)
+
+# Merge with 'sites_of_interest_merge' DataFrame
+    peak_table_all = pd.merge(flat_df, sites_of_interest_merge[['Region', 'River','Gauge','Order']], left_on='Station', right_on='Gauge')
+    columns_to_move = ['Order','Region', 'River']
+    new_order = columns_to_move + [col for col in peak_table_all.columns if col not in columns_to_move]
+    peak_table_all = peak_table_all[new_order]
+    peak_table_all.drop(columns=['Gauge'], inplace=True)
+
+    peak_table_all = peak_table_all.sort_values(by=['Order'], ascending=[True])
+    peak_table_all.set_index('Order', inplace=True)
+
+    peak_table_all = peak_table_all.drop_duplicates(subset=['Station'])
+    # peak_table_all = flat_df
+    
+    return df, peak_table_all
+
+# Do the comparison to the gaugeboard data
+def gaugeboard_comparison(gaugeboard_data, df):
+    # Format gaugeboard data datetimes
+    gaugeboard_data['Date'] = pd.to_datetime(gaugeboard_data['Date'], format='%d/%m/%Y').dt.date
+
+    # Rename 'Gauge' column to 'Station' in gaugeboard
+    gaugeboard_data.rename(columns={'Gauge': 'Station'}, inplace=True)
+
+    # Add a new column 'Storm' filled with nulls in gaugeboard
+    gaugeboard_data['Storm'] = None
+
+    # Change 'datetime' column to 'date' in df
+    df['DateTime'] = df['DateTime'].dt.date
+    df.rename(columns={'Value': 'Level'}, inplace=True)
+    df.rename(columns={'DateTime': 'Date'}, inplace=True)
+
+    comparison_concat = pd.concat([gaugeboard_data, df], ignore_index=True)
+
+    comparison_concat['Station'] = comparison_concat['Station'].replace({
+        'Bewdley us': 'Bewdley',
+        'SAXONS LODE US': 'Saxons Lode',
+        'Buildwas Us': 'Buildwas'
+    })
+
+    # Group the DataFrame by 'station' and sort each group by 'level' from highest to lowest
+    sorted_df = comparison_concat.groupby('Station', as_index=False).apply(lambda x: x.sort_values(by='Level', ascending=False))
+
+    # Add a new column 'Ranking' for each group indicating the rank of each level
+    sorted_df['Ranking'] = sorted_df.groupby('Station').cumcount() + 1
+
+    # Add a new column for difference from peak
+    sorted_df['Difference_from_peak'] = sorted_df.groupby('Station')['Level'].transform(lambda x: round(x.max() - x, 2))
+    
+    # Reset the index to flatten the DataFrame
+    sorted_df.reset_index(drop=True, inplace=True)
+
+    # Display the sorted DataFrame
+    sorted_df.head(20)
+
+    # Count the number of rows for each unique value in 'Station' column
+    station_counts = sorted_df['Station'].value_counts()
+
+    # Filter out stations with 5 or fewer records
+    stations_to_keep = station_counts[station_counts > 8].index
+
+    # Filter the DataFrame to keep only the stations with more than 5 records
+    filtered_df = sorted_df[sorted_df['Station'].isin(stations_to_keep)]
+
+    # Display the filtered DataFrame
+    filtered_df['Station'].unique()
+
+    ranked_df = filtered_df[filtered_df['Storm'].notna()]
+    ranked_df.head(20)
+
+    top_ten = ranked_df[ranked_df['Ranking'] <= 10]
+    top_ten = top_ten.sort_values(by='Ranking')
+    top_ten['Date'] = pd.to_datetime(top_ten['Date'], format='%d/%m/%Y')  
+    top_ten['Date'] = top_ten['Date'].dt.strftime('%d-%b-%Y')
+    
+    return top_ten, filtered_df
+
+# Make a top 10 list for the station selected
+def station_top_ten(selected_station):
+    if selected_station:
+        # Filter for the selected station
+        station_df = filtered_df[filtered_df["Station"] == selected_station]
+        # Get the top 10 values for that station
+        top_ten_df = station_df.nlargest(n=10, columns= 'Level')
+        top_ten_df['Date'] = pd.to_datetime(top_ten_df['Date'], format='%d/%m/%Y')  
+        top_ten_df['Date'] = top_ten_df['Date'].dt.strftime('%d-%b-%Y')
+        return top_ten_df
+    else:
+        return pd.DataFrame()
+
+# Make the historic level plots
+def plot_historic_levels(filtered_df, selected_station, threshold_dict):
+    # Check if 'Station' column is present in filtered_df
+    if 'Station' not in filtered_df.columns:
+        # Return an empty figure if 'Station' column is not present
+        return go.Figure()
+    
+    # Check if the selected station is valid
+    if selected_station and selected_station in filtered_df['Station'].unique():
+        # Filter the DataFrame for the specified station name
+        station_df = filtered_df[filtered_df["Station"] == selected_station]
+        
+        # Filter the DataFrame for top 3 values
+        top_3_values = station_df.nlargest(n=3, columns='Level')
+        
+        # Filter the DataFrame for rows where 'Storm' is not None
+        storm_not_none = station_df[station_df["Storm"].notnull()]
+        
+        # Concatenate the two DataFrames
+        result_df = pd.concat([top_3_values, storm_not_none])
+
+        # Determine the maximum level in the data
+        max_level = result_df['Level'].max()
+        
+        # Round up to the nearest whole number
+        max_level = np.ceil(max_level)
+        
+        # Create a new figure
+        fig = go.Figure()
+        
+        # Iterate over each row in the filtered DataFrame
+        for index, row in result_df.iterrows():
+            # Assign colors based on Ranking
+            if row['Ranking'] == 1:
+                color = 'red'
+            elif row['Ranking'] == 2:
+                color = 'orange'
+            elif row['Ranking'] == 3:
+                color = 'yellow'
+            else:
+                color = 'blue'  # Default color
+            
+            # Format the date string
+            formatted_date = row['Date'].strftime('%d-%b-%Y')
+            
+            # Add a trace for each row
+            fig.add_trace(go.Scatter(x=[1, 2], y=[row['Level'], row['Level']], mode='lines+markers', line=dict(color=color), 
+                                     name=f"{formatted_date} {row['Storm'] if pd.notnull(row['Storm']) else ''}",
+                                     text=[f"Date: {formatted_date}<br>Level: {row['Level']}<br>Storm: {row['Storm'] if pd.notnull(row['Storm']) else 'Historic'}"] * 2,
+                                     hoverinfo='text'))
+        
+        # Add manual trace for the line at typical max range
+        if selected_station in threshold_dict:
+            typical_max_range = threshold_dict[selected_station]
+            fig.add_trace(go.Scatter(x=[1, 2], y=[typical_max_range, typical_max_range], mode='lines+markers', line=dict(color='lightskyblue'), 
+                                     name='Typical max range', text=f"Typical max range: {typical_max_range}", hoverinfo='text'))
+        
+        # Update layout...
+        fig.update_layout(
+            xaxis=dict(
+                showticklabels=False,
+                range=[0.5, 2.5]
+            ),
+            yaxis=dict(
+                title='Level (above gaugeboard datum)',
+                rangemode='tozero',  # Ensure y-axis starts at zero
+                tickmode='linear',   # Use linear ticks
+                tick0=0,             # Start tick at zero
+                dtick=1,             # Set tick interval to 1
+                tickvals=np.arange(0, max_level + 1),  # Set tick values to whole numbers up to max_level
+                range=[0, max_level]  # Set y-axis range to start from 0 and end at max_level
+            ),
+            title={
+                'text': f"Historic levels for {selected_station}",
+                'x': 0.5,  # Set x position to center
+                'y': 0.95   # Adjust y position as needed
+            },
+            legend=dict(
+                title='Recorded levels and dates',
+                x=1.2,  # Increase distance from right edge
+            ),
+            width=400,  # Adjust overall width
+            plot_bgcolor='white'
+        )
+        
+        fig.update_yaxes(
+            mirror=True,
+            ticks='outside',
+            showline=True,
+            linecolor='black',
+            gridcolor='lightgrey'
+        )
+        
+        return fig
+    else:
+        # If the selected station is not valid or no station is selected, return an empty figure
+        return go.Figure()
+
+
+### CALL YOUR FUNCTIONS
+# Fetch data for all stations
+data_dict = fetch_all_station_data()
+
+# Find and store maximum values for all stations
+max_values = find_and_store_max_values(data_dict)
+
+# Create peak table DataFrame
+df, peak_table_all = process_peak_table_all(max_values, sites_of_interest_merge)
+
+# Call gaugeboard_comparison function
+top_ten_records, filtered_df = gaugeboard_comparison(gaugeboard_data, df)
+
+# Identify the common station that has historic values, threholds and peak data
+complete_stations = sorted(set(filtered_df['Station'].unique()) & set(threshold_dict.keys()) & set(data_dict.keys()))
+percent_complete = len(complete_stations) / len(data_dict) * 100 if len(data_dict) > 0 else 0
+
+### MAKE YOUR APP
+# Initialize Dash app
+external_stylesheets = [dbc.themes.MINTY]
+app = dash.Dash('__main__', external_stylesheets=external_stylesheets)
+
+
+### DEFINE APP LAYOUT
+app.layout = dbc.Container([
+    NAVBAR,
+    html.H1("Flood Event Telemetry Analyser", 
+            style={"textAlign":"center", 'font-size': '24px'}), # title
+    html.H2("River level data downloaded from Environment Agency API", 
+            style={"textAlign":"center", 'font-size': '20px'}), # subtitle
+    html.H1("!!!This site is a work in progress: Stiltonnes of work to do!!!", 
+            style={"textAlign":"left", 'font-size': '12px',"color": "red", "fontStyle": "italic", "fontWeight": "bold"}), # subtitle
+    
+    html.Hr(), # line break
+   
+    dbc.Row([
+        dbc.Col([
+            html.H4("Not all stations have historic values, thresholds, and peak values", 
+                    style={"textAlign":"left", 'font-size': '16px',"color": "green", "fontWeight": "bold"}),
+            html.H4("Stations with complete datasets:", 
+                    style={"textAlign":"left", 'font-size': '16px',"color": "green"}),
+            html.P(', '.join(complete_stations), 
+                   style={"textAlign":"left", 'font-size': '14px',"color": "green"}),
+            html.P(f"That is {len(complete_stations)} stations out of {len(data_dict)} in the whole dataset ({percent_complete:.0f}%)", 
+                   style={"textAlign":"left", 'font-size': '12px',"color": "green", "fontStyle": "italic"})
+        ], width=9),  
+        dbc.Col([
+            dbc.CardImg(src="https://media2.giphy.com/media/1Zp8tUAMkOZDMkqcHb/giphy.gif?cid=6c09b952rjrtfs3brpsa0z89g2oeqrzgg7d3sdoj8fon3aqd&ep=v1_internal_gif_by_id&rid=giphy.gif&ct=g", bottom=True, style={"width": "250px"})
+        ], width=3)  
+    ]),
+
+    html.Hr(), # line break
+    html.P("Choose a site for peak analyswiss:", style={'font-size': '16px', "fontStyle": 'bold'}), 
+    html.P("First, pick the river name, then the stations available for that river will be shown", style={'font-size': '14px'}),
+    html.P("You can start typing into the bar to search, or pick from the dropdown", style={'font-size': '14px'}), 
+    # First dropdown for selecting river names
+    dbc.Row([
+        dbc.Col(
+            dcc.Dropdown(
+                id="river-dropdown",
+                clearable=False,
+                value="River Severn",  # Default value for the river dropdown
+                options=[
+                    {'label': river_name, 'value': river_name} for river_name in sorted(set([v['river_name'] for v in data_dict.values()]))
+                ],
+                style={'font-size': '16px'}
+            ),
+            width=6
+        ),
+        # Second dropdown for selecting stations based on the selected river name
+        dbc.Col(
+            dcc.Dropdown(
+                id="station-dropdown",
+                clearable=False,
+                value="Welsh Bridge",  # Default value for the station dropdown
+                options=[],  # Will be dynamically populated based on the selected river name
+                style={'font-size': '16px'}
+            ),
+            width=6
+        )
+    ]),
+
+    html.Hr(), # line break
+    dbc.Row([
+        dbc.Col(
+            html.Div([
+                html.H2("River levels for this station over Winter 23-24", style={"textAlign": "center", 'font-size': '14px'}),
+                html.Div(id="output-graph", className="card"),
+            ]),
+            width=8
+        ),  # Graph column
+        dbc.Col(
+            html.Div([
+                html.H2("Peaks identified for this station over Winter 23-24", style={"textAlign": "center", 'font-size': '14px'}),
+                html.Div(id="peak-table", className="card"),
+            ]),
+            width=4
+        ),  # Table column
+        
+    ]),
+
+    html.Hr(), # line break
+    dbc.Row([
+        dbc.Col(
+            html.Div([
+                html.H2("Top 10 historic levels for this station", style={"textAlign": "center", 'font-size': '14px'}),
+                dash_table.DataTable(
+                    id='station-top-ten-table',
+                    columns=[{"name": i, "id": i} for i in filtered_df.columns],
+                    data=[],
+                    style_table={'minWidth': '90%', 'overflowY': 'auto'},
+                    style_cell={'textAlign': 'left', 'fontSize': '10px', 'padding': '5px'},
+                    page_action='none'
+                ),
+            ]),
+            width=4
+        ),
+        dbc.Col(html.Div([
+            html.H2("Winter 23-24 peaks versus historic levels", style={"textAlign": "center", 'font-size': '14px'}),
+            html.Div(id="historic-graph", className="card"),
+        ]),
+        width=6)
+    ]),
+html.Hr(), # line break
+    dbc.Row([
+        dbc.Col(
+            [
+                html.H2("These stations experienced exceptional (top-10 all-time) historic levels this winter", style={"textAlign": "center", 'font-size': '14px'}),
+                html.Div([
+                    dash_table.DataTable(
+                        id='top-ten-rank',
+                        columns=[{"name": i, "id": i} for i in top_ten_records.columns],
+                        data=top_ten_records.to_dict('records'),
+                        fixed_columns={'headers': True, 'data': 3},
+                        style_table={'minWidth': '90%', 'height': '200px', 'overflowY': 'auto'},
+                        style_cell={'textAlign': 'left', 'fontSize': '10px', 'padding': '5px'},
+                        page_action='none'
+                    ),
+                ]),
+            ],
+            width=12
+        )
+    ]),
+
+    html.Hr(), # line break
+    dbc.Row([
+    dbc.Col(
+        html.Div([
+            html.H2("Here are the peaks for all stations in all events this winter", style={"textAlign": "center", 'font-size': '14px'}),
+            dash_table.DataTable(
+                id='peak-table-all',
+                columns=[{"name": i, "id": i} for i in peak_table_all.columns],
+                data=peak_table_all.to_dict('records'),
+                fixed_columns={'headers': True, 'data': 3},
+                style_table={'minWidth': '90%', 'height': '200px', 'overflowY': 'auto'},
+                style_cell={'textAlign': 'left', 'fontSize': '10px', 'padding': '5px'},
+                page_action='none'
+            ),
+        ]),
+        width=12
+     )
+    ]),
+
+    html.Hr(), # line break
+    dbc.Row([
+        dbc.Col(
+            [dbc.Button(id='btn',
+                children="Raclette your data here",
+                color="info",
+                className="mt-1"
+            ),
+            dcc.Download(id="download-component")
+            ],
+            width=12
+        )
+    ]),
+    html.Hr(), # line break
+    html.H1("Storm Parameters used", style={"textAlign":"left", 'font-size': '20px'}),
+    html.Div(generate_storm_info()),
+    html.Hr(), # line break
+    dbc.Row([
+        dbc.Col(
+            dbc.CardImg(
+                src="https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExYjRkczhwNHI2emxnMzUzMDBwYWdiN2JpY3k0aGswb3A3cXhiMW1leiZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/25Pke1HBWFhjLNrMUe/giphy.gif",
+                bottom=True,
+                style={"width": "150px", "height": "150px"}
+            ),
+            width=2
+        ),
+        dbc.Col(
+            html.Div([
+                html.P("Yay my code is doing what I want it to."),
+                html.P("This makes me a happy Stacy."),
+            ]),
+            width=10
+        )
+    ]),
+], fluid=True)
+
+
+
+
+
+### DEFINE CALLBACKS
+@app.callback(
+    Output("download-component", "data"),
+    Input("btn", "n_clicks"),
+    prevent_initial_call=True,
+)
+
+def func(n_clicks):
+    return dcc.send_data_frame(peak_table_all.to_csv, "BEST_DATA_TABLE_EVER.csv")
+ 
+def update_station_options(selected_river):
+    if selected_river:
+        stations = [key for key, value in data_dict.items() if value['river_name'] == selected_river]
+        options = [{'label': station, 'value': station} for station in stations]
+        return options
+    else:
+        return []
+    
+# Callback associated with the dropdown
+@app.callback(
+    [Output('output-graph', 'children'),
+     Output('peak-table', 'children'),
+     Output('historic-graph', 'children'),
+     Output('station-top-ten-table', 'data'),
+     Output('station-dropdown', 'options')],
+    [Input('river-dropdown', 'value'),
+    Input('station-dropdown', 'value')]
+)
+
+### UPDATE FUNCTIONS BASED ON THE CALLBACK
+def update_graph_peak_table_top_ten(selected_river, selected_station):
+    # Update the options of the station dropdown based on the selected river
+    station_options = update_station_options(selected_river)
+
+    if selected_station:
+        station_data = data_dict[selected_station]
+        df = station_data.get('date_values')
+        river_name = station_data.get('river_name', 'Unknown River')
+        if df is not None:
+            figure = {
+                'data': [{'x': df['dateTime'], 
+                          'y': df['value'], 
+                          'type': 'line', 
+                          'name': 'River Level'}],
+                'layout': {'title': f'River Levels for {selected_station} ({river_name})', 'xaxis': {'title': 'Date Time'},
+                           'yaxis': {'title': 'Value'}}
+            }
+            if selected_station in max_values:
+                # Create table rows for peak values
+                table_rows = []
+                for filter_name, max_value_info in max_values[selected_station].items():
+                    max_datetime = max_value_info['dateTime']
+                    max_value = max_value_info['value']
+                    figure['data'].append({
+                        'x': [max_datetime], 
+                        'y': [max_value], 
+                        'mode': 'markers',
+                        'marker': {'color': DATE_FILTERS[filter_name][2], 'size': 10},
+                        'name': f'Storm {filter_name} peak'})
+                    max_datetime = max_value_info['dateTime'].strftime('%d-%b-%Y %H:%M')  # Format datetime here,after the figure plot,and not at the data entry otherwise peaks don't plot
+                    color = DATE_FILTERS[filter_name][2] # get color info
+
+                    # Create a colored marker cell
+                    colored_marker_cell = html.Td(style={'background-color': color, 'width': '10px'}, children=[])
+
+                    table_rows.append(html.Tr([
+                        colored_marker_cell,  # Colored marker cell
+                        html.Td(filter_name, style={'font-size': '16px'}),
+                        html.Td(str(max_datetime), style={'font-size': '16px'}),
+                        html.Td(str(max_value), style={'font-size': '16px'})
+                    ]))
+
+                # Create the table
+                peak_table = html.Table([
+                    html.Thead(html.Tr([
+                        html.Th('', style={'font-size': '16px', 'width': '18px'}),  # Empty header for marker cell
+                        html.Th('Storm Name', style={'font-size': '16px'}),
+                        html.Th('Date Time', style={'font-size': '16px'}),
+                        html.Th('Peak Value', style={'font-size': '16px'})
+                    ])),
+                    html.Tbody(table_rows)
+                ])
+
+                # Get top 10 table data
+                top_10_df = station_top_ten(selected_station)
+
+                # Make historic plot
+                fig = plot_historic_levels(filtered_df, selected_station, threshold_dict)
+                # Include the generated plot in the layout
+                historic_graph = dcc.Graph(id='historic-levels-graph', figure=fig)
+
+                # Return graph, peak table, and top 10 table data
+                return dcc.Graph(id='river-level-graph', figure=figure), peak_table, historic_graph, top_10_df.to_dict('records'), station_options
+
+    return "No data available for selected station.", "", [], [], station_options
+
+
+    
+# Run the app
+if __name__ == '__main__':
+    app.run_server(debug=True)
