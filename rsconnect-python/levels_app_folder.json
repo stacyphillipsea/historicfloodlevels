@@ -1,0 +1,12 @@
+{
+    "https://dap-prd2-connect.azure.defra.cloud/": {
+        "server_url": "https://dap-prd2-connect.azure.defra.cloud/",
+        "filename": "C:\\Users\\SPHILLIPS03\\Documents\\repos\\levels_app_folder",
+        "app_url": "https://dap-prd2-connect.azure.defra.cloud/level_data/",
+        "app_id": "edfb53fd-e38c-4e92-a1e2-84a075b3fcbd",
+        "app_guid": "edfb53fd-e38c-4e92-a1e2-84a075b3fcbd",
+        "title": "levels_app_folder",
+        "app_mode": "python-dash",
+        "app_store_version": 1
+    }
+}
