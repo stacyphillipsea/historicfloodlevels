@@ -1,4 +1,6 @@
-This is the code for my Apprenticeship End Point Assessment Project!
+# Welcome to my Read Me doc!
+
+## This is the code for my Apprenticeship End Point Assessment Project!
 
 It is to make a Dash App that analyses EA Gauging Station data across the West Midlands, making use of the EA Hydrology API
 It calculates peak levels for given storm events over the winetr of 2023-2024, visuliases them in charts and tables, and compares them to historic peak levels to provide context.
