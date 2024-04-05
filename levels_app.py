@@ -15,6 +15,8 @@ from datetime import datetime
 import plotly.graph_objects as go
 import numpy as np
 import pandas as pd
+import os
+from plotly.io import write_image
 
 
 ### GET YOUR DATA BITS
@@ -392,6 +394,45 @@ top_ten_records, filtered_df = gaugeboard_comparison(gaugeboard_data, df)
 # Identify the common station that has historic values, threholds and peak data
 complete_stations = sorted(set(filtered_df['Station'].unique()) & set(threshold_dict.keys()) & set(data_dict.keys()))
 percent_complete = len(complete_stations) / len(data_dict) * 100 if len(data_dict) > 0 else 0
+
+# Save all the charts for use in the Powerpoint
+import matplotlib.pyplot as plt
+def save_all_station_charts(data_dict, output_directory):
+    # Create the output directory if it doesn't exist
+    if not os.path.exists(output_directory):
+        os.makedirs(output_directory)
+    
+    for station_name, station_data in data_dict.items():
+        df = station_data.get('date_values')
+        if df is not None:
+            # Create the figure
+            plt.figure(figsize=(10, 3))
+            plt.plot(df['dateTime'], df['value'])
+            plt.title(f'River Levels for {station_name} ({station_data.get("river_name", "Unknown River")})')
+            plt.xlabel('Date Time')
+            plt.ylabel('Value')
+            
+            # Plot max values if available
+            if station_name in max_values:
+                for filter_name, max_value_info in max_values[station_name].items():
+                    max_datetime = max_value_info['dateTime']
+                    max_value = max_value_info['value']
+                    color = DATE_FILTERS[filter_name][2]
+                    plt.plot(max_datetime, max_value, marker='o', markersize=10, color=color, label=f'Storm {filter_name} peak')
+            
+            plt.legend(bbox_to_anchor=(1.05, 1), loc='upper left')  # Add legend
+
+            # Specify the path to save the image
+            image_path = os.path.join(output_directory, f"chart_{station_name}.png")
+            
+            # Save the figure as an image
+            plt.tight_layout()  # Adjust layout to prevent clipping
+            plt.savefig(image_path, bbox_inches='tight')  # Use bbox_inches='tight' to include legend
+            plt.close()  # Close the figure to free up memory
+
+output_directory = "C:\\Users\\SPHILLIPS03\\Documents\\repos\\levels_app_folder_charts"
+save_all_station_charts(data_dict, output_directory)
+
 
 ### MAKE YOUR APP
 # Initialize Dash app
