@@ -16,7 +16,9 @@ import plotly.graph_objects as go
 import numpy as np
 import pandas as pd
 import os
-from plotly.io import write_image
+from pptx import Presentation
+from pptx.dml.color import RGBColor
+from pptx.util import Pt, Inches
 
 
 ### GET YOUR DATA BITS
@@ -395,12 +397,16 @@ top_ten_records, filtered_df = gaugeboard_comparison(gaugeboard_data, df)
 complete_stations = sorted(set(filtered_df['Station'].unique()) & set(threshold_dict.keys()) & set(data_dict.keys()))
 percent_complete = len(complete_stations) / len(data_dict) * 100 if len(data_dict) > 0 else 0
 
+
+#### SAVING STUFF FOR POWERPOINT PRESENTATION
 # Save all the charts for use in the Powerpoint
 import matplotlib.pyplot as plt
 def save_all_station_charts(data_dict, output_directory):
     # Create the output directory if it doesn't exist
     if not os.path.exists(output_directory):
         os.makedirs(output_directory)
+
+    image_paths = []  # Initialize list to store image paths
     
     for station_name, station_data in data_dict.items():
         df = station_data.get('date_values')
@@ -408,7 +414,7 @@ def save_all_station_charts(data_dict, output_directory):
             # Create the figure
             plt.figure(figsize=(10, 3))
             plt.plot(df['dateTime'], df['value'])
-            plt.title(f'River Levels for {station_name} ({station_data.get("river_name", "Unknown River")})')
+            # plt.title(f'River Levels for {station_name} ({station_data.get("river_name", "Unknown River")})')
             plt.xlabel('Date Time')
             plt.ylabel('Value')
             
@@ -420,18 +426,74 @@ def save_all_station_charts(data_dict, output_directory):
                     color = DATE_FILTERS[filter_name][2]
                     plt.plot(max_datetime, max_value, marker='o', markersize=10, color=color, label=f'Storm {filter_name} peak')
             
+            # Plot legend outside plot
             plt.legend(bbox_to_anchor=(1.05, 1), loc='upper left')  # Add legend
 
+            # Get river name from data_dict
+            river_name = data_dict.get(station_name, {}).get('river_name', 'Unknown River')
+
             # Specify the path to save the image
-            image_path = os.path.join(output_directory, f"chart_{station_name}.png")
+            image_path = os.path.join(output_directory, f"peakchart_{river_name}_{station_name}.png")
             
             # Save the figure as an image
             plt.tight_layout()  # Adjust layout to prevent clipping
             plt.savefig(image_path, bbox_inches='tight')  # Use bbox_inches='tight' to include legend
             plt.close()  # Close the figure to free up memory
 
+            # Append the image path to the list
+            image_paths.append(image_path)
+
+    return image_paths  # Return list of image paths
+
 output_directory = "C:\\Users\\SPHILLIPS03\\Documents\\repos\\levels_app_folder_charts"
-save_all_station_charts(data_dict, output_directory)
+image_paths = save_all_station_charts(data_dict, output_directory)
+
+def insert_plots_into_ppt(image_paths, prs):
+    for image_path in image_paths:
+        # Extract river name and location from the filename
+        file_name = os.path.splitext(os.path.basename(image_path))[0]
+        parts = file_name.split('_')
+        river_name = ' '.join(parts[1:-1])  #River name is everything between first and last underscore  
+        station = parts[-1]  
+
+        # Insert each image onto a new slide in the presentation
+        slide = prs.slides.add_slide(prs.slide_layouts[5])  # Slide layout 5
+    
+        # # Modify title text
+        title_text = f"River Levels for {station}\n({river_name})"
+        title_shape = slide.shapes.title
+        title_shape.text = title_text
+        
+        # Set font size for each line
+        title_shape.text_frame.paragraphs[0].font.size = Pt(36)  # Font size for station
+        title_shape.text_frame.paragraphs[1].font.size = Pt(24)  # Font size for river name
+        
+        # Set font bold for river name
+        title_shape.text_frame.paragraphs[1].font.bold = True
+        
+        # Set vertical alignment for the title text
+        # title_shape.text_frame.text_frame.vertical_anchor = MSO_ANCHOR.MIDDLE
+        
+        # Set image dimensions and position
+        image_width = Inches(10)  # Adjust as needed
+        image_height = Inches(3)  # Adjust as needed
+        image_left = (prs.slide_width - image_width) / 2
+        image_top = Inches(1.5)
+        
+        # Add the plot image to the slide
+        slide.shapes.add_picture(image_path, image_left, image_top, image_width, image_height)
+
+# Create a PowerPoint presentation object
+prs = Presentation()
+
+# Call the function to insert plots into the presentation
+insert_plots_into_ppt(image_paths, prs)
+
+# Save the PowerPoint presentation
+output_presentation_path = "C:\\Users\\SPHILLIPS03\\Documents\\repos\\levels_app_folder_exports\Winter2324_PeakPlots.pptx"
+prs.save(output_presentation_path)
+
+
 
 
 ### MAKE YOUR APP
