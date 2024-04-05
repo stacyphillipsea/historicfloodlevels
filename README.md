@@ -12,6 +12,7 @@ I have already done loads of work on this before using Git Hub.
 * Peak graph and peak table
 * All dates throughout are formatted as I want them to be
 * The download data button currently works well
+* Peak plot is being loaded into a Powerpoint (not yet built download button)
 
 ## Things that could be improved
 * The top 10 historic values tables is not formatted, and I would like it to show the colours of the storms
