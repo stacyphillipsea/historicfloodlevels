@@ -239,7 +239,14 @@ def gaugeboard_comparison(gaugeboard_data, df):
 
     # Add a new column for difference from peak
     sorted_df['Difference_from_peak'] = sorted_df.groupby('Station')['Level'].transform(lambda x: round(x.max() - x, 2))
-    
+
+    # Convert 'Date' column to datetime format after sorting
+    sorted_df['Date'] = pd.to_datetime(sorted_df['Date'])
+
+    # Add a new column for difference from peak
+    sorted_df['Years_since_peak'] = sorted_df.groupby('Station').apply(
+        lambda group: round(abs((group['Date'] - group['Date'].max()).dt.days / 365.25))).reset_index(level=0, drop=True)
+  
     # Reset the index to flatten the DataFrame
     sorted_df.reset_index(drop=True, inplace=True)
 
@@ -643,7 +650,7 @@ app.layout = dbc.Container([
                     page_action='none'
                 ),
             ]),
-            width=4
+            width=6
         ),
         dbc.Col(html.Div([
             html.H2("Winter 23-24 peaks versus historic levels", style={"textAlign": "center", 'font-size': '14px'}),
