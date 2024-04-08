@@ -2,13 +2,13 @@
 
 ## This is the code for my Apprenticeship End Point Assessment Project!
 
-It is to make a Dash App that analyses EA Gauging Station data across the West Midlands, making use of the EA Hydrology API
+This project aims to make a Dash App that analyses EA Gauging Station data across the West Midlands, making use of the EA Hydrology API
 It calculates peak levels for given storm events over the winetr of 2023-2024, visualises them in charts and tables, and compares them to historic peak levels to provide context.
 
 I have already done loads of work on this before using Git Hub.
 
 ## Functionality that is currently working
-* Double dropdown menu 
+* Double dropdown menu  for River name then Station name
 * Peak graph and peak table
 * All dates throughout are formatted as I want them to be
 * The download data button currently works well
