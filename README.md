@@ -13,6 +13,7 @@ I have already done loads of work on this before using Git Hub.
 * All dates throughout are formatted as I want them to be
 * The download data button currently works well
 * Peak plot is being loaded into a Powerpoint that can be downloaded locally
+* Have downloaded and stored the data_dict as a JSON that is then loaded into the file, instead of calling the API everytime
 
 ## Things that could be improved
 * The top 10 historic values tables is not formatted, and I would like it to show the colours of the storms
