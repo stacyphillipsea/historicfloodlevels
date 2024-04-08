@@ -19,6 +19,7 @@ import os
 from pptx import Presentation
 from pptx.dml.color import RGBColor
 from pptx.util import Pt, Inches
+import folium
 
 
 ### GET YOUR DATA BITS
@@ -608,7 +609,7 @@ app.layout = dbc.Container([
     html.Hr(),  # line break
     dbc.Row([
         dbc.Col(
-            html.Iframe(srcDoc=open('stations_map.html', 'r').read(), width='100%', height='600'),
+            html.Iframe(id='map-container', width='100%', height='600'),
         ),
     ]),
     html.Hr(),  # line break
@@ -823,6 +824,41 @@ def update_graph_peak_table_top_ten(selected_river, selected_station):
                 return dcc.Graph(id='river-level-graph', figure=figure), peak_table, historic_graph, top_10_df.to_dict('records'), station_options
 
     return "No data available for selected station.", "", [], [], station_options
+
+
+# Callback to update map based on selected station
+# Callback to update map based on selected station
+@app.callback(
+    Output('map-container', 'srcDoc'),
+    [Input('station-dropdown', 'value')]
+)
+def update_map(selected_station):
+    # Create Folium map
+    if selected_station:
+        station_data = data_dict[selected_station]
+        lat = station_data.get('lat', None)
+        long = station_data.get('long', None)
+
+        if lat is not None and long is not None:
+            # If latitude and longitude are available, create the map centered at the station location
+            m = folium.Map(location=[lat, long], zoom_start=10)
+            
+            # Add marker for selected station
+            folium.Marker(location=[lat, long], popup=selected_station).add_to(m)
+        else:
+            # If latitude or longitude is not available, create the map with default location and zoom
+            m = folium.Map(location=[51.5074, -0.1278], zoom_start=10)
+    else:
+        # If no station is selected, create the map with default location and zoom
+        m = folium.Map(location=[51.5074, -0.1278], zoom_start=10)
+    
+    # Convert Folium map to HTML
+    map_html = m.get_root().render()
+    
+    return map_html
+
+
+
     
 # Run the app
 if __name__ == '__main__':
