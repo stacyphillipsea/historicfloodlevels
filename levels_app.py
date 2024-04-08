@@ -600,11 +600,11 @@ app.layout = dbc.Container([
         ], width=3)  
     ]),
     html.Hr(),  # line break
-    html.P("Choose a site for peak analysis:", style={'font-size': '16px', "fontStyle": 'bold'}), 
-    html.P("First, pick the river name, then the stations available for that river will be shown", style={'font-size': '14px'}),
-    html.P("You can start typing into the bar to search, or pick from the dropdown", style={'font-size': '14px'}), 
     dbc.Row([
         dbc.Col([
+            html.P("Choose a site for peak analysis:", style={'font-size': '16px', "fontStyle": 'bold'}), 
+            html.P("First, pick the river name, then the stations available for that river will be shown", style={'font-size': '14px'}),
+            html.P("You can start typing into the bar to search, or pick from the dropdown", style={'font-size': '14px'}),
             dcc.Dropdown(
                 id="river-dropdown",
                 clearable=False,
