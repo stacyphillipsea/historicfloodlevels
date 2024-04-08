@@ -562,36 +562,25 @@ app = dash.Dash('__main__', external_stylesheets=external_stylesheets)
 ### DEFINE APP LAYOUT
 app.layout = dbc.Container([
     NAVBAR,
-    html.H1("Flood Event Telemetry Analyser", 
-            style={"textAlign":"center", 'font-size': '24px'}), # title
-    html.H2("River level data downloaded from Environment Agency API", 
-            style={"textAlign":"center", 'font-size': '20px'}), # subtitle
-    html.H1("!!!This site is a work in progress: Stiltonnes of work to do!!!", 
-            style={"textAlign":"left", 'font-size': '12px',"color": "red", "fontStyle": "italic", "fontWeight": "bold"}), # subtitle
-    
-    html.Hr(), # line break
-   
+    html.H1("Flood Event Telemetry Analyser", style={"textAlign":"center", 'font-size': '24px'}),  # title
+    html.H2("River level data downloaded from Environment Agency API", style={"textAlign":"center", 'font-size': '20px'}),  # subtitle
+    html.H1("!!!This site is a work in progress: Stiltonnes of work to do!!!", style={"textAlign":"left", 'font-size': '12px', "color": "red", "fontStyle": "italic", "fontWeight": "bold"}),  # subtitle
+    html.Hr(),  # line break
     dbc.Row([
         dbc.Col([
-            html.H4("Not all stations have historic values, typical ranges, and peak values", 
-                    style={"textAlign":"left", 'font-size': '16px',"color": "green", "fontWeight": "bold"}),
-            html.H4("Stations with complete datasets:", 
-                    style={"textAlign":"left", 'font-size': '16px',"color": "green"}),
-            html.P(', '.join(complete_stations), 
-                   style={"textAlign":"left", 'font-size': '14px',"color": "green"}),
-            html.P(f"That is {len(complete_stations)} stations out of {len(data_dict)} in the whole dataset ({percent_complete:.0f}%)", 
-                   style={"textAlign":"left", 'font-size': '12px',"color": "green", "fontStyle": "italic"})
+            html.H4("Not all stations have historic values, typical ranges, and peak values", style={"textAlign":"left", 'font-size': '16px', "color": "green", "fontWeight": "bold"}),
+            html.H4("Stations with complete datasets:", style={"textAlign":"left", 'font-size': '16px', "color": "green"}),
+            html.P(', '.join(complete_stations), style={"textAlign":"left", 'font-size': '14px', "color": "green"}),
+            html.P(f"That is {len(complete_stations)} stations out of {len(data_dict)} in the whole dataset ({percent_complete:.0f}%)", style={"textAlign":"left", 'font-size': '12px', "color": "green", "fontStyle": "italic"})
         ], width=9),  
         dbc.Col([
             dbc.CardImg(src="https://media2.giphy.com/media/1Zp8tUAMkOZDMkqcHb/giphy.gif?cid=6c09b952rjrtfs3brpsa0z89g2oeqrzgg7d3sdoj8fon3aqd&ep=v1_internal_gif_by_id&rid=giphy.gif&ct=g", bottom=True, style={"width": "250px"})
         ], width=3)  
     ]),
-
-    html.Hr(), # line break
-    html.P("Choose a site for peak analyswiss:", style={'font-size': '16px', "fontStyle": 'bold'}), 
+    html.Hr(),  # line break
+    html.P("Choose a site for peak analysis:", style={'font-size': '16px', "fontStyle": 'bold'}), 
     html.P("First, pick the river name, then the stations available for that river will be shown", style={'font-size': '14px'}),
     html.P("You can start typing into the bar to search, or pick from the dropdown", style={'font-size': '14px'}), 
-    # First dropdown for selecting river names
     dbc.Row([
         dbc.Col(
             dcc.Dropdown(
@@ -605,7 +594,6 @@ app.layout = dbc.Container([
             ),
             width=6
         ),
-        # Second dropdown for selecting stations based on the selected river name
         dbc.Col(
             dcc.Dropdown(
                 id="station-dropdown",
@@ -617,8 +605,13 @@ app.layout = dbc.Container([
             width=6
         )
     ]),
-
-    html.Hr(), # line break
+    html.Hr(),  # line break
+    dbc.Row([
+        dbc.Col(
+            html.Iframe(srcDoc=open('stations_map.html', 'r').read(), width='100%', height='600'),
+        ),
+    ]),
+    html.Hr(),  # line break
     dbc.Row([
         dbc.Col(
             html.Div([
@@ -635,8 +628,7 @@ app.layout = dbc.Container([
             width=4
         ),  
     ]),
-
-    html.Hr(), # line break
+    html.Hr(),  # line break
     dbc.Row([
         dbc.Col(
             html.Div([
@@ -652,16 +644,18 @@ app.layout = dbc.Container([
             ]),
             width=6
         ),
-        dbc.Col(html.Div([
-            html.H2("Winter 23-24 peaks versus historic levels", style={"textAlign": "center", 'font-size': '14px'}),
-            html.Div(id="historic-graph", className="card"),
-        ]),
-        width=6)
+        dbc.Col(
+            html.Div([
+                html.H2("Winter 23-24 peaks versus historic levels", style={"textAlign": "center", 'font-size': '14px'}),
+                html.Div(id="historic-graph", className="card"),
+            ]),
+            width=6
+        )
     ]),
-    html.Hr(), # line break
+    html.Hr(),  # line break
     dbc.Row([
         dbc.Col(
-            [
+            html.Div([
                 html.H2("These stations experienced exceptional (top-10 all-time) historic levels this winter", style={"textAlign": "center", 'font-size': '14px'}),
                 html.Div([
                     dash_table.DataTable(
@@ -674,47 +668,46 @@ app.layout = dbc.Container([
                         page_action='none'
                     ),
                 ]),
-            ],
+            ]),
             width=12
         )
     ]),
-
-    html.Hr(), # line break
-    dbc.Row([
-    dbc.Col(
-        html.Div([
-            html.H2("Here are the peaks for all stations in all events this winter", style={"textAlign": "center", 'font-size': '14px'}),
-            dash_table.DataTable(
-                id='peak-table-all',
-                columns=[{"name": i, "id": i} for i in peak_table_all.columns],
-                data=peak_table_all.to_dict('records'),
-                fixed_columns={'headers': True, 'data': 3},
-                style_table={'minWidth': '90%', 'height': '200px', 'overflowY': 'auto'},
-                style_cell={'textAlign': 'left', 'fontSize': '10px', 'padding': '5px'},
-                page_action='none'
-            ),
-        ]),
-        width=12
-     )
-    ]),
-
-    html.Hr(), # line break
+    html.Hr(),  # line break
     dbc.Row([
         dbc.Col(
-            [dbc.Button(id='btn',
-                children="Raclette your data here",
-                color="info",
-                className="mt-1"
-            ),
-            dcc.Download(id="download-component")
+            html.Div([
+                html.H2("Here are the peaks for all stations in all events this winter", style={"textAlign": "center", 'font-size': '14px'}),
+                dash_table.DataTable(
+                    id='peak-table-all',
+                    columns=[{"name": i, "id": i} for i in peak_table_all.columns],
+                    data=peak_table_all.to_dict('records'),
+                    fixed_columns={'headers': True, 'data': 3},
+                    style_table={'minWidth': '90%', 'height': '200px', 'overflowY': 'auto'},
+                    style_cell={'textAlign': 'left', 'fontSize': '10px', 'padding': '5px'},
+                    page_action='none'
+                ),
+            ]),
+            width=12
+        )
+    ]),
+    html.Hr(),  # line break
+    dbc.Row([
+        dbc.Col(
+            [
+                dbc.Button(id='btn',
+                    children="Raclette your data here",
+                    color="info",
+                    className="mt-1"
+                ),
+                dcc.Download(id="download-component")
             ],
             width=12
         )
     ]),
-    html.Hr(), # line break
+    html.Hr(),  # line break
     html.H1("Storm Parameters used", style={"textAlign":"left", 'font-size': '20px'}),
     html.Div(generate_storm_info()),
-    html.Hr(), # line break
+    html.Hr(),  # line break
     dbc.Row([
         dbc.Col(
             dbc.CardImg(
@@ -733,6 +726,7 @@ app.layout = dbc.Container([
         )
     ]),
 ], fluid=True)
+
 
 ### DEFINE CALLBACKS
 @app.callback(
