@@ -456,6 +456,27 @@ complete_stations = sorted(set(filtered_df['Station'].unique()) & set(threshold_
 percent_complete = len(complete_stations) / len(data_dict) * 100 if len(data_dict) > 0 else 0
 
 
+# Function to create initial Folium map with markers for all stations
+def create_initial_map():
+    # Create Folium map
+    m = folium.Map(location=[51.5074, -0.1278], zoom_start=10)
+    
+    # Add markers for all stations
+    for station_name, station_data in data_dict.items():
+        lat = station_data.get('lat', None)
+        long = station_data.get('long', None)
+        
+        if lat is not None and long is not None:
+            # Add marker for station
+            folium.Marker(location=[lat, long], popup=station_name).add_to(m)
+    
+    # Convert Folium map to HTML
+    map_html = m.get_root().render()
+    
+    return map_html
+
+initial_map_html = create_initial_map()
+
 #### SAVING STUFF FOR POWERPOINT PRESENTATION
 # Save all the charts for use in the Powerpoint
 import matplotlib.pyplot as plt
@@ -583,7 +604,7 @@ app.layout = dbc.Container([
     html.P("First, pick the river name, then the stations available for that river will be shown", style={'font-size': '14px'}),
     html.P("You can start typing into the bar to search, or pick from the dropdown", style={'font-size': '14px'}), 
     dbc.Row([
-        dbc.Col(
+        dbc.Col([
             dcc.Dropdown(
                 id="river-dropdown",
                 clearable=False,
@@ -593,9 +614,6 @@ app.layout = dbc.Container([
                 ],
                 style={'font-size': '16px'}
             ),
-            width=6
-        ),
-        dbc.Col(
             dcc.Dropdown(
                 id="station-dropdown",
                 clearable=False,
@@ -603,13 +621,10 @@ app.layout = dbc.Container([
                 options=[],  # Will be dynamically populated based on the selected river name
                 style={'font-size': '16px'}
             ),
-            width=6
-        )
-    ]),
-    html.Hr(),  # line break
-    dbc.Row([
+        ], width=8),
         dbc.Col(
-            html.Iframe(id='map-container', width='100%', height='600'),
+            html.Iframe(id='map-container',srcDoc=initial_map_html, width='100%', height='200'),
+            width=4
         ),
     ]),
     html.Hr(),  # line break
@@ -729,6 +744,7 @@ app.layout = dbc.Container([
 ], fluid=True)
 
 
+
 ### DEFINE CALLBACKS
 @app.callback(
     Output("download-component", "data"),
@@ -826,7 +842,7 @@ def update_graph_peak_table_top_ten(selected_river, selected_station):
     return "No data available for selected station.", "", [], [], station_options
 
 
-# Callback to update map based on selected station
+
 # Callback to update map based on selected station
 @app.callback(
     Output('map-container', 'srcDoc'),
@@ -834,23 +850,27 @@ def update_graph_peak_table_top_ten(selected_river, selected_station):
 )
 def update_map(selected_station):
     # Create Folium map
+    m = folium.Map(location=[51.5074, -0.1278], zoom_start=10)
+    
+    # Add markers for all stations
+    for station_name, station_data in data_dict.items():
+        lat = station_data.get('lat', None)
+        long = station_data.get('long', None)
+        
+        if lat is not None and long is not None:
+            # Add marker for station
+            folium.Marker(location=[lat, long], popup=station_name).add_to(m)
+    
+    # Adjust zoom level and center map if a station is selected
     if selected_station:
         station_data = data_dict[selected_station]
         lat = station_data.get('lat', None)
         long = station_data.get('long', None)
 
         if lat is not None and long is not None:
-            # If latitude and longitude are available, create the map centered at the station location
-            m = folium.Map(location=[lat, long], zoom_start=10)
-            
-            # Add marker for selected station
-            folium.Marker(location=[lat, long], popup=selected_station).add_to(m)
-        else:
-            # If latitude or longitude is not available, create the map with default location and zoom
-            m = folium.Map(location=[51.5074, -0.1278], zoom_start=10)
-    else:
-        # If no station is selected, create the map with default location and zoom
-        m = folium.Map(location=[51.5074, -0.1278], zoom_start=10)
+            # If latitude and longitude are available for the selected station, center the map on that station
+            m.location = [lat, long]
+            m.zoom_start = 12  # Adjust the zoom level as needed
     
     # Convert Folium map to HTML
     map_html = m.get_root().render()
