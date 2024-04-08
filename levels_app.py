@@ -379,10 +379,60 @@ def plot_historic_levels(filtered_df, selected_station, threshold_dict):
         # If the selected station is not valid or no station is selected, return an empty figure
         return go.Figure()
 
+#### FUNCTION TO MAKE DICTIONARY OFFLINE AND THEN LOAD
+
+# # Fetch data for all stations
+# data_dict = fetch_all_station_data()
+
+# def fetch_and_save_all_station_data():
+#     data_dict = {}
+#     for wiski_id in WISKI_IDS:
+#         station_data = fetch_station_data(wiski_id)
+#         if station_data:
+#             # Convert DataFrame to JSON-serializable format
+#             date_values_json = station_data['date_values'].to_json(orient='records')
+#             # Replace DataFrame with JSON string in station_data dictionary
+#             station_data['date_values'] = date_values_json
+#             data_dict[station_data['name']] = station_data
+
+#     # Specify the file path where you want to save the JSON file
+#     file_path = "C:\\Users\\SPHILLIPS03\\Documents\\repos\\levels_app_folder\\nested_dict.json"
+
+#     # Save the dictionary containing station data to a JSON file
+#     with open(file_path, "w") as json_file:
+#         json.dump(data_dict, json_file)
+
+#     print("JSON file saved successfully.")
+
+# fetch_and_save_all_station_data()
+
+# Function to load station data from JSON file
+def load_station_data_from_json(file_path):
+    try:
+        # Load data from JSON file
+        with open(file_path, "r") as json_file:
+            data_dict = json.load(json_file)
+        
+        # Convert date_values from JSON strings to DataFrames
+        for station_data in data_dict.values():
+            station_data['date_values'] = pd.read_json(station_data['date_values'])
+
+        return data_dict
+    except FileNotFoundError:
+        print(f"File {file_path} not found.")
+        return None
+    
+# Load station data from JSON file
+file_path = "nested_dict.json"
+data_dict = load_station_data_from_json(file_path)
+
+if data_dict:
+    print("Data loaded successfully.")
+else:
+    print("Error loading data.")
+
 
 ### CALL YOUR FUNCTIONS
-# Fetch data for all stations
-data_dict = fetch_all_station_data()
 
 # Find and store maximum values for all stations
 max_values = find_and_store_max_values(data_dict)
