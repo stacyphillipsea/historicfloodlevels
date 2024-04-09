@@ -3,9 +3,9 @@
 ## This is the code for my Apprenticeship End Point Assessment Project!
 
 This project aims to make a Dash App that analyses EA Gauging Station data across the West Midlands, making use of the EA Hydrology API
-It calculates peak levels for given storm events over the winetr of 2023-2024, visualises them in charts and tables, and compares them to historic peak levels to provide context.
+It calculates peak levels for given storm events over the winter of 2023-2024, visualises them in charts and tables, and compares them to historic peak levels to provide context.
 
-I have already done loads of work on this before using Git Hub.
+I have already done loads of work on this before using Git Hub, so earlier versions of the code ar enot included.
 
 ## Functionality that is currently working
 * Double dropdown menu  for River name then Station name
@@ -14,14 +14,14 @@ I have already done loads of work on this before using Git Hub.
 * The download data button currently works well
 * Peak plot is being loaded into a Powerpoint that can be downloaded locally
 * Have downloaded and stored the data_dict as a JSON that is then loaded into the file, instead of calling the API everytime
-* Years to peak date column added
-* Map showing position of gauging stations
+* Difference from and Years to peak date column added
+* Map showing position of selected station and all stations
 
 ## Things that could be improved
 * The top 10 historic values tables is not formatted, and I would like it to show the colours of the storms
 * The Historic versus winter chart is fine, but it is a different size when it default loads and then is the intended size when the callback update code is triggered
 * The exceptional levels table and the all peak data table are not formatted
-* Cannot get the download button for the Powerpoint to work. Created seperate branch (Powerpoint-Download-Attempt)
+* Cannot get the download button for the Powerpoint to work. Created separate branch (Powerpoint-Download-Attempt)
 
 
 
