@@ -16,12 +16,14 @@ I have already done loads of work on this before using Git Hub, so earlier versi
 * Have downloaded and stored the data_dict as a JSON that is then loaded into the file, instead of calling the API everytime
 * Difference from and Years to peak date column added
 * Map showing position of selected station and all stations
+* Navbar formatted with items on left and right
 
 ## Things that could be improved
 * The top 10 historic values tables is not formatted, and I would like it to show the colours of the storms
 * The Historic versus winter chart is fine, but it is a different size when it default loads and then is the intended size when the callback update code is triggered
 * The exceptional levels table and the all peak data table are not formatted
 * Cannot get the download button for the Powerpoint to work. Created separate branch (Powerpoint-Download-Attempt)
+* Navbar is not pulling the images from the project folder, had to give it urls instead
 
 
 
