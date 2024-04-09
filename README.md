@@ -17,6 +17,7 @@ I have already done loads of work on this before using Git Hub, so earlier versi
 * Difference from and Years to peak date column added
 * Map showing position of selected station and all stations
 * Navbar formatted with items on left and right
+* Map shows formatted popup and colour coded symbols based on river name
 
 ## Things that could be improved
 * The top 10 historic values tables is not formatted, and I would like it to show the colours of the storms

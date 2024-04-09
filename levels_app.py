@@ -459,23 +459,52 @@ def load_station_data_from_json(file_path):
         print(f"File {file_path} not found.")
         return None
 
-# Function to create initial Folium map with markers for all stations
-def create_initial_map():
-    # Create Folium map
-    m = folium.Map(location=[51.5074, -0.1278], zoom_start=10)
+# Define a list of colors to use as a palette
+color_palette = [
+    'blue', 'green', 'cadetblue', 'orange', 'purple', 'pink', 'gray', 'beige', 
+    'lightblue', 'red', 'lightred', 'lightgray', 'darkblue', 'darkgreen', 'darkred', 'darkpurple'
+]
+
+# Function to create Folium map with markers for stations
+def create_map(data_dict, selected_station=None):
+    # Create Folium map centred on Hagley (roughly in centre of WMD)
+    m = folium.Map(location=[52.4083, -2.2272], zoom_start=10)
     
+    # Extract unique river names from the data_dict
+    unique_rivers = sorted(set(station_data.get('river_name', None) for station_data in data_dict.values() if 'river_name' in station_data))
+
+    # Create river-color mapping by assigning colors from the palette
+    river_color_mapping = {river: color_palette[i % len(color_palette)] for i, river in enumerate(unique_rivers)}
+
     # Add markers for all stations
     for station_name, station_data in data_dict.items():
         lat = station_data.get('lat', None)
         long = station_data.get('long', None)
+        river_name = station_data.get('river_name', None)
+        popup_content = f"<b>{station_name}</b><br>{river_name}"
         
         if lat is not None and long is not None:
-            # Add marker for station
-            folium.Marker(location=[lat, long], popup=station_name).add_to(m)
-    
+            # Select marker color based on river name
+            marker_color = river_color_mapping.get(river_name, 'gray')  # Default to gray if river name not found
+            # Add marker for station with selected color
+            folium.Marker(location=[lat, long], popup=popup_content, 
+                          icon=folium.Icon(icon = "info-sign", color=marker_color, icon_color="white")).add_to(m)
+            m.get_root().header.add_child(folium.Element("<style>.leaflet-popup-content { width: 100px; text-align: center; }</style>"))
+
+    # Adjust zoom level and center map if a station is selected
+    if selected_station:
+        station_data = data_dict[selected_station]
+        lat = station_data.get('lat', None)
+        long = station_data.get('long', None)
+
+        if lat is not None and long is not None:
+            # If latitude and longitude are available for the selected station, center the map on that station
+            m.location = [lat, long]
+            m.zoom_start = 10  # Adjust the zoom level as needed
+
     # Convert Folium map to HTML
     map_html = m.get_root().render()
-    
+
     return map_html
 
 
@@ -502,7 +531,7 @@ top_ten_records, filtered_df = gaugeboard_comparison(gaugeboard_data, df)
 complete_stations = sorted(set(filtered_df['Station'].unique()) & set(threshold_dict.keys()) & set(data_dict.keys()))
 percent_complete = len(complete_stations) / len(data_dict) * 100 if len(data_dict) > 0 else 0
 
-initial_map_html = create_initial_map()
+initial_map_html = create_map(data_dict)
 
 #### SAVING STUFF FOR POWERPOINT PRESENTATION
 # Save all the charts for use in the Powerpoint
@@ -883,33 +912,7 @@ def update_graph_peak_table_top_ten(selected_river, selected_station):
 )
 
 def update_map(selected_station):
-    # Create Folium map
-    m = folium.Map(location=[51.5074, -0.1278], zoom_start=10)
-    
-    # Add markers for all stations
-    for station_name, station_data in data_dict.items():
-        lat = station_data.get('lat', None)
-        long = station_data.get('long', None)
-        
-        if lat is not None and long is not None:
-            # Add marker for station
-            folium.Marker(location=[lat, long], popup=station_name).add_to(m)
-    
-    # Adjust zoom level and center map if a station is selected
-    if selected_station:
-        station_data = data_dict[selected_station]
-        lat = station_data.get('lat', None)
-        long = station_data.get('long', None)
-
-        if lat is not None and long is not None:
-            # If latitude and longitude are available for the selected station, center the map on that station
-            m.location = [lat, long]
-            m.zoom_start = 12  # Adjust the zoom level as needed
-    
-    # Convert Folium map to HTML
-    map_html = m.get_root().render()
-    
-    return map_html
+    return create_map(data_dict, selected_station)
 
 # Run the app
 if __name__ == '__main__':
