@@ -54,16 +54,50 @@ gaugeboard_data = pd.read_csv('gaugeboard_data.csv')
 threshold_values = sites_of_interest_merge[sites_of_interest_merge['Threshold'].notnull()]
 threshold_values['Threshold'] = threshold_values['Threshold'].astype(float)
 threshold_dict = threshold_values.set_index('Gauge')['Threshold'].to_dict()
+ea_logo = "EA_logo.jpg"
+ea_logo_clip = "https://png2.cleanpng.com/sh/21bbe3c8fc2fbad88acec34e033dd3de/L0KzQYm3VMIxN5N0fZH0aYP2gLBuTfVvfpp3h9D2ZX73PbLuhf5kgV5teexqcnTyhcS0lBF0fJYyhtN9dYLkfH7sjwZqepDzRdd3dnn1f7B0hf51aZ0yhtN9dYLoPYbohMllP5MASNRrNEW1Poa5V8k4OmM6Sac7NEK1RYqAV8A1QF91htk=/kisspng-environment-agency-hazardous-waste-natural-environ-environmental-nature-5ad9d7b90bb452.527972251524225977048.png"
+dash_logo = "https://raw.githubusercontent.com/tomkdefra/defra-dash/main/assets/images/DASH_logo_colour.png"
 
 
-NAVBAR = dbc.NavbarSimple(
-    brand="FETA Homepage",
-    brand_href="#",
-    color="primary",
+
+PLOTLY_LOGO = "https://images.plot.ly/logo/new-branding/plotly-logomark.png"
+
+NAVBAR = dbc.Navbar(
+    dbc.Container(
+        [
+            html.A(
+                dbc.Row(
+                    [
+                        dbc.Col(html.Img(src="https://visualpharm.com/assets/818/Cheese-595b40b65ba036ed117d2a6c.svg", 
+                              height="50px")),
+                        dbc.Col(dbc.NavbarBrand("FETA Homepage", className="ms-2", 
+                                                style={"color":"#008531", "font-weight": "bold"})),
+                    ],
+                    align="center",
+                    className="g-0",
+                ),
+                href="https://dap-prd2-connect.azure.defra.cloud/level_data/",
+                style={"textDecoration": "none"},
+            ),
+            dbc.Row(
+                [
+                dbc.Col(dbc.NavbarBrand("App powered by", className="ms-2", 
+                                        style={"color":"#008531"}), width="auto"),
+                dbc.Col(html.A(html.Img(src=ea_logo_clip, height="60px")), width="auto"),
+                dbc.Col(html.A(html.Img(src=dash_logo, height="50px")), width="auto"),
+                ],
+                className="g-0 ms-auto flex-nowrap mt-3 mt-md-0", # no gutter, right hand side, no wrap, margins
+                align="center",
+                justify="end"  # Align the row content to the end (right-hand side)
+            ),
+        ]
+    ),
+    color="#d9f5ce",
     dark=True,
-    children=[html.A(html.Img(src = "https://visualpharm.com/assets/818/Cheese-595b40b65ba036ed117d2a6c.svg", 
-                              height="50px"))]
 )
+
+
+
 
 ### MAKE YOUR FUNCTIONS
 # Fetch data for a single station
