@@ -23,7 +23,7 @@ import folium
 
 
 ### GET YOUR DATA BITS
-# Define constants
+# Define key constants
 BASE_URL = "http://environment.data.gov.uk/hydrology/id"
 BASE_STATIONS_URL = "http://environment.data.gov.uk/hydrology/id/stations"
 WISKI_IDS = ['2175', '2077', '2134', '2180', '2001', '2642', '2085', '2616', '2032', '2087', '2606', '2057', '2071',
@@ -34,7 +34,6 @@ WISKI_IDS = ['2175', '2077', '2134', '2180', '2001', '2642', '2085', '2616', '20
 # ## WYE WISKI IDS
 # WISKI_IDS =['055002', '055028', '055811', '055040', '055021','055014', '055829', '055041', '055003', '055843',
 #             '055843', '055807', '055039', '055817', '055031', '055013', '055018']
-
 #WISKI_IDS = ['2175', '2077', '2134']
 MIN_DATE = "2023-10-01"
 MAX_DATE = "2024-02-29"
@@ -49,6 +48,7 @@ DATE_FILTERS = {
     'Late February': ('2024-02-22', '2024-02-25', 'gray')
 }
 
+# Load data
 sites_of_interest_merge = pd.read_csv('sites_of_interest_merge.csv')
 gaugeboard_data = pd.read_csv('gaugeboard_data.csv')
 threshold_values = sites_of_interest_merge[sites_of_interest_merge['Threshold'].notnull()]
@@ -58,10 +58,7 @@ ea_logo = "EA_logo.jpg"
 ea_logo_clip = "https://png2.cleanpng.com/sh/21bbe3c8fc2fbad88acec34e033dd3de/L0KzQYm3VMIxN5N0fZH0aYP2gLBuTfVvfpp3h9D2ZX73PbLuhf5kgV5teexqcnTyhcS0lBF0fJYyhtN9dYLkfH7sjwZqepDzRdd3dnn1f7B0hf51aZ0yhtN9dYLoPYbohMllP5MASNRrNEW1Poa5V8k4OmM6Sac7NEK1RYqAV8A1QF91htk=/kisspng-environment-agency-hazardous-waste-natural-environ-environmental-nature-5ad9d7b90bb452.527972251524225977048.png"
 dash_logo = "https://raw.githubusercontent.com/tomkdefra/defra-dash/main/assets/images/DASH_logo_colour.png"
 
-
-
-PLOTLY_LOGO = "https://images.plot.ly/logo/new-branding/plotly-logomark.png"
-
+## Creat navigation bar/header
 NAVBAR = dbc.Navbar(
     dbc.Container(
         [
@@ -96,8 +93,32 @@ NAVBAR = dbc.Navbar(
     dark=True,
 )
 
+#### FUNCTION TO MAKE DICTIONARY OFFLINE AND THEN LOAD
 
+# # Fetch data for all stations
+# data_dict = fetch_all_station_data()
 
+# def fetch_and_save_all_station_data():
+#     data_dict = {}
+#     for wiski_id in WISKI_IDS:
+#         station_data = fetch_station_data(wiski_id)
+#         if station_data:
+#             # Convert DataFrame to JSON-serializable format
+#             date_values_json = station_data['date_values'].to_json(orient='records')
+#             # Replace DataFrame with JSON string in station_data dictionary
+#             station_data['date_values'] = date_values_json
+#             data_dict[station_data['name']] = station_data
+
+#     # Specify the file path where you want to save the JSON file
+#     file_path = "C:\\Users\\SPHILLIPS03\\Documents\\repos\\levels_app_folder\\nested_dict.json"
+
+#     # Save the dictionary containing station data to a JSON file
+#     with open(file_path, "w") as json_file:
+#         json.dump(data_dict, json_file)
+
+#     print("JSON file saved successfully.")
+
+# fetch_and_save_all_station_data()
 
 ### MAKE YOUR FUNCTIONS
 # Fetch data for a single station
@@ -422,33 +443,6 @@ def plot_historic_levels(filtered_df, selected_station, threshold_dict):
         # If the selected station is not valid or no station is selected, return an empty figure
         return go.Figure()
 
-#### FUNCTION TO MAKE DICTIONARY OFFLINE AND THEN LOAD
-
-# # Fetch data for all stations
-# data_dict = fetch_all_station_data()
-
-# def fetch_and_save_all_station_data():
-#     data_dict = {}
-#     for wiski_id in WISKI_IDS:
-#         station_data = fetch_station_data(wiski_id)
-#         if station_data:
-#             # Convert DataFrame to JSON-serializable format
-#             date_values_json = station_data['date_values'].to_json(orient='records')
-#             # Replace DataFrame with JSON string in station_data dictionary
-#             station_data['date_values'] = date_values_json
-#             data_dict[station_data['name']] = station_data
-
-#     # Specify the file path where you want to save the JSON file
-#     file_path = "C:\\Users\\SPHILLIPS03\\Documents\\repos\\levels_app_folder\\nested_dict.json"
-
-#     # Save the dictionary containing station data to a JSON file
-#     with open(file_path, "w") as json_file:
-#         json.dump(data_dict, json_file)
-
-#     print("JSON file saved successfully.")
-
-# fetch_and_save_all_station_data()
-
 # Function to load station data from JSON file
 def load_station_data_from_json(file_path):
     try:
@@ -464,32 +458,6 @@ def load_station_data_from_json(file_path):
     except FileNotFoundError:
         print(f"File {file_path} not found.")
         return None
-    
-# Load station data from JSON file
-file_path = "nested_dict.json"
-data_dict = load_station_data_from_json(file_path)
-
-if data_dict:
-    print("Data loaded successfully.")
-else:
-    print("Error loading data.")
-
-
-### CALL YOUR FUNCTIONS
-
-# Find and store maximum values for all stations
-max_values = find_and_store_max_values(data_dict)
-
-# Create peak table DataFrame
-df, peak_table_all = process_peak_table_all(max_values, sites_of_interest_merge)
-
-# Call gaugeboard_comparison function
-top_ten_records, filtered_df = gaugeboard_comparison(gaugeboard_data, df)
-
-# Identify the common station that has historic values, threholds and peak data
-complete_stations = sorted(set(filtered_df['Station'].unique()) & set(threshold_dict.keys()) & set(data_dict.keys()))
-percent_complete = len(complete_stations) / len(data_dict) * 100 if len(data_dict) > 0 else 0
-
 
 # Function to create initial Folium map with markers for all stations
 def create_initial_map():
@@ -509,6 +477,30 @@ def create_initial_map():
     map_html = m.get_root().render()
     
     return map_html
+
+
+### CALL YOUR FUNCTIONS 
+# Load station data from JSON file
+file_path = "nested_dict.json"
+data_dict = load_station_data_from_json(file_path)
+
+if data_dict:
+    print("Data loaded successfully.")
+else:
+    print("Error loading data.")
+
+# Find and store maximum values for all stations
+max_values = find_and_store_max_values(data_dict)
+
+# Create peak table DataFrame
+df, peak_table_all = process_peak_table_all(max_values, sites_of_interest_merge)
+
+# Call gaugeboard_comparison function
+top_ten_records, filtered_df = gaugeboard_comparison(gaugeboard_data, df)
+
+# Identify the common station that has historic values, threholds and peak data
+complete_stations = sorted(set(filtered_df['Station'].unique()) & set(threshold_dict.keys()) & set(data_dict.keys()))
+percent_complete = len(complete_stations) / len(data_dict) * 100 if len(data_dict) > 0 else 0
 
 initial_map_html = create_initial_map()
 
@@ -608,8 +600,6 @@ output_presentation_path = "C:\\Users\\SPHILLIPS03\\Documents\\repos\\levels_app
 prs.save(output_presentation_path)
 
 
-
-
 ### MAKE YOUR APP
 # Initialize Dash app
 external_stylesheets = [dbc.themes.MINTY]
@@ -619,10 +609,12 @@ app = dash.Dash('__main__', external_stylesheets=external_stylesheets)
 ### DEFINE APP LAYOUT
 app.layout = dbc.Container([
     NAVBAR,
+    # Titles
     html.H1("Flood Event Telemetry Analyser", style={"textAlign":"center", 'font-size': '24px'}),  # title
     html.H2("River level data downloaded from Environment Agency API", style={"textAlign":"center", 'font-size': '20px'}),  # subtitle
     html.H1("!!!This site is a work in progress: Stiltonnes of work to do!!!", style={"textAlign":"left", 'font-size': '12px', "color": "red", "fontStyle": "italic", "fontWeight": "bold"}),  # subtitle
     html.Hr(),  # line break
+    # Data info
     dbc.Row([
         dbc.Col([
             html.H4("Not all stations have historic values, typical ranges, and peak values", style={"textAlign":"left", 'font-size': '16px', "color": "green", "fontWeight": "bold"}),
@@ -635,6 +627,7 @@ app.layout = dbc.Container([
         ], width=3)  
     ]),
     html.Hr(),  # line break
+    # Dropdowns and map
     dbc.Row([
         dbc.Col([
             html.P("Choose a site for peak analysis:", style={'font-size': '16px', "fontStyle": 'bold'}), 
@@ -663,6 +656,7 @@ app.layout = dbc.Container([
         ),
     ]),
     html.Hr(),  # line break
+    # Peak chart and peak table
     dbc.Row([
         dbc.Col(
             html.Div([
@@ -680,6 +674,7 @@ app.layout = dbc.Container([
         ),  
     ]),
     html.Hr(),  # line break
+    # Peaks versus historic table and chart
     dbc.Row([
         dbc.Col(
             html.Div([
@@ -705,6 +700,7 @@ app.layout = dbc.Container([
         )
     ]),
     html.Hr(),  # line break
+    # Top ten table
     dbc.Row([
         dbc.Col(
             html.Div([
@@ -725,6 +721,7 @@ app.layout = dbc.Container([
         )
     ]),
     html.Hr(),  # line break
+    # All peak table
     dbc.Row([
         dbc.Col(
             html.Div([
@@ -743,6 +740,7 @@ app.layout = dbc.Container([
         )
     ]),
     html.Hr(),  # line break
+    # Download all peak table
     dbc.Row([
         dbc.Col(
             [
@@ -757,9 +755,11 @@ app.layout = dbc.Container([
         )
     ]),
     html.Hr(),  # line break
+    # Storm Parameters used
     html.H1("Storm Parameters used", style={"textAlign":"left", 'font-size': '20px'}),
     html.Div(generate_storm_info()),
     html.Hr(),  # line break
+    # Final gif
     dbc.Row([
         dbc.Col(
             dbc.CardImg(
@@ -780,7 +780,6 @@ app.layout = dbc.Container([
 ], fluid=True)
 
 
-
 ### DEFINE CALLBACKS
 @app.callback(
     Output("download-component", "data"),
@@ -799,7 +798,7 @@ def update_station_options(selected_river):
     else:
         return []
     
-# Callback associated with the dropdown
+# Callback associated with the dropdowns
 @app.callback(
     [Output('output-graph', 'children'),
      Output('peak-table', 'children'),
@@ -877,13 +876,12 @@ def update_graph_peak_table_top_ten(selected_river, selected_station):
 
     return "No data available for selected station.", "", [], [], station_options
 
-
-
 # Callback to update map based on selected station
 @app.callback(
     Output('map-container', 'srcDoc'),
     [Input('station-dropdown', 'value')]
 )
+
 def update_map(selected_station):
     # Create Folium map
     m = folium.Map(location=[51.5074, -0.1278], zoom_start=10)
@@ -913,9 +911,6 @@ def update_map(selected_station):
     
     return map_html
 
-
-
-    
 # Run the app
 if __name__ == '__main__':
     app.run_server(debug=True)
