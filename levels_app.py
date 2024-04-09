@@ -246,8 +246,9 @@ def gaugeboard_comparison(gaugeboard_data, df):
 
     # Add a new column for difference from peak
     sorted_df['Years_since_peak'] = sorted_df.groupby('Station').apply(
-        lambda group: round(abs((group['Date'] - group['Date'].max()).dt.days / 365.25))).reset_index(level=0, drop=True)
-  
+        lambda group: round(abs((group['Date'] - group.loc[group['Level'].idxmax(), 'Date']).dt.days / 365.25))
+        ).reset_index(level=0, drop=True)
+    
     # Reset the index to flatten the DataFrame
     sorted_df.reset_index(drop=True, inplace=True)
 
