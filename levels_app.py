@@ -653,8 +653,9 @@ app.layout = dbc.Container([
                     id='station-top-ten-table',
                     columns=[{"name": i, "id": i} for i in filtered_df.columns],
                     data=[],
-                    style_table={'minWidth': '90%', 'overflowY': 'auto'},
-                    style_cell={'textAlign': 'left', 'fontSize': '10px', 'padding': '5px'},
+                    style_table={'minWidth': '90%', 'overflowY': 'auto', 
+                        'border': '1px solid black', 'font-size': '12px'},  # Adjust font size
+                    style_cell={'textAlign': 'left', 'padding': '5px', 'border': '1px solid black'},  # Add padding
                     page_action='none'
                 ),
             ]),
