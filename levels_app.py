@@ -26,7 +26,7 @@ WISKI_IDS = ['2175', '2077', '2134', '2180', '2001', '2642', '2085', '2616', '20
              '2618', '2165', '2102', '2153', '2132', '2008', '2086', '2002', '2128', '055829', '055811', '055807',
              '055817', '055843', '4143', '4078', '4018', '4703', '4052', '4040', '4083', '4006', '4012', '4019',
              '4069', '4039', '4066', '4081', '4878', '4003', '2090', '2019', '2091', '2093', '2050', '2049', '2048',
-             '452039', '2092', '2621', '2104']
+             '452039', '2092', '2621', '2104', '2531', '055041', '055003', '055816']
 # ## WYE WISKI IDS
 # WISKI_IDS =['055002', '055028', '055811', '055040', '055021','055014', '055829', '055041', '055003', '055843',
 #             '055843', '055807', '055039', '055817', '055031', '055013', '055018']
@@ -88,33 +88,6 @@ NAVBAR = dbc.Navbar(
     color="#d9f5ce",
     dark=True,
 )
-
-#### FUNCTION TO MAKE DICTIONARY OFFLINE AND THEN LOAD
-
-# # Fetch data for all stations
-# data_dict = fetch_all_station_data()
-
-# def fetch_and_save_all_station_data():
-#     data_dict = {}
-#     for wiski_id in WISKI_IDS:
-#         station_data = fetch_station_data(wiski_id)
-#         if station_data:
-#             # Convert DataFrame to JSON-serializable format
-#             date_values_json = station_data['date_values'].to_json(orient='records')
-#             # Replace DataFrame with JSON string in station_data dictionary
-#             station_data['date_values'] = date_values_json
-#             data_dict[station_data['name']] = station_data
-
-#     # Specify the file path where you want to save the JSON file
-#     file_path = "C:\\Users\\SPHILLIPS03\\Documents\\repos\\levels_app_folder\\nested_dict.json"
-
-#     # Save the dictionary containing station data to a JSON file
-#     with open(file_path, "w") as json_file:
-#         json.dump(data_dict, json_file)
-
-#     print("JSON file saved successfully.")
-
-# fetch_and_save_all_station_data()
 
 ### MAKE YOUR FUNCTIONS
 # Fetch data for a single station
@@ -503,6 +476,32 @@ def create_map(data_dict, selected_station=None):
 
     return map_html
 
+#### FUNCTION TO MAKE DICTIONARY OFFLINE AND THEN LOAD
+
+# # Fetch data for all stations
+# data_dict = fetch_all_station_data()
+
+# def fetch_and_save_all_station_data():
+#     data_dict = {}
+#     for wiski_id in WISKI_IDS:
+#         station_data = fetch_station_data(wiski_id)
+#         if station_data:
+#             # Convert DataFrame to JSON-serializable format
+#             date_values_json = station_data['date_values'].to_json(orient='records')
+#             # Replace DataFrame with JSON string in station_data dictionary
+#             station_data['date_values'] = date_values_json
+#             data_dict[station_data['name']] = station_data
+
+#     # Specify the file path where you want to save the JSON file
+#     file_path = "C:\\Users\\SPHILLIPS03\\Documents\\repos\\levels_app_folder\\nested_dict.json"
+
+#     # Save the dictionary containing station data to a JSON file
+#     with open(file_path, "w") as json_file:
+#         json.dump(data_dict, json_file)
+
+#     print("JSON file saved successfully.")
+
+# fetch_and_save_all_station_data()
 
 ### CALL YOUR FUNCTIONS 
 # Load station data from JSON file
