@@ -31,8 +31,10 @@ WISKI_IDS = ['2175', '2077', '2134', '2180', '2001', '2642', '2085', '2616', '20
 # WISKI_IDS =['055002', '055028', '055811', '055040', '055021','055014', '055829', '055041', '055003', '055843',
 #             '055843', '055807', '055039', '055817', '055031', '055013', '055018']
 #WISKI_IDS = ['2175', '2077', '2134']
-MIN_DATE = "2023-10-01"
-MAX_DATE = "2024-02-29"
+MIN_DATE_STR = "2023-10-01"
+MAX_DATE_STR = "2024-02-29"
+MIN_DATE = datetime.strptime(MIN_DATE_STR, '%Y-%m-%d')
+MAX_DATE = datetime.strptime(MAX_DATE_STR, '%Y-%m-%d')
 DATE_FILTERS = {
     'Babet': ('2023-10-18', '2023-10-31', 'red'),
     'Ciaran': ('2023-11-01', '2023-11-08', 'blue'),
@@ -109,7 +111,7 @@ def fetch_station_data(wiski_id):
             measure = json.loads(response.content)
             if 'items' in measure and measure['items']:
                 measure_id = measure['items'][0]['@id']
-                readings_url = f"{measure_id}/readings?mineq-date={MIN_DATE}&maxeq-date={MAX_DATE}"
+                readings_url = f"{measure_id}/readings?mineq-date={MIN_DATE_STR}&maxeq-date={MAX_DATE_STR}"
                 response = requests.get(readings_url)
                 response.raise_for_status()
                 readings = json.loads(response.content)
@@ -829,13 +831,13 @@ app.layout = dbc.Container([
             width=12
         )
     ]),
-    html.Hr(),  # line break
+
     # Download all peak table
     dbc.Row([
         dbc.Col(
             [
                 dbc.Button(id='btn',
-                    children="Raclette your data here",
+                    children="Download this data table with peaks for all stations here",
                     color="info",
                     className="mt-1"
                 ),
@@ -845,9 +847,22 @@ app.layout = dbc.Container([
         )
     ]),
     html.Hr(),  # line break
+    
     # Storm Parameters used
-    html.H1("Storm Parameters used", id="data-info", style={"textAlign":"left", 'font-size': '20px'}),
+    html.H4("Data sources used in this app", style={"text-decoration": "underline"}, id="data-info"),
+    html.H5("River level data"),
+    html.P([" River level data is accessed using the ",
+             html.A("DEFRA Hydrology API", href="https://environment.data.gov.uk/hydrology/doc/reference"),
+             f". ID codes for a list of selected key gauging stations across the West Midlands was used,\
+                  and 15-minute resolution river level data was downloaded for analysis.\
+                Data was downloaded for the period {MIN_DATE.strftime('%d %b %Y')} to {MAX_DATE.strftime('%d %b %Y')}"
+            ]),
+    html.H5("Storm Parameters", style={"textAlign":"left"}),
+    html.P("Storm parameters were set to cover time periods consistent with internal EA reporting."),
     html.Div(generate_storm_info()),
+    html.H5("Historic data", style={"textAlign":"left"}),
+    html.P("Historic data has been digitised from internal EA records (Gaugeboards in SHWG and Thermometer Sheets in SWWM)."),
+
     html.Hr(),  # line break
     # Final gif
     dbc.Row([
