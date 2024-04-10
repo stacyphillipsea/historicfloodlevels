@@ -634,15 +634,36 @@ app = dash.Dash('__main__', external_stylesheets=external_stylesheets)
 app.layout = dbc.Container([
     NAVBAR,
     # Titles
-    html.H1("Flood Event Telemetry Analyser", style={"textAlign":"center", 'font-size': '24px'}),  # title
-    html.H2("River level data downloaded from Environment Agency API", style={"textAlign":"center", 'font-size': '20px'}),  # subtitle
-    html.H1("!!!This site is a work in progress: Stiltonnes of work to do!!!", style={"textAlign":"left", 'font-size': '12px', "color": "red", "fontStyle": "italic", "fontWeight": "bold"}),  # subtitle
+    html.H1("Welcome to the Flood Event Telemetry Analyser (FETA)!", style={"textAlign":"center", }),  # title
+    html.H4(["This app allows you to explore river level data for the Winter flood events 2023-2024",
+            html.Br(),
+            "for sites across the West Midlands"],
+            style={"textAlign":"center"}),  
+    html.Hr(),  # line break
+    # How to use        
+    html.H5("How to use the FETA",
+            style={"text-decoration": "underline"}),
+    html.P("Data is accessed using an Environment Agency API for a number of different gauging stations"),
+    html.P(["Choose your station of interest ",
+            html.A("(here)", href="#station-choice"),
+            " and then look at the peak levels for that station across different storm events ",
+            html.A("(here)", href="#peak-info"),
+            "."]),
+    html.P(["You can then compare these peak levels ",
+            html.A("(here)", href="#historic-info"),
+            " to historic records (where available) to give context for each storm event."]),     
+    html.P("All of the charts, maps and tables are interactive in some way, allowing you to filter, sort and investigate the data as you please."),
+    html.P(["Further information about data sources can be found at the ",
+            html.A("bottom of the page", href="#data-info"),
+            "."]),
+    html.Div(style={"height": "14px"}),
+    html.H6("!!!This site is a work in progress: Stiltonnes of work to do!!!", style={"textAlign":"left", "color": "red", "fontStyle": "italic", "fontWeight": "bold"}),  # subtitle
     html.Hr(),  # line break
     # Data info
     dbc.Row([
         dbc.Col([
-            html.H4("Not all stations have historic values, typical ranges, and peak values", style={"textAlign":"left", 'font-size': '16px', "color": "green", "fontWeight": "bold"}),
-            html.H4("Stations with complete datasets:", style={"textAlign":"left", 'font-size': '16px', "color": "green"}),
+            html.H4("Not all stations have historic values, typical ranges, and peak values", style={"textAlign":"left", "color": "green", "fontWeight": "bold"}),
+            html.P("Stations with complete datasets:", style={"textAlign":"left", 'font-size': '16px', "color": "green"}),
             html.P(', '.join(complete_stations), style={"textAlign":"left", 'font-size': '14px', "color": "green"}),
             html.P(f"That is {len(complete_stations)} stations out of {len(data_dict)} in the whole dataset ({percent_complete:.0f}%)", style={"textAlign":"left", 'font-size': '12px', "color": "green", "fontStyle": "italic"})
         ], width=9),  
@@ -654,7 +675,7 @@ app.layout = dbc.Container([
     # Dropdowns and map
     dbc.Row([
         dbc.Col([
-            html.P("Choose a site for peak analysis:", style={'font-size': '16px', "fontStyle": 'bold'}), 
+            html.P("Choose a site for peak analysis:", id="station-choice", style={'font-size': '16px', "fontStyle": 'bold'}), 
             html.P("First, pick the river name, then the stations available for that river will be shown", style={'font-size': '14px'}),
             html.P("You can start typing into the bar to search, or pick from the dropdown", style={'font-size': '14px'}),
             dcc.Dropdown(
@@ -684,7 +705,7 @@ app.layout = dbc.Container([
     dbc.Row([
         dbc.Col(
             html.Div([
-                html.H2("River levels for this station over Winter 23-24", style={"textAlign": "center", 'font-size': '14px'}),
+                html.H2("River levels for this station over Winter 23-24",id="peak-info", style={"textAlign": "center", 'font-size': '14px'}),
                 html.Div(id="output-graph", className="card"),
             ]),
             width=8
@@ -702,7 +723,7 @@ app.layout = dbc.Container([
     dbc.Row([
         dbc.Col(
             html.Div([
-                html.H2("Top 10 historic levels for this station", style={"textAlign": "center", 'font-size': '14px'}),
+                html.H2("Top 10 historic levels for this station", id="historic-info", style={"textAlign": "center", 'font-size': '14px'}),
                 dash_table.DataTable(
                     id='station-top-ten-table',
                     columns=[{"name": i, "id": i} for i in filtered_df.columns],
@@ -786,7 +807,7 @@ app.layout = dbc.Container([
     ]),
     html.Hr(),  # line break
     # Storm Parameters used
-    html.H1("Storm Parameters used", style={"textAlign":"left", 'font-size': '20px'}),
+    html.H1("Storm Parameters used", id="data-info", style={"textAlign":"left", 'font-size': '20px'}),
     html.Div(generate_storm_info()),
     html.Hr(),  # line break
     # Final gif
