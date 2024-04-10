@@ -18,9 +18,10 @@ I have already done loads of work on this before using Git Hub, so earlier versi
 * Map showing position of selected station and all stations
 * Navbar formatted with items on left and right
 * Map shows formatted popup and colour coded symbols based on river name
+* Basic table formatting for top-10 and all peak table
 
 ## Things that could be improved
-* The top 10 historic values tables is not formatted, and I would like it to show the colours of the storms
+* Would like to colour code storms in the top 10 table
 * The Historic versus winter chart is fine, but it is a different size when it default loads and then is the intended size when the callback update code is triggered
 * The exceptional levels table and the all peak data table are not formatted
 * Cannot get the download button for the Powerpoint to work. Created separate branch (Powerpoint-Download-Attempt)
