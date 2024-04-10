@@ -738,7 +738,9 @@ app.layout = dbc.Container([
                         style_table={'minWidth': '100%', 'height': '200px', 'overflowY': 'auto', 
                                      'border': '1px solid black', 'font-size': '12px'},
                         style_cell={'textAlign': 'left', 'padding': '5px', 'border': '1px solid black'},
-                        page_action='none'
+                        page_action='none',
+                        filter_action="native",
+                        sort_action="native",
                     ),
                 ]),
             ]),
@@ -759,7 +761,9 @@ app.layout = dbc.Container([
                     style_table={'minWidth': '100%', 'height': '200px', 'overflowY': 'auto', 
                                 'border': '1px solid black', 'font-size': '12px'},
                     style_cell={'textAlign': 'left', 'padding': '5px', 'border': '1px solid black'},
-                    page_action='none'
+                    page_action='none',
+                    filter_action="native",
+                    sort_action="native"
                 ),
             ]),
             width=12
