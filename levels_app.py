@@ -650,10 +650,12 @@ app.layout = dbc.Container([
     NAVBAR,
     # Titles
     html.H1("Welcome to the Flood Event Telemetry Analyser (FETA)!", style={"textAlign":"center", }),  # title
-    html.H4(["This app allows you to explore river level data for the Winter flood events 2023-2024",
+    html.H5(["This app allows you to explore river level data for the Winter flood events 2023-2024",
             html.Br(),
             "for sites across the West Midlands"],
-            style={"textAlign":"center"}),  
+            style={"textAlign":"center"}), 
+    html.H4(["App created by ", html.A("Stacy Phillips", href="mailto:stacy.phillips1@environment-agency.gov.uk?subject=I%20love%20your%20FETA%20app!")], 
+            style={"textAlign": "center", "color":"#034B89"}),         
     html.Hr(),  # line break
     
     # How to use information & photo
@@ -703,9 +705,14 @@ app.layout = dbc.Container([
     # Dropdowns and map
     dbc.Row([
         dbc.Col([
-            html.P("Choose a site for peak analysis:", id="station-choice", style={'font-size': '16px', "fontStyle": 'bold'}), 
-            html.P("First, pick the river name, then the stations available for that river will be shown", style={'font-size': '14px'}),
-            html.P("You can start typing into the bar to search, or pick from the dropdown", style={'font-size': '14px'}),
+            html.P("Choose a site for peak analysis:", id="station-choice", 
+                   style={'font-size': '16px', "fontStyle": 'bold'}), 
+            html.P("First, pick the river name, and then the stations available for that river will be shown.", 
+                   style={'font-size': '14px'}),
+            html.P("You can start typing into the bar to search, or pick from the dropdown.", 
+                   style={'font-size': '14px'}),
+            html.P("The map to the right can help you identify what river a site is on; each river is coloured differently.", 
+                   style={'font-size': '14px'}),
             dcc.Dropdown(
                 id="river-dropdown",
                 clearable=False,
