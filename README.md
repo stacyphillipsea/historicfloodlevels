@@ -25,6 +25,7 @@ I have already done loads of work on this before using Git Hub, so earlier versi
 * Photo aded next to info
 * Email address added to top intro
 * Data sources section updated
+* Link at bottom to send back to top
 
 ## Things that could be improved
 * Would like to colour code storms in the top 10 table
@@ -33,6 +34,7 @@ I have already done loads of work on this before using Git Hub, so earlier versi
 * Cannot get the download button for the Powerpoint to work. Created separate branch (Powerpoint-Download-Attempt)
 * Navbar is not pulling the images from the project folder, had to give it urls instead
 * Attempted to tidy up the callback and update functions but didn't work (didn't save)
+* Would be nice to include more icons, couldn't get it to work with a "To top" button
 
 
 ## Things to remember to run in VSCODE
