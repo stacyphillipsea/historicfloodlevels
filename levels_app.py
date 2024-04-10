@@ -643,7 +643,7 @@ app.layout = dbc.Container([
     # How to use        
     html.H5("How to use the FETA",
             style={"text-decoration": "underline"}),
-    html.P("Data is automatically downloaded using the Environment Agency API for a number of different specified gauging stations"),
+    html.P("Data is automatically downloaded using the Environment Agency API for a number of different specified gauging stations."),
     html.P(["Choose your station of interest ",
             html.A("(here)", href="#station-choice"),
             " and then look at the peak levels for that station across different storm events ",
