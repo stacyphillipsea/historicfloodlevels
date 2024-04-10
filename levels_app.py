@@ -735,8 +735,9 @@ app.layout = dbc.Container([
                         columns=[{"name": i, "id": i} for i in top_ten_records.columns],
                         data=top_ten_records.to_dict('records'),
                         fixed_columns={'headers': True, 'data': 3},
-                        style_table={'minWidth': '90%', 'height': '200px', 'overflowY': 'auto'},
-                        style_cell={'textAlign': 'left', 'fontSize': '10px', 'padding': '5px'},
+                        style_table={'minWidth': '100%', 'height': '200px', 'overflowY': 'auto', 
+                                     'border': '1px solid black', 'font-size': '12px'},
+                        style_cell={'textAlign': 'left', 'padding': '5px', 'border': '1px solid black'},
                         page_action='none'
                     ),
                 ]),
@@ -755,8 +756,9 @@ app.layout = dbc.Container([
                     columns=[{"name": i, "id": i} for i in peak_table_all.columns],
                     data=peak_table_all.to_dict('records'),
                     fixed_columns={'headers': True, 'data': 3},
-                    style_table={'minWidth': '90%', 'height': '200px', 'overflowY': 'auto'},
-                    style_cell={'textAlign': 'left', 'fontSize': '10px', 'padding': '5px'},
+                    style_table={'minWidth': '100%', 'height': '200px', 'overflowY': 'auto', 
+                                'border': '1px solid black', 'font-size': '12px'},
+                    style_cell={'textAlign': 'left', 'padding': '5px', 'border': '1px solid black'},
                     page_action='none'
                 ),
             ]),
