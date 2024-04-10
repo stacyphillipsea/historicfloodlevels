@@ -20,7 +20,7 @@ I have already done loads of work on this before using Git Hub, so earlier versi
 * Map shows formatted popup and colour coded symbols based on river name
 * Basic table border formatting, sort and filter added for both top-10 and all peak table
 * Intro added at the top
-* Hyperlinks added to intro to help navigation
+* Hyperlinks throughout to help navigation
 * Popup modal added to show the data quality messaging
 * Photo aded next to info
 * Email address added to top intro

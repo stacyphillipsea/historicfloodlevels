@@ -651,7 +651,7 @@ modal_content = dbc.Modal([
 app.layout = dbc.Container([
     NAVBAR,
     # Titles
-    html.H1("Welcome to the Flood Event Telemetry Analyser (FETA)!", style={"textAlign":"center", }),  # title
+    html.H1("Welcome to the Flood Event Telemetry Analyser (FETA)!", style={"textAlign":"center", }, id="top"),  # title
     html.H5(["This app allows you to explore river level data for the Winter flood events 2023-2024",
             html.Br(),
             "for sites across the West Midlands"],
@@ -755,6 +755,11 @@ app.layout = dbc.Container([
             html.Div([
                 html.H2("Peaks identified for this station over Winter 23-24", style={"textAlign": "center", 'font-size': '14px'}),
                 html.Div(id="peak-table", className="card"),
+                html.Br(),
+                html.H4(["To see storm parameters used, click ",
+                        html.A("here", href="#storm-info"),
+                        "."], 
+                        style={"textAlign": "center","font-size":"14px"})
             ]),
             width=4
         ),  
@@ -857,11 +862,12 @@ app.layout = dbc.Container([
                   and 15-minute resolution river level data was downloaded for analysis.\
                 Data was downloaded for the period {MIN_DATE.strftime('%d %b %Y')} to {MAX_DATE.strftime('%d %b %Y')}"
             ]),
-    html.H5("Storm Parameters", style={"textAlign":"left"}),
+    html.H5("Storm Parameters", style={"textAlign":"left"}, id="storm-info"),
     html.P("Storm parameters were set to cover time periods consistent with internal EA reporting."),
     html.Div(generate_storm_info()),
     html.H5("Historic data", style={"textAlign":"left"}),
     html.P("Historic data has been digitised from internal EA records (Gaugeboards in SHWG and Thermometer Sheets in SWWM)."),
+    html.P(html.A("Return back to top", href="#top")),
 
     html.Hr(),  # line break
     # Final gif
