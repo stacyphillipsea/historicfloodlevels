@@ -19,6 +19,8 @@ I have already done loads of work on this before using Git Hub, so earlier versi
 * Navbar formatted with items on left and right
 * Map shows formatted popup and colour coded symbols based on river name
 * Basic table border formatting, sort and filter added for both top-10 and all peak table
+* Intro added at the top
+* Hyperlinks added to intro to help navigation
 
 ## Things that could be improved
 * Would like to colour code storms in the top 10 table
@@ -27,6 +29,7 @@ I have already done loads of work on this before using Git Hub, so earlier versi
 * Cannot get the download button for the Powerpoint to work. Created separate branch (Powerpoint-Download-Attempt)
 * Navbar is not pulling the images from the project folder, had to give it urls instead
 * Attempted to tidy up the callback and update functions but didn't work (didn't save)
+* Should be a section at the bottom for data sources with URL to API Reference
 
 
 
