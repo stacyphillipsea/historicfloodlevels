@@ -23,6 +23,7 @@ I have already done loads of work on this before using Git Hub, so earlier versi
 * Hyperlinks added to intro to help navigation
 * Popup modal added to show the data quality messaging
 * Photo aded next to info
+* Email address added to top intro
 
 ## Things that could be improved
 * Would like to colour code storms in the top 10 table
@@ -33,5 +34,6 @@ I have already done loads of work on this before using Git Hub, so earlier versi
 * Attempted to tidy up the callback and update functions but didn't work (didn't save)
 * Should be a section at the bottom for data sources with URL to API Reference
 
-
+## Things to remember to run in VSCODE
+* pip freeze > requirements.txt
 
