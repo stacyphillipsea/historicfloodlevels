@@ -669,9 +669,11 @@ app.layout = dbc.Container([
                         " and then look at the peak levels for that station across different storm events ",
                         html.A("(here)", href="#peak-info"),
                         "."]),
-                html.P(["You can then compare these peak levels ",
+                html.P(["You can then compare these peak levels to historic records ",
                         html.A("(here)", href="#historic-info"),
-                        " to historic records (where available) to give context for each storm event."]),     
+                        " (where available: ",
+                        html.A("see note here", href="#data-modal"), 
+                        ") to give context for each storm event."]),     
                 html.P("All of the charts, maps and tables are interactive in some way, allowing you to filter, sort and investigate the data as you please."),
                 html.P(["Further information about data sources can be found at the ",
                         html.A("bottom of the page", href="#data-info"),
@@ -697,6 +699,7 @@ app.layout = dbc.Container([
     
     # Data info modal popup
     html.Div([
+        html.Div(id="data-modal"),
         html.Button("A note on data completeness", id="open_modal"),
         # Define the modal
         modal_content,
