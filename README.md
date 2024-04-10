@@ -24,6 +24,7 @@ I have already done loads of work on this before using Git Hub, so earlier versi
 * Popup modal added to show the data quality messaging
 * Photo aded next to info
 * Email address added to top intro
+* Data sources section updated
 
 ## Things that could be improved
 * Would like to colour code storms in the top 10 table
@@ -32,8 +33,9 @@ I have already done loads of work on this before using Git Hub, so earlier versi
 * Cannot get the download button for the Powerpoint to work. Created separate branch (Powerpoint-Download-Attempt)
 * Navbar is not pulling the images from the project folder, had to give it urls instead
 * Attempted to tidy up the callback and update functions but didn't work (didn't save)
-* Should be a section at the bottom for data sources with URL to API Reference
+
 
 ## Things to remember to run in VSCODE
+* rsconnect deploy dash . -n LevelsApp --entrypoint levels_app:app 
 * pip freeze > requirements.txt
 
