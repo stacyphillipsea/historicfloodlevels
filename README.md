@@ -18,7 +18,7 @@ I have already done loads of work on this before using Git Hub, so earlier versi
 * Map showing position of selected station and all stations
 * Navbar formatted with items on left and right
 * Map shows formatted popup and colour coded symbols based on river name
-* Basic table formatting for top-10 and all peak table
+* Basic table border formatting, sort and filter added for both top-10 and all peak table
 
 ## Things that could be improved
 * Would like to colour code storms in the top 10 table
