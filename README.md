@@ -8,7 +8,7 @@ It calculates peak levels for given storm events over the winter of 2023-2024, v
 I have already done loads of work on this before using Git Hub, so earlier versions of the code are not included.
 
 ## Functionality that is currently working
-* Double dropdown menu  for River name then Station name
+* Double dropdown menu for River name then Station name
 * Peak graph and peak table
 * All dates throughout are formatted as I want them to be
 * The download data button currently works well
@@ -17,6 +17,7 @@ I have already done loads of work on this before using Git Hub, so earlier versi
 * Difference from and Years to peak date column added
 * Map showing position of selected station and all stations
 * Navbar formatted with items on left and right
+* Apprenticeships logo added
 * Map shows formatted popup and colour coded symbols based on river name
 * Basic table border formatting, sort and filter added for both top-10 and all peak table
 * Intro added at the top
