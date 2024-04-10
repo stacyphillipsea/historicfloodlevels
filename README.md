@@ -22,6 +22,7 @@ I have already done loads of work on this before using Git Hub, so earlier versi
 * Intro added at the top
 * Hyperlinks added to intro to help navigation
 * Popup modal added to show the data quality messaging
+* Photo aded next to info
 
 ## Things that could be improved
 * Would like to colour code storms in the top 10 table

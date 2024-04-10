@@ -655,26 +655,44 @@ app.layout = dbc.Container([
             "for sites across the West Midlands"],
             style={"textAlign":"center"}),  
     html.Hr(),  # line break
-    # How to use        
-    html.H5("How to use the FETA",
-            style={"text-decoration": "underline"}),
-    html.P("Data is automatically downloaded using the Environment Agency API for a number of different specified gauging stations."),
-    html.P(["Choose your station of interest ",
-            html.A("(here)", href="#station-choice"),
-            " and then look at the peak levels for that station across different storm events ",
-            html.A("(here)", href="#peak-info"),
-            "."]),
-    html.P(["You can then compare these peak levels ",
-            html.A("(here)", href="#historic-info"),
-            " to historic records (where available) to give context for each storm event."]),     
-    html.P("All of the charts, maps and tables are interactive in some way, allowing you to filter, sort and investigate the data as you please."),
-    html.P(["Further information about data sources can be found at the ",
-            html.A("bottom of the page", href="#data-info"),
-            "."]),
-    html.Div(style={"height": "14px"}),
-    html.H6("!!!This site is a work in progress: Stiltonnes of work to do!!!", style={"textAlign":"left", "color": "red", "fontStyle": "italic", "fontWeight": "bold"}),  # subtitle
     
+    # How to use information & photo
+    html.Div([
+        dbc.Row([
+            dbc.Col([
+                html.H5("How to use the FETA", style={"text-decoration": "underline"}),
+                html.P("Data is automatically downloaded using the Environment Agency API for a number of different specified gauging stations."),
+                html.P(["Choose your station of interest ",
+                        html.A("(here)", href="#station-choice"),
+                        " and then look at the peak levels for that station across different storm events ",
+                        html.A("(here)", href="#peak-info"),
+                        "."]),
+                html.P(["You can then compare these peak levels ",
+                        html.A("(here)", href="#historic-info"),
+                        " to historic records (where available) to give context for each storm event."]),     
+                html.P("All of the charts, maps and tables are interactive in some way, allowing you to filter, sort and investigate the data as you please."),
+                html.P(["Further information about data sources can be found at the ",
+                        html.A("bottom of the page", href="#data-info"),
+                        "."]),
+                html.Div(style={"height": "14px"}),
+            ], width=9),
+            dbc.Col([
+                html.Img(src="https://www.shropshirestar.com/resizer/R-JBYJySB7d1sV88kojEsofoO0w=/1200x675/cloudfront-us-east-1.images.arcpublishing.com/mna/6RGV7KRRMRDC7JMDGNQFHD7X7U.jpg", style={"width": "100%"}),
+                html.P("Flooding in Shrewsbury following Storm Gerrit", 
+                       style={"textAlign": "center", "fontStyle": "italic", "color": "gray", "font-size":"12px", "margin-bottom": "5px"}),
+                html.P("Photo from Shropshire Star", 
+                       style={"textAlign": "center", "fontStyle": "italic", "color": "gray", "font-size":"10px"})  # Adjust margin-top
+            ]),
+        ]),
+        dbc.Row([
+            dbc.Col(
+                html.H6("!!!This site is a work in progress: Stiltonnes of work to do!!!", 
+                        style={"textAlign":"center", "color": "red", "fontStyle": "italic", "fontWeight": "bold"}),
+            )
+        ]),
+    ]),       
     html.Hr(),  # line break
+    
     # Data info modal popup
     html.Div([
         html.Button("A note on data completeness", id="open_modal"),
@@ -715,7 +733,8 @@ app.layout = dbc.Container([
     dbc.Row([
         dbc.Col(
             html.Div([
-                html.H2("River levels for this station over Winter 23-24",id="peak-info", style={"textAlign": "center", 'font-size': '14px'}),
+                html.H2("River levels for this station over Winter 23-24",id="peak-info", 
+                        style={"textAlign": "center", 'font-size': '14px'}),
                 html.Div(id="output-graph", className="card"),
             ]),
             width=8
