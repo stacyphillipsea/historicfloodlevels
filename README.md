@@ -21,6 +21,7 @@ I have already done loads of work on this before using Git Hub, so earlier versi
 * Basic table border formatting, sort and filter added for both top-10 and all peak table
 * Intro added at the top
 * Hyperlinks added to intro to help navigation
+* Popup modal added to show the data quality messaging
 
 ## Things that could be improved
 * Would like to colour code storms in the top 10 table

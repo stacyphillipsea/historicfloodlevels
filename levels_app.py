@@ -629,6 +629,21 @@ prs.save(output_presentation_path)
 external_stylesheets = [dbc.themes.MINTY]
 app = dash.Dash('__main__', external_stylesheets=external_stylesheets)
 
+# Define the content of the modal
+modal_content = dbc.Modal([
+    dbc.ModalHeader("A note on data completeness"),
+    dbc.ModalBody([
+        html.H4("Not all stations have historic values, typical ranges, and peak values", style={"textAlign": "left", "color": "green", "fontWeight": "bold"}),
+        html.P("Stations with complete datasets:", style={"textAlign": "left", "font-size": "16px", "color": "green"}),
+        html.P(', '.join(complete_stations), style={"textAlign": "left", "font-size": "14px", "color": "green"}),
+        html.P(f"That is {len(complete_stations)} stations out of {len(data_dict)} in the whole dataset ({percent_complete:.0f}%)", style={"textAlign": "left", "font-size": "12px", "color": "green", "fontStyle": "italic"}),
+        dbc.CardImg(src="https://media2.giphy.com/media/1Zp8tUAMkOZDMkqcHb/giphy.gif?cid=6c09b952rjrtfs3brpsa0z89g2oeqrzgg7d3sdoj8fon3aqd&ep=v1_internal_gif_by_id&rid=giphy.gif&ct=g", bottom=True, style={"width": "250px"}), 
+    ]),
+    dbc.ModalFooter(
+        dbc.Button("Close", id="close_modal", className="ml-auto")
+    ),
+], id="modal")
+
 
 ### DEFINE APP LAYOUT
 app.layout = dbc.Container([
@@ -658,20 +673,15 @@ app.layout = dbc.Container([
             "."]),
     html.Div(style={"height": "14px"}),
     html.H6("!!!This site is a work in progress: Stiltonnes of work to do!!!", style={"textAlign":"left", "color": "red", "fontStyle": "italic", "fontWeight": "bold"}),  # subtitle
+    
     html.Hr(),  # line break
-    # Data info
-    dbc.Row([
-        dbc.Col([
-            html.H4("Not all stations have historic values, typical ranges, and peak values", style={"textAlign":"left", "color": "green", "fontWeight": "bold"}),
-            html.P("Stations with complete datasets:", style={"textAlign":"left", 'font-size': '16px', "color": "green"}),
-            html.P(', '.join(complete_stations), style={"textAlign":"left", 'font-size': '14px', "color": "green"}),
-            html.P(f"That is {len(complete_stations)} stations out of {len(data_dict)} in the whole dataset ({percent_complete:.0f}%)", style={"textAlign":"left", 'font-size': '12px', "color": "green", "fontStyle": "italic"})
-        ], width=9),  
-        dbc.Col([
-            dbc.CardImg(src="https://media2.giphy.com/media/1Zp8tUAMkOZDMkqcHb/giphy.gif?cid=6c09b952rjrtfs3brpsa0z89g2oeqrzgg7d3sdoj8fon3aqd&ep=v1_internal_gif_by_id&rid=giphy.gif&ct=g", bottom=True, style={"width": "250px"})
-        ], width=3)  
+    # Data info modal popup
+    html.Div([
+        html.Button("A note on data completeness", id="open_modal"),
+        # Define the modal
+        modal_content,
     ]),
-    html.Hr(),  # line break
+    html.Div(style={'height': '10px'}),  # Adding vertical space with a div
     # Dropdowns and map
     dbc.Row([
         dbc.Col([
@@ -935,6 +945,18 @@ def update_graph_peak_table_top_ten(selected_river, selected_station):
 
 def update_map(selected_station):
     return create_map(data_dict, selected_station)
+
+# Define callback to toggle the modal
+@app.callback(
+    dash.dependencies.Output("modal", "is_open"),
+    [dash.dependencies.Input("open_modal", "n_clicks"), dash.dependencies.Input("close_modal", "n_clicks")],
+    [dash.dependencies.State("modal", "is_open")],
+)
+def toggle_modal(n1, n2, is_open):
+    if n1 or n2:
+        return not is_open
+    return is_open
+
 
 # Run the app
 if __name__ == '__main__':
