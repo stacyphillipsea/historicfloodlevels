@@ -5,7 +5,7 @@
 This project aims to make a Dash App that analyses EA Gauging Station data across the West Midlands, making use of the EA Hydrology API
 It calculates peak levels for given storm events over the winter of 2023-2024, visualises them in charts and tables, and compares them to historic peak levels to provide context.
 
-I have already done loads of work on this before using Git Hub, so earlier versions of the code ar enot included.
+I have already done loads of work on this before using Git Hub, so earlier versions of the code are not included.
 
 ## Functionality that is currently working
 * Double dropdown menu  for River name then Station name
