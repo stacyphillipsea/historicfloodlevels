@@ -870,7 +870,7 @@ app.layout = dbc.Container([
     html.P(html.A("Return back to top", href="#top")),
 
     html.Hr(),  # line break
-    # Final gif
+    # Gif at end
     dbc.Row([
         dbc.Col(
             dbc.CardImg(
