@@ -32,8 +32,6 @@ I have already done loads of work on this before using Git Hub, so earlier versi
 
 ## Things that could be improved
 * Would like to colour code storms in the top 10 table
-* The Historic versus winter chart is fine, but it is a different size when it default loads and then is the intended size when the callback update code is triggered
-* The exceptional levels table and the all peak data table are not formatted
 * Cannot get the download button for the Powerpoint to work. Created separate branch (Powerpoint-Download-Attempt)
 * Navbar is not pulling the images from the project folder, had to give it urls instead
 * Attempted to tidy up the callback and update functions but didn't work (didn't save)
