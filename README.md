@@ -27,6 +27,8 @@ I have already done loads of work on this before using Git Hub, so earlier versi
 * Email address added to top intro
 * Data sources section updated
 * Link at bottom to send back to top
+* Import ibraries tidied
+* App log warnings fixed
 
 ## Things that could be improved
 * Would like to colour code storms in the top 10 table
