@@ -387,7 +387,7 @@ def plot_historic_levels(filtered_df, selected_station, threshold_dict):
                 tick0=0,             # Start tick at zero
                 dtick=1,             # Set tick interval to 1
                 tickvals=np.arange(0, max_level + 1),  # Set tick values to whole numbers up to max_level
-                range=[0, max_level]  # Set y-axis range to start from 0 and end at max_level
+                range=[0, max_level],  # Set y-axis range to start from 0 and end at max_level
             ),
             title={
                 'text': f"Historic levels for {selected_station}",
@@ -693,7 +693,7 @@ app.layout = dbc.Container([
         ]),
         dbc.Row([
             dbc.Col(
-                html.H6("!!!This site is a work in progress: Stiltonnes of work to do!!!", 
+                html.H6("!!! This site is a work in progress: Stiltonnes of work to do !!!", 
                         style={"textAlign":"center", "color": "red", "fontStyle": "italic", "fontWeight": "bold"}),
             )
         ]),
