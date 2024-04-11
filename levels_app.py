@@ -398,7 +398,7 @@ def plot_historic_levels(filtered_df, selected_station, threshold_dict):
                 title='Recorded levels and dates',
                 x=1.2,  # Increase distance from right edge
             ),
-            width=400,  # Adjust overall width
+
             plot_bgcolor='white'
         )
         
@@ -781,14 +781,14 @@ app.layout = dbc.Container([
                     page_action='none'
                 ),
             ]),
-            width=6
+            width=7
         ),
         dbc.Col(
             html.Div([
                 html.H2("Winter 23-24 peaks versus historic levels", style={"textAlign": "center", 'font-size': '14px'}),
                 html.Div(id="historic-graph", className="card"),
             ]),
-            width=6
+
         )
     ]),
     html.Hr(),  # line break
@@ -981,7 +981,7 @@ def update_graph_peak_table_top_ten(selected_river, selected_station):
                 # Make historic plot
                 fig = plot_historic_levels(filtered_df, selected_station, threshold_dict)
                 # Include the generated plot in the layout
-                historic_graph = dcc.Graph(id='historic-levels-graph', figure=fig)
+                historic_graph = dcc.Graph(figure=fig)
 
                 # Return graph, peak table, and top 10 table data
                 return dcc.Graph(id='river-level-graph', figure=figure), peak_table, historic_graph, top_10_df.to_dict('records'), station_options
