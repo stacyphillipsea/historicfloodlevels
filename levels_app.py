@@ -1,9 +1,10 @@
 import requests
 import json
 import pandas as pd
-import dash
+import dash 
+from dash import dcc, html
 from dash import dash_table
-from dash.dependencies import dcc, html, Input, Output
+from dash.dependencies import Input, Output
 import dash_bootstrap_components as dbc
 from datetime import datetime
 import plotly.graph_objects as go
@@ -13,6 +14,7 @@ import os
 from pptx import Presentation
 from pptx.util import Pt, Inches
 import folium
+from io import StringIO
 
 
 ### GET YOUR DATA BITS
@@ -47,7 +49,7 @@ DATE_FILTERS = {
 sites_of_interest_merge = pd.read_csv('sites_of_interest_merge.csv')
 gaugeboard_data = pd.read_csv('gaugeboard_data.csv')
 threshold_values = sites_of_interest_merge[sites_of_interest_merge['Threshold'].notnull()]
-threshold_values['Threshold'] = threshold_values['Threshold'].astype(float)
+threshold_values.loc[:, 'Threshold'] = threshold_values['Threshold'].astype(float) # Ensure original i modified, removing SettingWithCopyWarning
 threshold_dict = threshold_values.set_index('Gauge')['Threshold'].to_dict()
 ea_logo = "EA_logo.jpg"
 ea_logo_clip = "https://png2.cleanpng.com/sh/21bbe3c8fc2fbad88acec34e033dd3de/L0KzQYm3VMIxN5N0fZH0aYP2gLBuTfVvfpp3h9D2ZX73PbLuhf5kgV5teexqcnTyhcS0lBF0fJYyhtN9dYLkfH7sjwZqepDzRdd3dnn1f7B0hf51aZ0yhtN9dYLoPYbohMllP5MASNRrNEW1Poa5V8k4OmM6Sac7NEK1RYqAV8A1QF91htk=/kisspng-environment-agency-hazardous-waste-natural-environ-environmental-nature-5ad9d7b90bb452.527972251524225977048.png"
@@ -422,7 +424,7 @@ def load_station_data_from_json(file_path):
         
         # Convert date_values from JSON strings to DataFrames
         for station_data in data_dict.values():
-            station_data['date_values'] = pd.read_json(station_data['date_values'])
+            station_data['date_values'] = pd.read_json(StringIO(station_data['date_values']))
 
         return data_dict
     except FileNotFoundError:
