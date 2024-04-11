@@ -3,9 +3,7 @@ import json
 import pandas as pd
 import dash
 from dash import dash_table
-from dash.dependencies import Input, Output
-import dash_core_components as dcc
-import dash_html_components as html
+from dash.dependencies import dcc, html, Input, Output
 import dash_bootstrap_components as dbc
 from datetime import datetime
 import plotly.graph_objects as go
@@ -13,7 +11,6 @@ import numpy as np
 import pandas as pd
 import os
 from pptx import Presentation
-from pptx.dml.color import RGBColor
 from pptx.util import Pt, Inches
 import folium
 
