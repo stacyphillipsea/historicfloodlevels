@@ -482,8 +482,8 @@ def create_map(data_dict, selected_station=None):
 
 #### FUNCTION TO MAKE DICTIONARY OFFLINE AND THEN LOAD
 
-# # Fetch data for all stations
-# data_dict = fetch_all_station_data()
+## Fetch and save data for all stations
+data_dict = fetch_all_station_data()
 
 # def fetch_and_save_all_station_data():
 #     data_dict = {}
