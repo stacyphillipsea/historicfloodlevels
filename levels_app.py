@@ -482,7 +482,7 @@ def create_map(data_dict, selected_station=None):
 #### FUNCTION TO MAKE DICTIONARY OFFLINE AND THEN LOAD
 
 ## Fetch and save data for all stations
-data_dict = fetch_all_station_data()
+# data_dict = fetch_all_station_data()
 
 # def fetch_and_save_all_station_data():
 #     data_dict = {}
@@ -684,11 +684,22 @@ app.layout = dbc.Container([
                 html.Div(style={"height": "14px"}),
             ], width=9),
             dbc.Col([
-                html.Img(src="https://www.shropshirestar.com/resizer/R-JBYJySB7d1sV88kojEsofoO0w=/1200x675/cloudfront-us-east-1.images.arcpublishing.com/mna/6RGV7KRRMRDC7JMDGNQFHD7X7U.jpg", style={"width": "100%"}),
-                html.P("Flooding in Shrewsbury following Storm Gerrit", 
-                       style={"textAlign": "center", "fontStyle": "italic", "color": "gray", "font-size":"12px", "margin-bottom": "5px"}),
-                html.P("Photo from Shropshire Star", 
-                       style={"textAlign": "center", "fontStyle": "italic", "color": "gray", "font-size":"10px"})  # Adjust margin-top
+                html.A(
+                    [
+                        html.Img(
+                            src="https://www.shropshirestar.com/resizer/R-JBYJySB7d1sV88kojEsofoO0w=/1200x675/cloudfront-us-east-1.images.arcpublishing.com/mna/6RGV7KRRMRDC7JMDGNQFHD7X7U.jpg", 
+                            style={"width": "100%"}), 
+                        html.P(
+                            "Flooding in Shrewsbury following Storm Gerrit", 
+                            style={"textAlign": "center", "fontStyle": "italic", "color": "gray", "font-size":"12px", "margin-bottom": "5px"}
+                        ),
+                        html.P(
+                            "Photo from Shropshire Star", 
+                            style={"textAlign": "center", "fontStyle": "italic", "color": "gray", "font-size":"10px"}  # Adjust margin-top
+                        )
+                    ],
+                    href="https://www.shropshirestar.com/resizer/R-JBYJySB7d1sV88kojEsofoO0w=/1200x675/cloudfront-us-east-1.images.arcpublishing.com/mna/6RGV7KRRMRDC7JMDGNQFHD7X7U.jpg"
+                ),
             ]),
         ]),
         dbc.Row([
@@ -699,7 +710,6 @@ app.layout = dbc.Container([
         ]),
     ]),       
     html.Hr(),  # line break
-    
     # Data info modal popup
     html.Div([
         html.Div(id="data-modal"),
@@ -892,6 +902,7 @@ app.layout = dbc.Container([
 ], fluid=True)
 
 
+
 ### DEFINE CALLBACKS
 @app.callback(
     Output("download-component", "data"),
@@ -900,7 +911,7 @@ app.layout = dbc.Container([
 )
 
 def func(n_clicks):
-    return dcc.send_data_frame(peak_table_all.to_csv, "BEST_DATA_TABLE_EVER.csv")
+    return dcc.send_data_frame(peak_table_all.to_csv, "Winter2324_PeakLevels.csv")
  
 def update_station_options(selected_river):
     if selected_river:
