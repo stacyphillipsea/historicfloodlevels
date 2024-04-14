@@ -285,10 +285,10 @@ def gaugeboard_comparison(gaugeboard_data, df):
     # Count the number of rows for each unique value in 'Station' column
     station_counts = sorted_df['Station'].value_counts()
 
-    # Filter out stations with 5 or fewer records
+    # Filter out stations with 8 or fewer records
     stations_to_keep = station_counts[station_counts > 8].index
 
-    # Filter the DataFrame to keep only the stations with more than 5 records
+    # Filter the DataFrame to keep only the stations with more than 8 records
     filtered_df = sorted_df[sorted_df['Station'].isin(stations_to_keep)]
 
     # Display the filtered DataFrame
@@ -812,10 +812,11 @@ app.layout = dbc.Container([
                         id='top-ten-rank',
                         columns=[{"name": i, "id": i} for i in top_ten_records.columns],
                         data=top_ten_records.to_dict('records'),
+                        fixed_rows={'headers': True},
                         fixed_columns={'headers': True, 'data': 3},
                         style_table={'minWidth': '100%', 'height': '200px', 'overflowY': 'auto', 
                                      'border': '1px solid black', 'font-size': '12px'},
-                        style_cell={'textAlign': 'left', 'padding': '5px', 'border': '1px solid black'},
+                        style_cell={'textAlign': 'left', 'padding': '5px', 'border': '1px solid black', 'minWidth': '150px', 'maxWidth': '150px'},
                         page_action='none',
                         filter_action="native",
                         sort_action="native",
@@ -835,10 +836,11 @@ app.layout = dbc.Container([
                     id='peak-table-all',
                     columns=[{"name": i, "id": i} for i in peak_table_all.columns],
                     data=peak_table_all.to_dict('records'),
+                    fixed_rows={'headers': True},
                     fixed_columns={'headers': True, 'data': 3},
                     style_table={'minWidth': '100%', 'height': '200px', 'overflowY': 'auto', 
                                 'border': '1px solid black', 'font-size': '12px'},
-                    style_cell={'textAlign': 'left', 'padding': '5px', 'border': '1px solid black'},
+                    style_cell={'textAlign': 'left', 'padding': '5px', 'border': '1px solid black', 'minWidth': '150px', 'maxWidth': '150px'},
                     page_action='none',
                     filter_action="native",
                     sort_action="native"
