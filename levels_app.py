@@ -691,14 +691,15 @@ app.layout = dbc.Container([
                             style={"width": "100%"}), 
                         html.P(
                             "Flooding in Shrewsbury following Storm Gerrit", 
-                            style={"textAlign": "center", "fontStyle": "italic", "color": "gray", "font-size":"12px", "margin-bottom": "5px"}
+                            style={"textAlign": "center", "fontStyle": "italic", "color": "gray", "font-size":"12px", "margin-bottom": "5px"} # Adjust margin-top
                         ),
                         html.P(
                             "Photo from Shropshire Star", 
-                            style={"textAlign": "center", "fontStyle": "italic", "color": "gray", "font-size":"10px"}  # Adjust margin-top
+                            style={"textAlign": "center", "fontStyle": "italic", "color": "gray", "font-size":"10px"}  
                         )
                     ],
-                    href="https://www.shropshirestar.com/resizer/R-JBYJySB7d1sV88kojEsofoO0w=/1200x675/cloudfront-us-east-1.images.arcpublishing.com/mna/6RGV7KRRMRDC7JMDGNQFHD7X7U.jpg"
+                    href="https://www.shropshirestar.com/resizer/R-JBYJySB7d1sV88kojEsofoO0w=/1200x675/cloudfront-us-east-1.images.arcpublishing.com/mna/6RGV7KRRMRDC7JMDGNQFHD7X7U.jpg",
+                    target="_blank" # Make tab open in new window
                 ),
             ]),
         ]),
@@ -869,8 +870,8 @@ app.layout = dbc.Container([
     # Storm Parameters used
     html.H4("Data sources used in this app", style={"text-decoration": "underline"}, id="data-info"),
     html.H5("River level data"),
-    html.P([" River level data is accessed using the ",
-             html.A("DEFRA Hydrology API", href="https://environment.data.gov.uk/hydrology/doc/reference"),
+    html.P(["River level data is accessed using the ",
+             html.A("DEFRA Hydrology API", href="https://environment.data.gov.uk/hydrology/doc/reference", target="_blank"),
              f". ID codes for a list of selected key gauging stations across the West Midlands was used,\
                   and 15-minute resolution river level data was downloaded for analysis.\
                 Data was downloaded for the period {MIN_DATE.strftime('%d %b %Y')} to {MAX_DATE.strftime('%d %b %Y')}"

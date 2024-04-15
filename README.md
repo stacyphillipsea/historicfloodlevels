@@ -31,6 +31,7 @@ I have already done loads of work on this before using Git Hub, so earlier versi
 * App log warnings fixed
 * Table widths fixed and headers fixed
 * Added hyperlink for full screen image
+* External hyperlinks now are forced to open in new tab
 
 ## Things that could be improved
 * Would like to colour code storms in the top 10 table
