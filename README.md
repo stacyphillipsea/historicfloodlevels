@@ -40,6 +40,7 @@ I have already done loads of work on this before using Git Hub, so earlier versi
 * Attempted to tidy up the callback and update functions but didn't work (didn't save)
 * Would be nice to include more icons, couldn't get it to work with a "To top" button
 * Should include data quality tag information in here somewhere
+* WISKI IDs list should be derived from the sites of interest merge using unique, currently it is a static list. Can compare this list with existing list to check info is correct
 
 
 ## Things to remember to run in VSCODE
