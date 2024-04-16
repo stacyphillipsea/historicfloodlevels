@@ -599,14 +599,9 @@ def insert_plots_into_ppt(image_paths, prs):
         
         # Set font size for each line
         title_shape.text_frame.paragraphs[0].font.size = Pt(36)  # Font size for station
-        title_shape.text_frame.paragraphs[1].font.size = Pt(24)  # Font size for river name
-        
+        title_shape.text_frame.paragraphs[1].font.size = Pt(24)  # Font size for river name    
         # Set font bold for river name
-        title_shape.text_frame.paragraphs[1].font.bold = True
-        
-        # Set vertical alignment for the title text
-        # title_shape.text_frame.text_frame.vertical_anchor = MSO_ANCHOR.MIDDLE
-        
+        title_shape.text_frame.paragraphs[1].font.bold = True       
         # Set image dimensions and position
         image_width = Inches(10)  # Adjust as needed
         image_height = Inches(3)  # Adjust as needed
