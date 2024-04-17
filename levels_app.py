@@ -623,7 +623,7 @@ NAVBAR = dbc.Navbar(
                 dbc.Col(dbc.NavbarBrand("App powered by", className="ms-2", 
                                         style={"color":"#008531"}), width="auto"),
                                         dbc.Col(html.A(html.Img(src=apprenticeship_logo, height="50px")), width="auto"),
-                dbc.Col(html.A(html.Img(src=ea_logo_clip_src, height="60px")), width="auto"),
+                dbc.Col(html.A(html.Img(src=ea_logo_clip_src, height="60px")), width="auto", style={"padding-right": "10px"}),
                 dbc.Col(html.A(html.Img(src=dash_logo_src, height="50px")), width="auto"),
                 ],
                 className="g-0 ms-auto flex-nowrap mt-3 mt-md-0", # no gutter, right hand side, no wrap, margins
