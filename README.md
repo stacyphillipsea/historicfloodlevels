@@ -32,6 +32,7 @@ I have already done loads of work on this before using Git Hub, so earlier versi
 * Table widths fixed and headers fixed
 * Added hyperlink for full screen image
 * External hyperlinks now are forced to open in new tab
+* Used "app.get_asset_url()" to get correct path for local images so they are pulled in correctly, instead of having them as urls
 
 ## Things that could be improved
 * Would like to colour code storms in the top 10 table
