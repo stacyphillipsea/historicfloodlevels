@@ -341,7 +341,8 @@ def plot_historic_levels(filtered_df, selected_station, threshold_dict):
                 range=[0.5, 2.5]
             ),
             yaxis=dict(
-                title='Level (above gaugeboard datum)',
+                title={'text': 'Level<br><span style="font-size: 80%;">(metres above gaugeboard datum)</span>',
+                        'standoff': 0},
                 rangemode='tozero',  # Ensure y-axis starts at zero
                 tickmode='linear',   # Use linear ticks
                 tick0=0,             # Start tick at zero
@@ -788,6 +789,7 @@ app.layout = dbc.Container([
         dbc.Col(
             html.Div([
                 html.H2("Winter 23-24 peaks versus historic levels", style={"textAlign": "center", 'font-size': '14px'}),
+                html.H2("Only top-3 historic records are shown here to help comparison", style={"textAlign": "center", 'font-size': '10px'}),
                 html.Div(id="historic-graph", className="card"),
             ]),
 
@@ -942,7 +944,8 @@ def update_graph_peak_table_top_ten(selected_river, selected_station):
                           'type': 'line', 
                           'name': 'River Level'}],
                 'layout': {'title': f'River Levels for {selected_station} ({river_name})', 'xaxis': {'title': 'Date Time'},
-                           'yaxis': {'title': 'Value'}}
+                           'yaxis': {'title': {'text': 'Level<br><span style="font-size: 80%;">(metres above gaugeboard datum)</span>',
+                                                'standoff': 0}}}
             }
             if selected_station in max_values:
                 # Create table rows for peak values
