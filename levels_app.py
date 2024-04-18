@@ -593,27 +593,21 @@ ea_logo_clip_src = app.get_asset_url('EA_logo_clip.png')
 dash_logo_src = app.get_asset_url('DASH_logo.png')
 apprenticeship_logo="https://nowskills.co.uk/wp-content/uploads/2018/11/Apprenticeships-Logo-PNG.png"
 
-## Creat navigation bar/header
+## Create navigation bar/header
 NAVBAR = dbc.Navbar(
     dbc.Container(
-        [
-            html.A(
-                dbc.Row(
-                    [
-                        dbc.Col(html.Img(src="https://visualpharm.com/assets/818/Cheese-595b40b65ba036ed117d2a6c.svg", 
+        [html.A(dbc.Row([dbc.Col(html.Img(src="https://visualpharm.com/assets/818/Cheese-595b40b65ba036ed117d2a6c.svg", 
                               height="50px")),
                         dbc.Col(dbc.NavbarBrand("FETA Homepage", className="ms-2", 
                                                 style={"color":"#008531", "font-weight": "bold"})),
                     ],
                     align="center",
-                    className="g-0",
-                ),
+                    className="g-0",),
                 href="https://dap-prd2-connect.azure.defra.cloud/level_data/",
                 style={"textDecoration": "none"},
             ),
             dbc.Row(
-                [
-                dbc.Col(dbc.NavbarBrand("App powered by", className="ms-2", 
+                [dbc.Col(dbc.NavbarBrand("App powered by", className="ms-2", 
                                         style={"color":"#008531"}), width="auto"),
                                         dbc.Col(html.A(html.Img(src=apprenticeship_logo, height="50px")), width="auto"),
                 dbc.Col(html.A(html.Img(src=ea_logo_clip_src, height="60px")), width="auto", style={"padding-right": "10px"}),
