@@ -36,7 +36,7 @@ I have already done loads of work on this before using Git Hub, so earlier versi
 
 ## Things that could be improved
 * Would like to colour code storms in the top 10 table
-* Cannot get the download button for the Powerpoint to work. Created separate branch (Powerpoint-Download-Attempt)
+* Cannot get the download button for the Powerpoint to work. Created separate branch (Powerpoint-Download-Attempt). Tried again using the new source url path and it just wouldn't work!! 
 * Navbar is not pulling the images from the project folder, had to give it urls instead
 * Attempted to tidy up the callback and update functions but didn't work (didn't save)
 * Would be nice to include more icons, couldn't get it to work with a "To top" button
