@@ -1,21 +1,18 @@
-import requests
-import json
 import pandas as pd
-import dash 
-from dash import dcc, html
-from dash import dash_table
+import numpy as np      # For numerical operations
+from datetime import datetime
+import requests         # For API call
+import json             # For API call
+import dash             # For app
+from dash import dcc, html, dash_table      # For app layout
 from dash.dependencies import Input, Output
 import dash_bootstrap_components as dbc
-from datetime import datetime
-import plotly.graph_objects as go
-import numpy as np
-import pandas as pd
-import os
-from pptx import Presentation
+import plotly.graph_objects as go           # For Plotly charts
+import os                                   # For filepath operations
+from pptx import Presentation       # For Powerpoint
 from pptx.util import Pt, Inches
-import folium
-from io import StringIO
-
+import folium               # For map
+from io import StringIO     # To loadd JSON to dataframe
 
 ### GET YOUR DATA BITS
 # Define key constants
