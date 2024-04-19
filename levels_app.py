@@ -42,11 +42,16 @@ DATE_FILTERS = {
     'Late February': ('2024-02-22', '2024-02-25', 'gray')
 }
 
-# Load data
+## Load data
+# Metadata spreadsheet
 sites_of_interest_merge = pd.read_csv('sites_of_interest_merge.csv')
+
+# Historic records
 gaugeboard_data = pd.read_csv('gaugeboard_data.csv')
+
+# Isolate threshold/max values from metadata spreadsheet
 threshold_values = sites_of_interest_merge[sites_of_interest_merge['Threshold'].notnull()]
-threshold_values.loc[:, 'Threshold'] = threshold_values['Threshold'].astype(float) # Ensure original i modified, removing SettingWithCopyWarning
+threshold_values.loc[:, 'Threshold'] = threshold_values['Threshold'].astype(float) # Ensure original is modified, removing SettingWithCopyWarning
 threshold_dict = threshold_values.set_index('Gauge')['Threshold'].to_dict()
 
 ### MAKE YOUR FUNCTIONS
