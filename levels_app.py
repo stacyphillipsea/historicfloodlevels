@@ -595,6 +595,7 @@ app = dash.Dash('__main__', external_stylesheets=external_stylesheets, assets_fo
 ea_logo_clip_src = app.get_asset_url('EA_logo_clip.png')
 dash_logo_src = app.get_asset_url('DASH_logo.png')
 apprenticeship_logo="https://nowskills.co.uk/wp-content/uploads/2018/11/Apprenticeships-Logo-PNG.png"
+cs_logo = app.get_asset_url('CS_Logo.png')
 
 ## Create navigation bar/header
 NAVBAR = dbc.Navbar(
@@ -611,8 +612,9 @@ NAVBAR = dbc.Navbar(
             ),
             dbc.Row(
                 [dbc.Col(dbc.NavbarBrand("App powered by", className="ms-2", 
-                                        style={"color":"#008531"}), width="auto"),
-                                        dbc.Col(html.A(html.Img(src=apprenticeship_logo, height="50px")), width="auto"),
+                                        style={"color":"#008531"}), width="auto"),                                 
+                dbc.Col(html.A(html.Img(src=apprenticeship_logo, height="50px")), width="auto"),
+                dbc.Col(html.A(html.Img(src=cs_logo, height="50px")), width="auto"),       
                 dbc.Col(html.A(html.Img(src=ea_logo_clip_src, height="60px")), width="auto", style={"padding-right": "10px"}),
                 dbc.Col(html.A(html.Img(src=dash_logo_src, height="50px")), width="auto"),
                 ],
