@@ -184,16 +184,14 @@ def process_peak_table_all(max_values, sites_of_interest_merge):
 
 # Merge with 'sites_of_interest_merge' DataFrame
     peak_table_all = pd.merge(flat_df, sites_of_interest_merge[['Region', 'River','Gauge','Order']], left_on='Station', right_on='Gauge')
+
     columns_to_move = ['Order','Region', 'River']
     new_order = columns_to_move + [col for col in peak_table_all.columns if col not in columns_to_move]
     peak_table_all = peak_table_all[new_order]
     peak_table_all.drop(columns=['Gauge'], inplace=True)
-
     peak_table_all = peak_table_all.sort_values(by=['Order'], ascending=[True])
     peak_table_all.set_index('Order', inplace=True)
-
     peak_table_all = peak_table_all.drop_duplicates(subset=['Station'])
-    # peak_table_all = flat_df
     
     return df, peak_table_all
 
