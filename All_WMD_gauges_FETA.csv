@@ -1,0 +1,261 @@
+Order,Region,Catchment,River,Gauge,Site type,Site sub-type,Site number,Site status,National Grid Reference
+1,SWWM,Avon,"Middle Avon, Rugby to Bidford",Bidford,Surface water sites,Surface water level (including tide and lake level) - continuous,2615,open,SP0985451769
+2,SWWM,Avon,"Middle Avon, Rugby to Bidford",Rugby,Surface water sites,River flow - continuous,2090,open,SP5029276636
+3,SWWM,Avon,"Middle Avon, Rugby to Bidford",Stareton,Surface water sites,River flow - continuous,2019,open,SP3328771535
+4,SWWM,Avon,"Middle Avon, Rugby to Bidford",Stratford,Surface water sites,Surface water level (including tide and lake level) - continuous,2093,open,SP2049854852
+5,SWWM,Avon,"Middle Avon, Rugby to Bidford",Warwick,Surface water sites,River flow - continuous,2091,open,SP2991265296
+6,SWWM,Avon,"Middle Avon, Rugby to Bidford",Warwick Old Budbrooke Road,Surface water sites,Surface water level (including tide and lake level) - continuous,2541,open,SP2643665486
+7,SWWM,Avon,"Middle Avon, Rugby to Bidford",Warwick Rothwell Road,Surface water sites,Surface water level (including tide and lake level) - continuous,2543,open,SP2767766134
+8,SWWM,Avon,"Middle Avon, Rugby to Bidford",Warwick Wedgnock Lane,Surface water sites,Surface water level (including tide and lake level) - continuous,2542,open,SP2724165718
+9,SWWM,Avon,River Arrow & River Alne,Broom,Surface water sites,River flow - continuous,2104,open,SP0863853580
+10,SWWM,Avon,River Arrow & River Alne,Henley River,Surface water sites,Surface water level (including tide and lake level) - continuous,2621,open,SP1527966559
+11,SWWM,Avon,River Arrow & River Alne,Little Alne,Surface water sites,River flow - continuous,2095,open,SP1416161060
+12,SWWM,Avon,River Arrow & River Alne,Studley,Surface water sites,River flow - continuous,2094,open,SP0763463999
+13,SWWM,Avon,River Dene in South East Warwickshire,Walton,Surface water sites,Surface water level (including tide and lake level) - continuous,2900,open,SP2860053170
+14,SWWM,Avon,River Dene in South East Warwickshire,Wellesbourne,Surface water sites,River flow - continuous,2048,open,SP2727155587
+15,SWWM,Avon,River Leam & River Itchen,Eathorpe,Surface water sites,River flow - continuous,2050,open,SP3885368829
+16,SWWM,Avon,River Leam & River Itchen,Kites Hardwick,Surface water sites,River flow - continuous,2609,open,SP4675068593
+17,SWWM,Avon,River Leam & River Itchen,Southam,Surface water sites,River flow - continuous,2613,open,SP4050362686
+18,SWWM,Avon,River Sowe Catchment & The Coventry Area,Blackburn Road,Surface water sites,Surface water level (including tide and lake level) - continuous,2209,open,SP3493083310
+19,SWWM,Avon,River Sowe Catchment & The Coventry Area,Charterhouse Br,Surface water sites,Surface water level (including tide and lake level) - continuous,2218,open,SP3440078240
+20,SWWM,Avon,River Sowe Catchment & The Coventry Area,Hall Green Road,Surface water sites,Surface water level (including tide and lake level) - continuous,2207,open,SP3577082500
+21,SWWM,Avon,River Sowe Catchment & The Coventry Area,Hope Street,Surface water sites,Surface water level (including tide and lake level) - continuous,2213,open,SP3259478873
+22,SWWM,Avon,River Sowe Catchment & The Coventry Area,Kenilworth,Surface water sites,Surface water level (including tide and lake level) - continuous,2627,open,SP2958672823
+23,SWWM,Avon,River Sowe Catchment & The Coventry Area,Kenilworth Whateleys Drive,Surface water sites,Surface water level (including tide and lake level) - continuous,2540,open,SP2917272073
+24,SWWM,Avon,River Stour in South Warwickshire,Shipston,Surface water sites,River flow - continuous,2092,open,SP2604240517
+25,SWWM,Avon,River Stour in South Warwickshire,Wimpstone,Surface water sites,River flow - continuous,2200,open,SP2134349236
+26,SWWM,Avon,River Stowe Catchment & The Coventry Area,Sir Henry Parkes Rd,Surface water sites,Surface water level (including tide and lake level) - continuous,2215,open,SP3065077380
+27,SWWM,Avon,River Stowe Catchment & The Coventry Area,Torrington Ave,Surface water sites,Surface water level (including tide and lake level) - continuous,2216,open,SP2788077700
+28,SWWM,Avon,"Upper Avon, River Swift & Clay Coton Brook",Churchover,Surface water sites,River flow - continuous,2117,open,SP5071380684
+29,SWWM,Avon,"Upper Avon, River Swift & Clay Coton Brook",Clay Coton,Surface water sites,Surface water level (including tide and lake level) - continuous,2649,open,SP5938176922
+30,SWWM,Avon,"Upper Avon, River Swift & Clay Coton Brook",Lilbourne,Surface water sites,River flow - continuous,2088,open,SP5635577779
+31,SHWG,Avon,Avon,Bredon,Surface water sites,River flow - continuous,2128,open,SO9206537238
+32,SHWG,Avon,Avon,Evesham,Surface water sites,River flow - continuous,2002,open,SP0400743741
+33,SHWG,Avon,Avon,Pershore,Surface water sites,Surface water level (including tide and lake level) - continuous,2097,open,SO9519045509
+34,SHWG,Avon,Avon Tributaries,Besford Bridge,Surface water sites,River flow - continuous,2015,open,SO9269346252
+35,SHWG,Avon,Avon Tributaries,Bidford-On-Avon,Surface water sites,Surface water level (including tide and lake level) - continuous,2615,open,SP0985451769
+36,SHWG,Avon,Avon Tributaries,Broom,Surface water sites,River flow - continuous,2104,open,SP0863853580
+37,SHWG,Avon,Avon Tributaries,Childswickham,Surface water sites,Surface water level (including tide and lake level) - continuous,2528,open,SP0788538497
+38,SHWG,Avon,Avon Tributaries,Feckenham,Surface water sites,River flow - continuous,2626,open,SP0047561175
+39,SHWG,Avon,Avon Tributaries,Hinton,Surface water sites,River flow - continuous,2036,open,SP0236840680
+40,SHWG,Avon,Avon Tributaries,Offenham,Surface water sites,River flow - continuous,2023,open,SP0629144920
+41,SHWG,Avon,Avon Tributaries,Sedgeberrow Ps,Surface water sites,Surface water level (including tide and lake level) - continuous,2711,open,SP0260938700
+42,SHWG,Avon,Avon Tributaries,Toddington,Surface water sites,Surface water level (including tide and lake level) - continuous,2648,open,SP0338633481
+43,SHWG,Avon,Avon Tributaries,Wyre Piddle,Surface water sites,River flow - continuous,2133,open,SO9625947611
+44,SWWM,Dove,Lower Dove,Aston Bridge,Surface water sites,Surface water level (including tide and lake level) - continuous,4124,open,SK1631031100
+45,SWWM,Dove,Lower Dove,Doveridge,Surface water sites,Surface water level (including tide and lake level) - continuous,4078,open,SK1115033960
+46,SWWM,Dove,Lower Dove,Hatton,Surface water sites,Surface water level (including tide and lake level) - continuous,4898,open,SK2171029390
+47,SWWM,Dove,Lower Dove,Marston On Dove,Surface water sites,River flow - continuous,4018,open,SK2374028840
+48,SWWM,Dove,Lower Dove,Rocester Dove,Surface water sites,River flow - continuous,4008,open,SK1124039670
+49,SWWM,Dove,Lower Dove,Rolleston,Surface water sites,River flow - continuous,4076,open,SK2435028300
+50,SWWM,Dove,Lower Dove Brooks in Derbyshire,Horsebottoms,Surface water sites,Surface water level (including tide and lake level) - continuous,4168,open,SK1851032880
+51,SWWM,Dove,Lower Dove Brooks in Derbyshire,Sutton Mill,Surface water sites,Surface water level (including tide and lake level) - continuous,4166,open,SK2313033650
+52,SWWM,Dove,Lower Dove Brooks in Staffordshire,Anslow,Surface water sites,Surface water level (including tide and lake level) - continuous,4147,open,SK2261026910
+53,SWWM,Dove,Lower Dove Brooks in Staffordshire,Marchington,Surface water sites,Surface water level (including tide and lake level) - continuous,4125,open,SK1359030740
+54,SWWM,Dove,Lower Dove Brooks in Staffordshire,Uttoxeter Park,Surface water sites,Surface water level (including tide and lake level) - continuous,4535,open,SK0800633315
+55,SWWM,Dove,River Churnet and River Tean,Adderley - Cheadle,Surface water sites,Surface water level (including tide and lake level) - continuous,4181,open,SJ9920043790
+56,SWWM,Dove,River Churnet and River Tean,Basford Bridge,Surface water sites,River flow - continuous,4061,open,SJ9823051970
+57,SWWM,Dove,River Churnet and River Tean,Cheadle,Surface water sites,Surface water level (including tide and lake level) - continuous,4188,open,SK0103544217
+58,SWWM,Dove,River Churnet and River Tean,Flint Mill,Surface water sites,Surface water level (including tide and lake level) - continuous,4183,open,SJ9733052600
+59,SWWM,Dove,River Churnet and River Tean,Froghall,Surface water sites,Surface water level (including tide and lake level) - continuous,4119,open,SK0220047310
+60,SWWM,Dove,River Churnet and River Tean,Leasows Farm,Surface water sites,Surface water level (including tide and lake level) - continuous,4180,open,SK0937034810
+61,SWWM,Dove,River Churnet and River Tean,Leek,Surface water sites,Surface water level (including tide and lake level) - continuous,4143,open,SJ9924058100
+62,SWWM,Dove,River Churnet and River Tean,Quixhill,Surface water sites,River flow - continuous,4142,open,SK0946042180
+63,SWWM,Dove,River Churnet and River Tean,Upper Tean,Surface water sites,Surface water level (including tide and lake level) - continuous,4121,open,SK0080039580
+64,SWWM,Dove,River Churnet and River Tean,Wallgrange,Surface water sites,Surface water level (including tide and lake level) - continuous,4895,open,SJ9655053550
+65,SWWM,Dove,River Hamps and River Manifold,Waterhouses,Surface water sites,River flow - continuous,4041,open,SK0829050160
+66,SWWM,Dove,Upper Dove,Agnes Meadow Bridge,Surface water sites,Surface water level (including tide and lake level) - continuous,4259,open,SK2154647380
+67,SWWM,Dove,Upper Dove,Ashbourne,Surface water sites,River flow - continuous,4058,open,SK1753046220
+68,SWWM,Dove,Upper Dove,Ilam,Surface water sites,River flow - continuous,4031,open,SK1398050720
+69,SWWM,Dove,Upper Dove,Izaak Walton,Surface water sites,River flow - continuous,4046,open,SK1471051000
+70,SWWM,Dove,Upper Dove,Mayfield,Surface water sites,Surface water level (including tide and lake level) - continuous,4122,open,SK1605044740
+71,SHWG,Severn in Gloucestershire,Cheltenham Tributaries,Charlton Kings,Surface water sites,Surface water level (including tide and lake level) - continuous,2139,open,SO9647120822
+72,SHWG,Severn in Gloucestershire,Cheltenham Tributaries,Cheltenham Arle,Surface water sites,Surface water level (including tide and lake level) - continuous,2650,open,SO9315823898
+73,SHWG,Severn in Gloucestershire,Cheltenham Tributaries,Cheltenham Coxs Flume,Surface water sites,Surface water level (including tide and lake level) - continuous,2654,open,SO9580521230
+74,SHWG,Severn in Gloucestershire,Cheltenham Tributaries,Cheltenham Merestones Road,Surface water sites,Surface water level (including tide and lake level) - continuous,2653,open,SO9365120825
+75,SHWG,Severn in Gloucestershire,Cheltenham Tributaries,Cheltenham Prestbury Road,Surface water sites,Surface water level (including tide and lake level) - continuous,2660,open,SO9587123205
+76,SHWG,Severn in Gloucestershire,Cheltenham Tributaries,Cheltenham Windyridge Road,Surface water sites,Surface water level (including tide and lake level) - continuous,2511,open,SO9413024278
+77,SHWG,Severn in Gloucestershire,Cheltenham Tributaries,Coxs Meadow,Surface water sites,Surface water level (including tide and lake level) - continuous,2635,open,SO9554721354
+78,SHWG,Severn in Gloucestershire,Cheltenham Tributaries,Moorend Road,Surface water sites,Surface water level (including tide and lake level) - continuous,2671,open,SO9585020511
+79,SHWG,Severn in Gloucestershire,Cheltenham Tributaries,Sandford Park,Surface water sites,Surface water level (including tide and lake level) - continuous,2276,open,SO9536921707
+80,SHWG,Severn in Gloucestershire,"Frome, Cam and Slad Brook",Brimscombe,Surface water sites,River flow - continuous,2205,open,SO8625102867
+81,SHWG,Severn in Gloucestershire,"Frome, Cam and Slad Brook",Cam River,Surface water sites,Surface water level (including tide and lake level) - continuous,2514,open,SO7523300173
+82,SHWG,Severn in Gloucestershire,"Frome, Cam and Slad Brook",Cambridge,Surface water sites,River flow - continuous,2603,open,SO7507503576
+83,SHWG,Severn in Gloucestershire,"Frome, Cam and Slad Brook",Chalford,Surface water sites,River flow - continuous,2617,open,SO9104902805
+84,SHWG,Severn in Gloucestershire,"Frome, Cam and Slad Brook",Eastington River,Surface water sites,Surface water level (including tide and lake level) - continuous,2513,open,SO7785206127
+85,SHWG,Severn in Gloucestershire,"Frome, Cam and Slad Brook",Ebley Mill,Surface water sites,River flow - continuous,2027,open,SO8301404627
+86,SHWG,Severn in Gloucestershire,"Frome, Cam and Slad Brook",Egypt Mill,Surface water sites,Surface water level (including tide and lake level) - continuous,2275,open,ST8499199861
+87,SHWG,Severn in Gloucestershire,"Frome, Cam and Slad Brook",Merrywalks,Surface water sites,Surface water level (including tide and lake level) - continuous,2206,open,SO8504905381
+88,SHWG,Severn in Gloucestershire,"Frome, Cam and Slad Brook",Slad Road,Surface water sites,Surface water level (including tide and lake level) - continuous,2226,open,SO8530205456
+89,SHWG,Severn in Gloucestershire,"Frome, Cam and Slad Brook",Slad Steanbridge Lane,Surface water sites,Surface water level (including tide and lake level) - continuous,2549,open,SO8767807695
+90,SHWG,Severn in Gloucestershire,Gloucester Tributaries,Abbeymead Avenue,Surface water sites,Surface water level (including tide and lake level) - continuous,2662,open,SO8616315834
+91,SHWG,Severn in Gloucestershire,Gloucester Tributaries,Armscroft Place,Surface water sites,Surface water level (including tide and lake level) - continuous,2272,open,SO8485318313
+92,SHWG,Severn in Gloucestershire,Gloucester Tributaries,Bodiam Ave - Daniels Brk,Surface water sites,Surface water level (including tide and lake level) - continuous,2225,open,SO8148114888
+93,SHWG,Severn in Gloucestershire,Gloucester Tributaries,Bondend Road,Surface water sites,Surface water level (including tide and lake level) - continuous,2667,open,SO8677215129
+94,SHWG,Severn in Gloucestershire,Gloucester Tributaries,Cheyney Close,Surface water sites,Surface water level (including tide and lake level) - continuous,2277,open,SO8491216690
+95,SHWG,Severn in Gloucestershire,Gloucester Tributaries,Clomoney Way,Surface water sites,Surface water level (including tide and lake level) - continuous,2221,open,SO8585820345
+96,SHWG,Severn in Gloucestershire,Gloucester Tributaries,Field Court Drive,Surface water sites,Surface water level (including tide and lake level) - continuous,2270,open,SO8031813422
+97,SHWG,Severn in Gloucestershire,Gloucester Tributaries,Hucclecote,Surface water sites,Surface water level (including tide and lake level) - continuous,2512,open,SO8767617689
+98,SHWG,Severn in Gloucestershire,Gloucester Tributaries,India Road,Surface water sites,Surface water level (including tide and lake level) - continuous,2273,open,SO8443117584
+99,SHWG,Severn in Gloucestershire,Gloucester Tributaries,Kingscroft Road,Surface water sites,Surface water level (including tide and lake level) - continuous,2268,open,SO8724917058
+100,SHWG,Severn in Gloucestershire,Gloucester Tributaries,Matson Place,Surface water sites,Surface water level (including tide and lake level) - continuous,2666,open,SO8402517084
+101,SHWG,Severn in Gloucestershire,Gloucester Tributaries,Saintbridge,Surface water sites,Surface water level (including tide and lake level) - continuous,2670,open,SO8512016669
+102,SHWG,Severn in Gloucestershire,Gloucester Tributaries,Shepherd Road,Surface water sites,Surface water level (including tide and lake level) - continuous,2269,open,SO8175215247
+103,SHWG,Severn in Gloucestershire,Gloucester Tributaries,The Causeway,Surface water sites,Surface water level (including tide and lake level) - continuous,2258,open,SO7956814035
+104,SHWG,Severn in Gloucestershire,Gloucester Tributaries,Witcombe,Surface water sites,Surface water level (including tide and lake level) - continuous,2661,open,SO9030515725
+105,SHWG,Severn in Gloucestershire,Gloucester Tributaries,Zoons Court River,Surface water sites,Surface water level (including tide and lake level) - continuous,2261,open,SO8659818944
+106,SHWG,Severn in Gloucestershire,Leadon & Lyd,Bosbury,Surface water sites,Surface water level (including tide and lake level) - continuous,2255,open,SO6948043394
+107,SHWG,Severn in Gloucestershire,Leadon & Lyd,Bromsberrow,Surface water sites,River flow - continuous,2607,open,SO7446333229
+108,SHWG,Severn in Gloucestershire,Leadon & Lyd,Lydney,Surface water sites,Surface water level (including tide and lake level) - continuous,2629,open,SO6316603576
+109,SHWG,Severn in Gloucestershire,Leadon & Lyd,Parkend,Surface water sites,River flow - continuous,2124,open,SO6167707481
+110,SHWG,Severn in Gloucestershire,Leadon & Lyd,Wedderburn Bridge,Surface water sites,River flow - continuous,2017,open,SO7766423340
+111,SHWG,Severn in Gloucestershire,Severn (Fluvial),Ashleworth,Surface water sites,Surface water level (including tide and lake level) - continuous,2071,open,SO8182924969
+112,SHWG,Severn in Gloucestershire,Severn (Fluvial),Deerhurst,Surface water sites,River flow - continuous,2606,open,SO8679830103
+113,SHWG,Severn in Gloucestershire,Severn (Fluvial),Deerhurst Pond,Surface water sites,Surface water level (including tide and lake level) - continuous,2534,open,SO8706630024
+114,SHWG,Severn in Gloucestershire,Severn (Fluvial),Gloucester Docks,Surface water sites,Surface water level (including tide and lake level) - continuous,2165,open,SO8268718488
+115,SHWG,Severn in Gloucestershire,Severn (Fluvial),Haw Bridge,Surface water sites,River flow - continuous,2057,open,SO8449127878
+116,SHWG,Severn in Gloucestershire,Severn (Fluvial),Mythe Bridge,Surface water sites,Surface water level (including tide and lake level) - continuous,2087,open,SO8889933722
+117,SHWG,Severn in Gloucestershire,Severn (Fluvial),Sandhurst,Surface water sites,Surface water level (including tide and lake level) - continuous,2618,open,SO8277821023
+118,SHWG,Severn in Gloucestershire,Severn (Fluvial),Sandhurst - Hthly Bk,Surface water sites,Surface water level (including tide and lake level) - continuous,2619,open,SO8279221039
+119,SHWG,Severn in Gloucestershire,Severn (Fluvial),Sandhurst Horns Ditch,Surface water sites,Surface water level (including tide and lake level) - continuous,2644,open,SO8266921084
+120,SHWG,Severn in Gloucestershire,Severn (Fluvial),Tewkesbury Pound Lower,Surface water sites,Surface water level (including tide and lake level) - continuous,2099,open,SO8942333387
+121,SHWG,Severn in Gloucestershire,Severn (Fluvial),Tewkesbury Pound Upper,Surface water sites,Surface water level (including tide and lake level) - continuous,2098,open,SO8945033390
+122,SHWG,Severn in Gloucestershire,Severn (Tidal),Epney,Surface water sites,Surface water level (including tide and lake level) - continuous,2153,open,SO7608711002
+123,SHWG,Severn in Gloucestershire,Severn (Tidal),Minsterworth,Surface water sites,Surface water level (including tide and lake level) - continuous,2102,open,SO7693116918
+124,SHWG,Severn in Gloucestershire,Severn (Tidal),Sharpness,Climate stations,Surface water level (including tide and lake level) - continuous,2195,open,SO6674102185
+125,SHWG,Severn in Worcestershire,Barbourne Brook,Shelley Close,Surface water sites,Surface water level (including tide and lake level) - continuous,2131,open,SO8534057040
+126,SHWG,Severn in Worcestershire,River Severn Gauges,Bewdley Us,Surface water sites,River flow - continuous,2001,open,SO7823076160
+127,SHWG,Severn in Worcestershire,River Severn in Worcestershire,Diglis,Surface water sites,Surface water level (including tide and lake level) - continuous,2085,open,SO8469053530
+128,SHWG,Severn in Worcestershire,River Severn in Worcestershire,Kempsey Yacht Club,Surface water sites,Surface water level (including tide and lake level) - continuous,2616,open,SO8508451171
+129,SHWG,Severn in Worcestershire,River Severn in Worcestershire,Saxons Lode Us,Surface water sites,River flow - continuous,2032,open,SO8634939041
+130,SHWG,Severn in Worcestershire,River Severn in Worcestershire,Worcester,Surface water sites,Surface water level (including tide and lake level) - continuous,2642,open,SO8401456544
+131,SHWG,Severn in Worcestershire,Stour & Salwarape,Bromsgrove Burcot Avenue,Surface water sites,Surface water level (including tide and lake level) - continuous,2544,open,SO9661171641
+132,SHWG,Severn in Worcestershire,Stour & Salwarape,Bromsgrove Factory Lane,Surface water sites,Surface water level (including tide and lake level) - continuous,2545,open,SO9544270367
+133,SHWG,Severn in Worcestershire,Stour & Salwarape,Harford Hill,Surface water sites,River flow - continuous,2011,open,SO8686061930
+134,SHWG,Severn in Worcestershire,Stour & Salwarape,Puxton,Surface water sites,River flow - continuous,2267,open,SO8275977381
+135,SHWG,Severn in Worcestershire,Stour & Salwarape,Stoke Prior,Surface water sites,Surface water level (including tide and lake level) - continuous,2515,open,SO9485067631
+136,SHWG,Severn in Worcestershire,Stour & Salwarape,Stoke Prior Hanbury Road,Surface water sites,Surface water level (including tide and lake level) - continuous,2546,open,SO9504067027
+137,SHWG,Severn in Worcestershire,Stour & Salwarape,Stourton,Surface water sites,Surface water level (including tide and lake level) - continuous,2084,open,SO8600084840
+138,SHWG,Severn in Shropshire,Brooks in the Wyre Forest,Marlbrook,Surface water sites,Surface water level (including tide and lake level) - continuous,2636,open,SO7095090270
+139,SHWG,Severn in Shropshire,Brooks in the Wyre Forest,Oak Cottage,Surface water sites,River flow - continuous,2034,open,SO7710076420
+140,SHWG,Severn in Shropshire,"Rea, Cound, Worfe & Wesley Brook",Boreton Bridge,Surface water sites,River flow - continuous,2608,open,SJ5162006780
+141,SHWG,Severn in Shropshire,"Rea, Cound, Worfe & Wesley Brook",Burcote,Surface water sites,River flow - continuous,2024,open,SO7460095340
+142,SHWG,Severn in Shropshire,"Rea, Cound, Worfe & Wesley Brook",Church Stretton,Surface water sites,Surface water level (including tide and lake level) - continuous,2705,open,SO4573093930
+143,SHWG,Severn in Shropshire,"Rea, Cound, Worfe & Wesley Brook",Cosford,Surface water sites,River flow - continuous,2046,open,SJ7803004670
+144,SHWG,Severn in Shropshire,"Rea, Cound, Worfe & Wesley Brook",Farley Bridge,Surface water sites,Surface water level (including tide and lake level) - continuous,2265,open,SJ3882907791
+145,SHWG,Severn in Shropshire,"Rea, Cound, Worfe & Wesley Brook",Hookagate,Surface water sites,River flow - continuous,2018,open,SJ4657009230
+146,SHWG,Severn in Shropshire,"Rea, Cound, Worfe & Wesley Brook",Shifnal,Surface water sites,Surface water level (including tide and lake level) - continuous,2669,open,SJ7444808607
+147,SHWG,Severn in Shropshire,River Severn in Shropshire,Bridgnorth,Surface water sites,Surface water level (including tide and lake level) - continuous,2180,open,SO7189093110
+148,SHWG,Severn in Shropshire,River Severn in Shropshire,Buildwas Us,Surface water sites,River flow - continuous,2134,open,SJ6455004400
+149,SHWG,Severn in Shropshire,River Severn in Shropshire,Cae Howel - New Cut,Surface water sites,Surface water level (including tide and lake level) - continuous,2833,open,SJ3446017090
+150,SHWG,Severn in Shropshire,River Severn in Shropshire,Cae Howel - Severn,Surface water sites,Surface water level (including tide and lake level) - continuous,2831,open,SJ3447017090
+151,SHWG,Severn in Shropshire,River Severn in Shropshire,Crew Green,Surface water sites,Surface water level (including tide and lake level) - continuous,2175,open,SJ3296015810
+152,SHWG,Severn in Shropshire,River Severn in Shropshire,Maesbrook,Surface water sites,Surface water level (including tide and lake level) - continuous,2832,open,SJ3009020740
+153,SHWG,Severn in Shropshire,River Severn in Shropshire,Montford,Surface water sites,River flow - continuous,2005,open,SJ4119014460
+154,SHWG,Severn in Shropshire,River Severn in Shropshire,Welsh Bridge,Surface water sites,Surface water level (including tide and lake level) - continuous,2077,open,SJ4888012730
+155,SHWG,Severn in Shropshire,"Tanat, Tern, Perry & Bagley Brook",Llanyblodwel,Surface water sites,River flow - continuous,2038,open,SJ2523022440
+156,SHWG,Severn in Shropshire,"Tanat, Tern, Perry & Bagley Brook",Rodington,Surface water sites,River flow - continuous,2016,open,SJ5891014170
+157,SHWG,Severn in Shropshire,"Tanat, Tern, Perry & Bagley Brook",Walcot,Surface water sites,River flow - continuous,2012,open,SJ5918012280
+158,SHWG,Severn in Shropshire,"Tanat, Tern, Perry & Bagley Brook",Yeaton,Surface water sites,River flow - continuous,2020,open,SJ4344019240
+159,SWWM,Tame,Bourne Brook (Tamworth),Hints,Surface water sites,Surface water level (including tide and lake level) - continuous,4153,open,SK1619002580
+160,SWWM,Tame,Lower Tame,Hopwas Bridge,Surface water sites,River flow - continuous,4095,open,SK1810005170
+161,SWWM,Tame,Middle Tame,Lea Marston Lakes,Surface water sites,River flow - continuous,4080,open,SP2080093700
+162,SWWM,Tame,Middle Tame,Tamworth,Surface water sites,Surface water level (including tide and lake level) - continuous,4069,open,SK2058003760
+163,SWWM,Tame,Middle Tame,Water Orton,Surface water sites,River flow - continuous,4003,open,SP1694091460
+164,SWWM,Tame,River Anker and River Sence,Mancetter,Surface water sites,Surface water level (including tide and lake level) - continuous,4123,open,SP3224096720
+165,SWWM,Tame,River Anker and River Sence,Nuneaton,Surface water sites,Surface water level (including tide and lake level) - continuous,4149,open,SP3804091600
+166,SWWM,Tame,River Anker and River Sence,Polesworth,Surface water sites,River flow - continuous,4026,open,SK2628003340
+167,SWWM,Tame,River Anker and River Sence,Temple Mill,Surface water sites,Surface water level (including tide and lake level) - continuous,4173,open,SK3559003510
+168,SWWM,Tame,River Blythe in Warwickshire,Castle Farm,Surface water sites,Surface water level (including tide and lake level) - continuous,4094,open,SP2124088770
+169,SWWM,Tame,River Blythe in Warwickshire,Cheswick Green,Surface water sites,Surface water level (including tide and lake level) - continuous,4129,open,SP1273075360
+170,SWWM,Tame,River Cole,Coleshill,Surface water sites,River flow - continuous,4066,open,SP1817087360
+171,SWWM,Tame,River Cole,Majors Green,Surface water sites,Surface water level (including tide and lake level) - continuous,4172,open,SP1004477750
+172,SWWM,Tame,River Cole,Swans Barn,Surface water sites,Surface water level (including tide and lake level) - continuous,4896,open,SP2015090030
+173,SWWM,Tame,River Rea,Bournville Woodbrooke Road,Surface water sites,Surface water level (including tide and lake level) - continuous,4662,open,SP0401081220
+174,SWWM,Tame,River Rea,Calthorpe Park,Surface water sites,River flow - continuous,4039,open,SP0707084710
+175,SWWM,Tame,River Rea,Lodge Hill Elford Road,Surface water sites,Surface water level (including tide and lake level) - continuous,4650,open,SP0282983108
+176,SWWM,Tame,River Rea,Longbridge Bristol Street South,Surface water sites,Surface water level (including tide and lake level) - continuous,4902,open,SP0081877524
+177,SWWM,Tame,River Rea,Selly Park,Surface water sites,Surface water level (including tide and lake level) - continuous,4206,open,SP0597781922
+178,SWWM,Tame,Upper Tame,Bescot Us,Surface water sites,River flow - continuous,4081,open,SP0140095690
+179,SWWM,Tame,Upper Tame,Birmingham Perry Beeches,Surface water sites,Surface water level (including tide and lake level) - continuous,4653,open,SP0621593420
+180,SWWM,Tame,Upper Tame,Brookvale Rd,Surface water sites,Surface water level (including tide and lake level) - continuous,4878,open,SP0822090900
+181,SWWM,Tame,Upper Tame,Park Hill,Surface water sites,Surface water level (including tide and lake level) - continuous,4105,open,SP0015595651
+182,SWWM,Tame,Upper Tame,Perry Park,Surface water sites,Surface water level (including tide and lake level) - continuous,4087,open,SP0604291887
+183,SWWM,Tame,Upper Tame,Sandwell Valley,Surface water sites,Surface water level (including tide and lake level) - continuous,4084,open,SP0293092640
+184,SWWM,Tame,Upper Tame,Sheepwash,Surface water sites,Surface water level (including tide and lake level) - continuous,4101,open,SO9739791756
+185,SWWM,Tame,Upper Tame,Sutton Coldfield Clifton Road,Surface water sites,Surface water level (including tide and lake level) - continuous,4654,open,SP1157396086
+186,SWWM,Tame,Upper Tame,Walsall,Surface water sites,Surface water level (including tide and lake level) - continuous,4200,open,SP0058096780
+187,SWWM,Tame,Upper Tame,Walsall Shelfield Millfield Avenue,Surface water sites,Surface water level (including tide and lake level) - continuous,4652,open,SK0271002154
+188,SHWG,Teme,Teme,Bransford,Surface water sites,Surface water level (including tide and lake level) - continuous,2086,open,SO8038053240
+189,SHWG,Teme,Teme,Dutlas,Surface water sites,Surface water level (including tide and lake level) - continuous,2639,open,SO2114078060
+190,SHWG,Teme,Teme,Knightsford Bridge,Surface water sites,River flow - continuous,2029,open,SO7350655737
+191,SHWG,Teme,Teme,Leintwardine,Surface water sites,Surface water level (including tide and lake level) - continuous,2132,open,SO4040073810
+192,SHWG,Teme,Teme,Ludlow - Teme,Surface water sites,Surface water level (including tide and lake level) - continuous,2625,open,SO5199074240
+193,SHWG,Teme,Teme,Ludlow Orleton Millbrook Way,Surface water sites,Surface water level (including tide and lake level) - continuous,2548,open,SO4884567167
+194,SHWG,Teme,Teme,Stanford Bridge,Surface water sites,Surface water level (including tide and lake level) - continuous,2646,open,SO7153865734
+195,SHWG,Teme,Teme Tributaries,Burford Bridge,Surface water sites,Surface water level (including tide and lake level) - continuous,2634,open,SO5746068370
+196,SHWG,Teme,Teme Tributaries,Craven Arms Burnside Close,Surface water sites,Surface water level (including tide and lake level) - continuous,2547,open,SO4318782677
+197,SHWG,Teme,Teme Tributaries,Ludlow - Corve,Surface water sites,River flow - continuous,2169,open,SO5093076080
+198,SHWG,Teme,Teme Tributaries,Newnham Bridge,Surface water sites,Surface water level (including tide and lake level) - continuous,2039,open,SO6440069280
+199,SHWG,Teme,Teme Tributaries,Onibury,Surface water sites,Surface water level (including tide and lake level) - continuous,2054,open,SO4547078980
+200,SHWG,Teme,Teme Tributaries,Sutton Bridge,Surface water sites,Surface water level (including tide and lake level) - continuous,2228,open,SO6204066810
+201,SHWG,Teme,Teme Tributaries,Tenbury,Surface water sites,River flow - continuous,2008,open,SO5977068520
+202,SHWG,Teme,Teme Tributaries,Tenbury - Kyre Brook,Surface water sites,Surface water level (including tide and lake level) - continuous,2227,open,SO5961068130
+203,SWWM,Trent,Burton Trent,Croxall,Surface water sites,Surface water level (including tide and lake level) - continuous,4171,open,SK2000014900
+204,SWWM,Trent,Burton Trent,Drakelow,Surface water sites,River flow - continuous,4019,open,SK2391020390
+205,SWWM,Trent,Burton Trent,Yoxall,Surface water sites,River flow - continuous,4012,open,SK1321017720
+206,SWWM,Trent,River Blithe and River Swarbourne,Blythe Bridge,Surface water sites,Surface water level (including tide and lake level) - continuous,4159,open,SJ9516341409
+207,SWWM,Trent,River Blithe and River Swarbourne,Cresswell,Surface water sites,Surface water level (including tide and lake level) - continuous,4863,open,SJ9765039060
+208,SWWM,Trent,River Blithe and River Swarbourne,Hamstall Ridware,Surface water sites,River flow - continuous,4002,open,SK1089019170
+209,SWWM,Trent,River Blithe and River Swarbourne,Hoar Cross,Surface water sites,Surface water level (including tide and lake level) - continuous,4169,open,SK1408020300
+210,SWWM,Trent,River Mease,Clifton Hall,Surface water sites,River flow - continuous,4175,open,SK2639011290
+211,SWWM,Trent,River Mease,Packington,Surface water sites,Surface water level (including tide and lake level) - continuous,4167,open,SK3599014420
+212,SWWM,Trent,River Sow and River Penk,Astonfields,Surface water sites,Surface water level (including tide and lake level) - continuous,4182,open,SJ9243024500
+213,SWWM,Trent,River Sow and River Penk,Broadeye Bridge,Surface water sites,Surface water level (including tide and lake level) - continuous,4703,open,SJ9179023300
+214,SWWM,Trent,River Sow and River Penk,Bushbury Wychall Drive,Surface water sites,Surface water level (including tide and lake level) - continuous,4651,open,SJ9208903754
+215,SWWM,Trent,River Sow and River Penk,Cannock,Surface water sites,Surface water level (including tide and lake level) - continuous,4176,open,SJ9839009430
+216,SWWM,Trent,River Sow and River Penk,Churchbridge Hall Lane,Surface water sites,Surface water level (including tide and lake level) - continuous,4663,open,SJ9892807599
+217,SWWM,Trent,River Sow and River Penk,Coven,Surface water sites,Surface water level (including tide and lake level) - continuous,4177,open,SJ9038007260
+218,SWWM,Trent,River Sow and River Penk,Deepmore Farm,Surface water sites,Surface water level (including tide and lake level) - continuous,4170,open,SJ9278008920
+219,SWWM,Trent,River Sow and River Penk,Great Bridgford,Surface water sites,River flow - continuous,4052,open,SJ8835026980
+220,SWWM,Trent,River Sow and River Penk,Milford,Surface water sites,Surface water level (including tide and lake level) - continuous,4014,open,SJ9754021530
+221,SWWM,Trent,River Sow and River Penk,Penkridge,Surface water sites,River flow - continuous,4053,open,SJ9219114433
+222,SWWM,Trent,River Sow and River Penk,Shallowford,Surface water sites,River flow - continuous,4079,open,SJ8750029074
+223,SWWM,Trent,River Sow and River Penk,Stafford,Surface water sites,Surface water level (including tide and lake level) - continuous,4249,open,SJ9202321415
+224,SWWM,Trent,River Stour & Smestow Brook ,Halesowen,Surface water sites,Surface water level (including tide and lake level) - continuous,2516,open,SO9592484993
+225,SWWM,Trent,River Stour & Smestow Brook ,Halesowen Dogkennel Lane,Surface water sites,Surface water level (including tide and lake level) - continuous,2539,open,SO9689383036
+226,SWWM,Trent,River Stour & Smestow Brook ,Halesowen Manor Way,Surface water sites,Surface water level (including tide and lake level) - continuous,2538,open,SO9727983028
+227,SWWM,Trent,River Stour & Smestow Brook ,Prestwood,Surface water sites,River flow - continuous,2063,open,SO8670086150
+228,SWWM,Trent,River Stour & Smestow Brook ,Stourbridge,Surface water sites,Surface water level (including tide and lake level) - continuous,2083,open,SO9056084460
+229,SWWM,Trent,River Stour & Smestow Brook ,Swindon,Surface water sites,River flow - continuous,2067,open,SO8612090560
+230,SWWM,Trent,River Stour & Smestow Brook ,Wightwick,Surface water sites,Surface water level (including tide and lake level) - continuous,2641,open,SO8707098300
+231,SWWM,Trent,River Stour & Smestow Brook ,Wombourne,Surface water sites,Surface water level (including tide and lake level) - continuous,2706,open,SO8623992608
+232,SWWM,Trent,Rugeley Trent,Great Haywood,Surface water sites,Surface water level (including tide and lake level) - continuous,4006,open,SJ9936023090
+233,SWWM,Trent,Stoke Trent,Brindley Ford,Surface water sites,Surface water level (including tide and lake level) - continuous,4165,open,SJ8811054100
+234,SWWM,Trent,Stoke Trent,Darlaston Us,Surface water sites,River flow - continuous,4083,open,SJ8857035500
+235,SWWM,Trent,Stoke Trent,Hanford Bridge,Surface water sites,Surface water level (including tide and lake level) - continuous,4843,open,SJ8669042710
+236,SWWM,Trent,Stoke Trent,Knypersley Gsm,Surface water sites,Surface water level (including tide and lake level) - continuous,4179,open,SJ8961054050
+237,SWWM,Trent,Stoke Trent,Liverpool Road,Surface water sites,Surface water level (including tide and lake level) - continuous,4815,open,SJ8764845631
+238,SWWM,Trent,Stoke Trent,Newcastle,Surface water sites,Surface water level (including tide and lake level) - continuous,4152,open,SJ8474645693
+239,SWWM,Trent,Stoke Trent,Stoke-On-Trent,Surface water sites,River flow - continuous,4040,open,SJ8917046670
+240,SHWG,Wye,Wye,Belmont,Surface water sites,River flow - continuous,55002,open,SO4850038799
+241,SHWG,Wye,Wye,Bredwardine,Surface water sites,Surface water level (including tide and lake level) - continuous,55811,open,SO3370744681
+242,SHWG,Wye,Wye,Eywas Harold Great Walkmill Farm,Surface water sites,Surface water level (including tide and lake level) - continuous,2553,open,SO3833629243
+243,SHWG,Wye,Wye,Lydbrook,Surface water sites,Surface water level (including tide and lake level) - continuous,55843,open,SO6024117389
+244,SHWG,Wye,Wye,Mordiford,Surface water sites,Surface water level (including tide and lake level) - continuous,55816,open,SO5683136494
+245,SHWG,Wye,Wye,Old Wye Bridge,Surface water sites,Surface water level (including tide and lake level) - continuous,55807,open,SO5056839430
+246,SHWG,Wye,Wye,Ross On Wye,Surface water sites,Surface water level (including tide and lake level) - continuous,55817,open,SO5968224254
+247,SHWG,Wye,Wye,Sandford Bridge,Surface water sites,River flow - continuous,55027,open,SO6406525717
+248,SHWG,Wye,Wye Tributaries,Bishops Frome,Surface water sites,River flow - continuous,55028,open,SO6666548863
+249,SHWG,Wye,Wye Tributaries,Bromyard,Surface water sites,Surface water level (including tide and lake level) - continuous,55040,open,SO6582454891
+250,SHWG,Wye,Wye Tributaries,Butts Bridge,Surface water sites,River flow - continuous,55021,open,SO5020858942
+251,SHWG,Wye,Wye Tributaries,Byton,Surface water sites,River flow - continuous,55014,open,SO3643264689
+252,SHWG,Wye,Wye Tributaries,Eardisland,Surface water sites,Surface water level (including tide and lake level) - continuous,55829,open,SO4196258698
+253,SHWG,Wye,Wye Tributaries,Ford Bridge - Marlbrook,Surface water sites,Surface water level (including tide and lake level) - continuous,55041,open,SO5097055101
+254,SHWG,Wye,Wye Tributaries,Leominster Osborne Place,Surface water sites,Surface water level (including tide and lake level) - continuous,2531,open,SO4930659483
+255,SHWG,Wye,Wye Tributaries,Leominster Upper Marsh,Surface water sites,Surface water level (including tide and lake level) - continuous,2532,open,SO4996259713
+256,SHWG,Wye,Wye Tributaries,Lugwardine,Surface water sites,River flow - continuous,55003,open,SO5487140585
+257,SHWG,Wye,Wye Tributaries,Peterchurch,Surface water sites,Surface water level (including tide and lake level) - continuous,55039,open,SO3444238549
+258,SHWG,Wye,Wye Tributaries,Three Elms,Surface water sites,River flow - continuous,55031,open,SO4912241454
+259,SHWG,Wye,Wye Tributaries,Titley Mill,Surface water sites,River flow - continuous,55013,open,SO3282158500
+260,SHWG,Wye,Wye Tributaries,Yarkhill,Surface water sites,River flow - continuous,55018,open,SO6148242705
