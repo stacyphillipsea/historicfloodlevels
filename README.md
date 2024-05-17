@@ -20,6 +20,7 @@ Harry D has given me information on all historic storms and all sites in WMD wit
 * Haven't touched any of the visualisations yet
 * Haven't deployed as an app yet
 * Peak Table All uses sites of interest so because Bidford isn't on there it doesn't return all the results so just looking at df for now
+* Started playing about with peak finding algorithms. Current one is too sensitive
 
 
 ## Things to remember to run in VSCODE

@@ -39,6 +39,7 @@ WISKI_IDS = wmd_gauges['Site number'].dropna().tolist()
 WISKI_IDS = [f"{name}" for name in WISKI_IDS]
 ### SUBSETTING FOR TESTING
 WISKI_IDS = WISKI_IDS[:3]
+WISKI_IDS =['2077', '2085','055807'] 
 
 # MET Office storms
 storms = pd.read_excel('Met Office named storms.xlsx')
@@ -472,7 +473,7 @@ def create_map(data_dict, selected_station=None):
 ### CALL YOUR FUNCTIONS 
 # Load station data from JSON file
 file_path = "historic_nested_dict.json"
-data_dict = load_station_data_from_json(file_path)
+data_dict = fv(file_path)
 
 if data_dict:
     print("Data loaded successfully.")

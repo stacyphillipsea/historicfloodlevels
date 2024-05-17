@@ -1,0 +1,52 @@
+import pandas as pd
+import matplotlib.pyplot as plt
+import json 
+from io import StringIO 
+from scipy.signal import find_peaks
+import plotly.graph_objects as go
+
+# Function to load station data from JSON file
+def load_station_data_from_json(file_path):
+    try:
+        # Load data from JSON file
+        with open(file_path, "r") as json_file:
+            data_dict = json.load(json_file)
+        
+        # Convert date_values from JSON strings to DataFrames
+        for station_data in data_dict.values():
+            station_data['date_values'] = pd.read_json(StringIO(station_data['date_values']))
+
+        return data_dict
+    except FileNotFoundError:
+        print(f"File {file_path} not found.")
+        return None
+
+file_path = "historic_nested_dict.json"
+data_dict = load_station_data_from_json(file_path)
+
+welsh_bridge_df = data_dict['Welsh Bridge']['date_values']
+
+time_series = welsh_bridge_df['value'].tolist()
+
+indices = find_peaks(time_series, threshold=0)[0]
+
+fig = go.Figure()
+fig.add_trace(go.Scatter(
+    y=time_series,
+    mode='lines+markers',
+    name='Original Plot'
+))
+
+fig.add_trace(go.Scatter(
+    x=indices,
+    y=[time_series[j] for j in indices],
+    mode='markers',
+    marker=dict(
+        size=8,
+        color='red',
+        symbol='cross'
+    ),
+    name='Detected Peaks'
+))
+
+fig.show()
