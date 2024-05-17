@@ -1,52 +1,31 @@
 # Welcome to my Read Me doc!
 
-## This is the code for my Apprenticeship End Point Assessment Project!
+## This is the code for calculating historic peak information!
 
-This project aims to make a Dash App that analyses EA Gauging Station data across the West Midlands, making use of the EA Hydrology API
-It calculates peak levels for given storm events over the winter of 2023-2024, visualises them in charts and tables, and compares them to historic peak levels to provide context.
+I have branched my levels-data app, moved it to a new repo and cloned it. From here I am going to tweak the code. I think it is set up in VS code correctly.
 
-I have already done loads of work on this before using Git Hub, so earlier versions of the code are not included.
+The aim of this work is to utlise my previous code to look at previous storm events and get peak information.
+
+Harry D has given me information on all historic storms and all sites in WMD with WISKI IDs.
 
 ## Functionality that is currently working
-* Double dropdown menu for River name then Station name
-* Peak graph and peak table
-* All dates throughout are formatted as I want them to be
-* The download data button currently works well
-* Peak plot is being loaded into a Powerpoint that can be downloaded locally
-* Have downloaded and stored the data_dict as a JSON that is then loaded into the file, instead of calling the API everytime
-* Difference from and Years to peak date column added
-* Map showing position of selected station and all stations
-* Navbar formatted with items on left and right
-* Apprenticeships logo added
-* Map shows formatted popup and colour coded symbols based on river name
-* Basic table border formatting, sort and filter added for both top-10 and all peak table
-* Intro added at the top
-* Hyperlinks throughout to help navigation
-* Popup modal added to show the data quality messaging
-* Photo aded next to info
-* Email address added to top intro
-* Data sources section updated
-* Link at bottom to send back to top
-* Import libraries tidied
-* App log warnings fixed
-* Table widths fixed and headers fixed
-* Added hyperlink for full screen image
-* External hyperlinks now are forced to open in new tab
-* Used "app.get_asset_url()" to get correct path for local images so they are pulled in correctly, instead of having them as urls
-* y-axis chart labels go across two lines
-* Cambridge Spark logo addeds
+* Makes a WSIKI IDs list from the csv file. Currently using a slice of 3 stations to test code.
+* Makes a date_filters dictionary for each of the storms, I have extended the date ranges to try and capture the storm event itself.
+* Extracting 15minute data only gets me as far back as 2018 (might be a data load problem). Daily max data gives me datetimes of peaks so should work
+* Create a historic_nest_dict of the daily max data to work with
+* Can find the peaks fine but the storms don't necessarily match with the events on the gaugeboard and vice versa. Dates may need further twiddling
+
 
 ## Things that could be improved
-* Would like to colour code storms in the top 10 table
-* Cannot get the download button for the Powerpoint to work. Created separate branch (Powerpoint-Download-Attempt). Tried again using the new source url path and it just wouldn't work!! 
-* Navbar is not pulling the images from the project folder, had to give it urls instead
-* Attempted to tidy up the callback and update functions but didn't work (didn't save)
-* Would be nice to include more icons, couldn't get it to work with a "To top" button
-* Should include data quality tag information in here somewhere
-* WISKI IDs list should be derived from the sites of interest merge using unique, currently it is a static list. Can compare this list with existing list to check info is correct
+* Haven't touched any of the visualisations yet
+* Haven't deployed as an app yet
+* Peak Table All uses sites of interest so because Bidford isn't on there it doesn't return all the results so just looking at df for now
 
 
 ## Things to remember to run in VSCODE
 * rsconnect deploy dash . -n LevelsApp --entrypoint levels_app:app 
 * pip freeze > requirements.txt
+
+* have used pd.set_option('display.max_rows', None) to show full dataframe
+* can reset with pd.reset_option('display.max_rows')
 

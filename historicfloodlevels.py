@@ -1,6 +1,7 @@
 import pandas as pd
 import numpy as np      # For numerical operations
 from datetime import datetime
+from datetime import timedelta
 import requests         # For API call
 import json             # For API call
 import dash             # For app
@@ -18,12 +19,12 @@ from io import StringIO     # To loadd JSON to dataframe
 # Define key constants
 BASE_URL = "http://environment.data.gov.uk/hydrology/id"
 BASE_STATIONS_URL = "http://environment.data.gov.uk/hydrology/id/stations"
-############################## NEED TO MAKE A WISKI IDS LIST
-MIN_DATE_STR = "2023-10-01"
+
+MIN_DATE_STR = "2015-10-01"
 MAX_DATE_STR = "2024-02-29"
 MIN_DATE = datetime.strptime(MIN_DATE_STR, '%Y-%m-%d')
 MAX_DATE = datetime.strptime(MAX_DATE_STR, '%Y-%m-%d')
-############################## NEED TO MAKE A DATE FILTERS LIST
+
 
 ## Load data
 # Metadata spreadsheet
@@ -34,9 +35,20 @@ gaugeboard_data = pd.read_csv('gaugeboard_data.csv')
 
 # WMD gauge list
 wmd_gauges = pd.read_csv('All_WMD_gauges_FETA.csv')
+WISKI_IDS = wmd_gauges['Site number'].dropna().tolist()
+WISKI_IDS = [f"{name}" for name in WISKI_IDS]
+### SUBSETTING FOR TESTING
+WISKI_IDS = WISKI_IDS[:3]
 
 # MET Office storms
 storms = pd.read_excel('Met Office named storms.xlsx')
+storms['startdate'] = pd.to_datetime(storms['startdate']).dt.date
+storms['enddate'] = pd.to_datetime(storms['enddate']).dt.date
+# Adjusting the filter length
+storms['startdate'] = storms['startdate'] - timedelta(days=2)
+storms['enddate'] = storms['enddate'] + timedelta(days=2)
+
+DATE_FILTERS = {row['Name']: (str(row['startdate']), str(row['enddate']), 'blue') for _, row in storms.iterrows()}
 
 
 # Isolate threshold/max values from metadata spreadsheet
@@ -58,7 +70,7 @@ def fetch_station_data(wiski_id):
             river_name = data['items'][0].get('riverName')
             latitude = data['items'][0].get('lat')
             longitude = data['items'][0].get('long')
-            measure_url = f"{BASE_URL}/measures?station.wiskiID={wiski_id}&observedProperty=waterLevel&periodName=15min"
+            measure_url = f"{BASE_URL}/measures?station.wiskiID={wiski_id}&observedProperty=waterLevel&periodName=daily&valueType=max"
             response = requests.get(measure_url)
             response.raise_for_status()
             measure = json.loads(response.content)
@@ -430,9 +442,9 @@ def create_map(data_dict, selected_station=None):
 
     return map_html
 
-#### FUNCTION TO MAKE DICTIONARY OFFLINE AND THEN LOAD
+# #### FUNCTION TO MAKE DICTIONARY OFFLINE AND THEN LOAD
 
-## Fetch and save data for all stations
+# # # Fetch and save data for all stations
 # data_dict = fetch_all_station_data()
 
 # def fetch_and_save_all_station_data():
@@ -447,7 +459,7 @@ def create_map(data_dict, selected_station=None):
 #             data_dict[station_data['name']] = station_data
 
 #     # Specify the file path where you want to save the JSON file
-#     file_path = "C:\\Users\\SPHILLIPS03\\Documents\\repos\\levels_app_folder\\nested_dict.json"
+#     file_path = "C:\\Users\\SPHILLIPS03\\Documents\\repos\\historicfloodlevels\\historic_nested_dict.json"
 
 #     # Save the dictionary containing station data to a JSON file
 #     with open(file_path, "w") as json_file:
@@ -459,7 +471,7 @@ def create_map(data_dict, selected_station=None):
 
 ### CALL YOUR FUNCTIONS 
 # Load station data from JSON file
-file_path = "nested_dict.json"
+file_path = "historic_nested_dict.json"
 data_dict = load_station_data_from_json(file_path)
 
 if data_dict:
@@ -472,6 +484,16 @@ max_values = find_and_store_max_values(data_dict)
 
 # Create peak table DataFrame
 df, peak_table_all = process_peak_table_all(max_values, sites_of_interest_merge)
+
+#####################################################
+#####################################################
+#####################################################
+#####################################################
+#### CALLING DF FROM HERE TO TEST THE RESULTS #######
+#####################################################
+#####################################################
+#####################################################
+#####################################################
 
 # Call gaugeboard_comparison function
 top_ten_records, filtered_df = gaugeboard_comparison(gaugeboard_data, df)
