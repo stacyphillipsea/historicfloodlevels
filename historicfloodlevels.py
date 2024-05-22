@@ -20,9 +20,9 @@ from io import StringIO     # To loadd JSON to dataframe
 BASE_URL = "http://environment.data.gov.uk/hydrology/id"
 BASE_STATIONS_URL = "http://environment.data.gov.uk/hydrology/id/stations"
 
-MIN_DATE_STR = "2015-10-01"
+#MIN_DATE_STR = "2015-10-01"
 MAX_DATE_STR = "2024-02-29"
-MIN_DATE = datetime.strptime(MIN_DATE_STR, '%Y-%m-%d')
+#MIN_DATE = datetime.strptime(MIN_DATE_STR, '%Y-%m-%d')
 MAX_DATE = datetime.strptime(MAX_DATE_STR, '%Y-%m-%d')
 
 
@@ -71,13 +71,14 @@ def fetch_station_data(wiski_id):
             river_name = data['items'][0].get('riverName')
             latitude = data['items'][0].get('lat')
             longitude = data['items'][0].get('long')
+            dateOpened_str = data['items'][0].get('dateOpened')
             measure_url = f"{BASE_URL}/measures?station.wiskiID={wiski_id}&observedProperty=waterLevel&periodName=daily&valueType=max"
             response = requests.get(measure_url)
             response.raise_for_status()
             measure = json.loads(response.content)
             if 'items' in measure and measure['items']:
                 measure_id = measure['items'][0]['@id']
-                readings_url = f"{measure_id}/readings?mineq-date={MIN_DATE_STR}&maxeq-date={MAX_DATE_STR}"
+                readings_url = f"{measure_id}/readings?mineq-date={dateOpened_str}&maxeq-date={MAX_DATE_STR}"
                 response = requests.get(readings_url)
                 response.raise_for_status()
                 readings = json.loads(response.content)
@@ -101,6 +102,7 @@ def fetch_station_data(wiski_id):
     except requests.exceptions.RequestException as e:
         print(f"Error fetching data for WISKI ID {wiski_id}: {e}")
     return None
+
 
 # Fetch data for all stations
 def fetch_all_station_data():
@@ -445,35 +447,35 @@ def create_map(data_dict, selected_station=None):
 
 # #### FUNCTION TO MAKE DICTIONARY OFFLINE AND THEN LOAD
 
-# # # Fetch and save data for all stations
-# data_dict = fetch_all_station_data()
+# # Fetch and save data for all stations
+data_dict = fetch_all_station_data()
 
-# def fetch_and_save_all_station_data():
-#     data_dict = {}
-#     for wiski_id in WISKI_IDS:
-#         station_data = fetch_station_data(wiski_id)
-#         if station_data:
-#             # Convert DataFrame to JSON-serializable format
-#             date_values_json = station_data['date_values'].to_json(orient='records')
-#             # Replace DataFrame with JSON string in station_data dictionary
-#             station_data['date_values'] = date_values_json
-#             data_dict[station_data['name']] = station_data
+def fetch_and_save_all_station_data():
+    data_dict = {}
+    for wiski_id in WISKI_IDS:
+        station_data = fetch_station_data(wiski_id)
+        if station_data:
+            # Convert DataFrame to JSON-serializable format
+            date_values_json = station_data['date_values'].to_json(orient='records')
+            # Replace DataFrame with JSON string in station_data dictionary
+            station_data['date_values'] = date_values_json
+            data_dict[station_data['name']] = station_data
 
-#     # Specify the file path where you want to save the JSON file
-#     file_path = "C:\\Users\\SPHILLIPS03\\Documents\\repos\\historicfloodlevels\\historic_nested_dict.json"
+    # Specify the file path where you want to save the JSON file
+    file_path = "C:\\Users\\SPHILLIPS03\\Documents\\repos\\historicfloodlevels\\historic_nested_dict.json"
 
-#     # Save the dictionary containing station data to a JSON file
-#     with open(file_path, "w") as json_file:
-#         json.dump(data_dict, json_file)
+    # Save the dictionary containing station data to a JSON file
+    with open(file_path, "w") as json_file:
+        json.dump(data_dict, json_file)
 
-#     print("JSON file saved successfully.")
+    print("JSON file saved successfully.")
 
-# fetch_and_save_all_station_data()
+fetch_and_save_all_station_data()
 
 ### CALL YOUR FUNCTIONS 
 # Load station data from JSON file
 file_path = "historic_nested_dict.json"
-data_dict = fv(file_path)
+data_dict = load_station_data_from_json(file_path)
 
 if data_dict:
     print("Data loaded successfully.")

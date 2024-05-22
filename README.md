@@ -11,8 +11,8 @@ Harry D has given me information on all historic storms and all sites in WMD wit
 ## Functionality that is currently working
 * Makes a WIsKI IDs list from the csv file. Currently using a slice of 3 stations to test code.
 * Makes a date_filters dictionary for each of the storms, I have extended the date ranges to try and capture the storm event itself.
-* Extracting 15minute data only gets me as far back as 2018 (might be a data load problem). Daily max data gives me datetimes of peaks so should work
-* Create a historic_nest_dict of the daily max data to work with
+* Extracting 15minute data only gets me as far back as 2018 (might be a data load problem). * Daily max data gives me datetimes of peaks so should work
+* Created a historic_nest_dict of the daily max data for 3 sites to work with
 * Can find the peaks fine but the storms don't necessarily match with the events on the gaugeboard and vice versa. Dates may need further twiddling
 
 # Peak analysis work
@@ -22,6 +22,7 @@ Harry D has given me information on all historic storms and all sites in WMD wit
 * Height could probably be defined by the threshold value
 * Some code afterwards to try and identify time periods with peaks i.e. storm events
 * Data_dict only gets 3 sites at the moment, and this wouldn't work iteratively as user input is needed
+* Have used the 'stationOpened' parameter in the API to extend to full historical record
 
 
 ## Things that could be improved

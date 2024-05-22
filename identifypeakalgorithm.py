@@ -83,13 +83,16 @@ def identify_peaks_for_site(site_data, site_name):
 file_path = "historic_nested_dict.json"
 data_dict = load_station_data_from_json(file_path)
 
-# Choose site name
-site_name = 'Hereford Bridge'
-# Call the function to identify peaks for the selected site
-identify_peaks_for_site(data_dict[site_name]['date_values'], site_name)
 
 # Choose site name
 site_name = 'Diglis'
+# Call the function to identify peaks for the selected site
+identify_peaks_for_site(data_dict[site_name]['date_values'], site_name)
+
+
+
+# Choose site name
+site_name = 'Hereford Bridge'
 # Call the function to identify peaks for the selected site
 identify_peaks_for_site(data_dict[site_name]['date_values'], site_name)
 
@@ -97,6 +100,17 @@ identify_peaks_for_site(data_dict[site_name]['date_values'], site_name)
 site_name = 'Welsh Bridge'
 # Call the function to identify peaks for the selected site
 identify_peaks_for_site(data_dict[site_name]['date_values'], site_name)
+
+
+
+
+
+
+
+
+
+
+
 
 
 # Concatenate the dataframes
