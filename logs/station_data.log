@@ -1,0 +1,12 @@
+2024-05-22 14:07:02,007 - INFO - Successful station fetched: Welsh Bridge (2077)
+2024-05-22 14:07:02,009 - INFO - Successful stations: {'2077': 'Welsh Bridge'}
+2024-05-22 14:07:02,628 - INFO - Successful station fetched: Diglis (2085)
+2024-05-22 14:07:02,629 - INFO - Successful stations: {'2077': 'Welsh Bridge', '2085': 'Diglis'}
+2024-05-22 14:07:03,414 - INFO - Successful station fetched: Hereford Bridge (055807)
+2024-05-22 14:07:03,416 - INFO - Successful stations: {'2077': 'Welsh Bridge', '2085': 'Diglis', '055807': 'Hereford Bridge'}
+2024-05-22 14:07:03,947 - INFO - Successful station fetched: Welsh Bridge (2077)
+2024-05-22 14:07:03,948 - INFO - Successful stations: {'2077': 'Welsh Bridge', '2085': 'Diglis', '055807': 'Hereford Bridge'}
+2024-05-22 14:07:04,544 - INFO - Successful station fetched: Diglis (2085)
+2024-05-22 14:07:04,546 - INFO - Successful stations: {'2077': 'Welsh Bridge', '2085': 'Diglis', '055807': 'Hereford Bridge'}
+2024-05-22 14:07:05,253 - INFO - Successful station fetched: Hereford Bridge (055807)
+2024-05-22 14:07:05,254 - INFO - Successful stations: {'2077': 'Welsh Bridge', '2085': 'Diglis', '055807': 'Hereford Bridge'}

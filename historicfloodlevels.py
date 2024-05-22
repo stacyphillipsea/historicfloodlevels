@@ -14,6 +14,8 @@ from pptx import Presentation       # For Powerpoint
 from pptx.util import Pt, Inches
 import folium               # For map
 from io import StringIO     # To loadd JSON to dataframe
+import logging
+
 
 ### GET YOUR DATA BITS
 # Define key constants
@@ -57,14 +59,50 @@ threshold_values = sites_of_interest_merge[sites_of_interest_merge['Threshold'].
 threshold_values.loc[:, 'Threshold'] = threshold_values['Threshold'].astype(float) # Ensure original is modified, removing SettingWithCopyWarning
 threshold_dict = threshold_values.set_index('Gauge')['Threshold'].to_dict()
 
+#### SETUP LOGGING
+# Ensure the logs directory exists
+log_directory = 'logs'
+if not os.path.exists(log_directory):
+    os.makedirs(log_directory)
+
+# Setup logging if not configured already
+logger = logging.getLogger(__name__)
+if not logger.handlers:
+    logger.setLevel(logging.INFO)
+
+    # Create handlers
+    console_handler = logging.StreamHandler()
+    file_handler = logging.FileHandler(os.path.join(log_directory, 'station_data.log'))
+
+    # Create formatters and add them to the handlers
+    formatter = logging.Formatter('%(asctime)s - %(levelname)s - %(message)s')
+    console_handler.setFormatter(formatter)
+    file_handler.setFormatter(formatter)
+
+    # Add handlers to the logger
+    logger.addHandler(console_handler)
+    logger.addHandler(file_handler)
+
+
+
+
 ### MAKE YOUR FUNCTIONS
 # Fetch data for a single station
+
+
+BASE_URL = "http://environment.data.gov.uk/hydrology/id"
+BASE_STATIONS_URL = "http://environment.data.gov.uk/hydrology/id/stations"
+MAX_DATE_STR = "2023-12-31"  # Replace with the actual max date
+
+successful_stations = {}  # Dictionary to store successful WISKI IDs and station names
+
 def fetch_station_data(wiski_id):
     try:
         url_endpoint = f"{BASE_STATIONS_URL}?wiskiID={wiski_id}"
         response = requests.get(url_endpoint)
         response.raise_for_status()
         data = json.loads(response.content)
+        
         if 'items' in data and data['items']:
             label_field = data['items'][0].get('label')
             name = str(label_field[1] if isinstance(label_field, list) else label_field)
@@ -72,10 +110,18 @@ def fetch_station_data(wiski_id):
             latitude = data['items'][0].get('lat')
             longitude = data['items'][0].get('long')
             dateOpened_str = data['items'][0].get('dateOpened')
+            
+            # Check if dateOpened_str is None and set it to "01/01/2000" if it is
+            if dateOpened_str is None:
+                dateOpened_str = "01/01/2000"
+                logger.info("No stationOpened date found. Default to 01/01/2000")
+                print("No stationOpened date found. Default to 01/01/2000")
+            
             measure_url = f"{BASE_URL}/measures?station.wiskiID={wiski_id}&observedProperty=waterLevel&periodName=daily&valueType=max"
             response = requests.get(measure_url)
             response.raise_for_status()
             measure = json.loads(response.content)
+            
             if 'items' in measure and measure['items']:
                 measure_id = measure['items'][0]['@id']
                 readings_url = f"{measure_id}/readings?mineq-date={dateOpened_str}&maxeq-date={MAX_DATE_STR}"
@@ -83,9 +129,12 @@ def fetch_station_data(wiski_id):
                 response.raise_for_status()
                 readings = json.loads(response.content)
                 readings_items = readings.get('items', [])
+                
                 if readings_items:
                     df = pd.DataFrame.from_dict(readings_items)
                     df['dateTime'] = pd.to_datetime(df['dateTime'])
+                    successful_stations[wiski_id] = name  # Add successful WISKI ID and name to the dictionary
+                    logger.info(f"Successful station fetched: {name} ({wiski_id})")
                     return {
                         'name': name,
                         'date_values': df[['dateTime', 'value']],
@@ -94,14 +143,24 @@ def fetch_station_data(wiski_id):
                         'long': longitude
                     }
                 else:
+                    logger.info(f"No readings found for {name} ({wiski_id})")
                     print(f"No readings found for {name} ({wiski_id})")
             else:
+                logger.info(f"No measure items found for WISKI ID {wiski_id}")
                 print(f"No measure items found for WISKI ID {wiski_id}")
         else:
+            logger.info(f"No station items found for WISKI ID {wiski_id}")
             print(f"No station items found for WISKI ID {wiski_id}")
     except requests.exceptions.RequestException as e:
+        logger.error(f"Error fetching data for WISKI ID {wiski_id}: {e}")
         print(f"Error fetching data for WISKI ID {wiski_id}: {e}")
+    finally:
+        # Log the dictionary of successful WISKI IDs and station names at the end of the function
+        logger.info(f"Successful stations: {successful_stations}")
+        print(f"Successful stations: {successful_stations}")
     return None
+
+
 
 
 # Fetch data for all stations
@@ -483,10 +542,10 @@ else:
     print("Error loading data.")
 
 # Find and store maximum values for all stations
-max_values = find_and_store_max_values(data_dict)
+#max_values = find_and_store_max_values(data_dict)
 
 # Create peak table DataFrame
-df, peak_table_all = process_peak_table_all(max_values, sites_of_interest_merge)
+#df, peak_table_all = process_peak_table_all(max_values, sites_of_interest_merge)
 
 #####################################################
 #####################################################
