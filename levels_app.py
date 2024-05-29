@@ -49,6 +49,11 @@ sites_of_interest_merge = pd.read_csv('sites_of_interest_merge.csv')
 # Historic records
 gaugeboard_data = pd.read_csv('gaugeboard_data.csv')
 
+# Adding to use all WMD Gauges from Harry's list
+wmd_gauges = pd.read_csv('All_WMD_gauges_FETA.csv')
+WISKI_IDS = wmd_gauges['Site number'].dropna().tolist()
+WISKI_IDS = [f"{name}" for name in WISKI_IDS]
+
 # Isolate threshold/max values from metadata spreadsheet
 threshold_values = sites_of_interest_merge[sites_of_interest_merge['Threshold'].notnull()]
 threshold_values.loc[:, 'Threshold'] = threshold_values['Threshold'].astype(float) # Ensure original is modified, removing SettingWithCopyWarning
@@ -62,16 +67,24 @@ def fetch_station_data(wiski_id):
         response = requests.get(url_endpoint)
         response.raise_for_status()
         data = json.loads(response.content)
+        
         if 'items' in data and data['items']:
             label_field = data['items'][0].get('label')
             name = str(label_field[1] if isinstance(label_field, list) else label_field)
             river_name = data['items'][0].get('riverName')
+            
+            # Take the first item if river_name is a list
+            if isinstance(river_name, list):
+                river_name = river_name[0]  # Take the first item
+                
             latitude = data['items'][0].get('lat')
             longitude = data['items'][0].get('long')
+            
             measure_url = f"{BASE_URL}/measures?station.wiskiID={wiski_id}&observedProperty=waterLevel&periodName=15min"
             response = requests.get(measure_url)
             response.raise_for_status()
             measure = json.loads(response.content)
+            
             if 'items' in measure and measure['items']:
                 measure_id = measure['items'][0]['@id']
                 readings_url = f"{measure_id}/readings?mineq-date={MIN_DATE_STR}&maxeq-date={MAX_DATE_STR}"
@@ -79,6 +92,7 @@ def fetch_station_data(wiski_id):
                 response.raise_for_status()
                 readings = json.loads(response.content)
                 readings_items = readings.get('items', [])
+                
                 if readings_items:
                     df = pd.DataFrame.from_dict(readings_items)
                     df['dateTime'] = pd.to_datetime(df['dateTime'])
@@ -98,6 +112,10 @@ def fetch_station_data(wiski_id):
     except requests.exceptions.RequestException as e:
         print(f"Error fetching data for WISKI ID {wiski_id}: {e}")
     return None
+
+
+
+
 
 # Fetch data for all stations
 def fetch_all_station_data():
@@ -183,7 +201,7 @@ def process_peak_table_all(max_values, sites_of_interest_merge):
     flat_df.reset_index(inplace=True)
 
 # Merge with 'sites_of_interest_merge' DataFrame
-    peak_table_all = pd.merge(flat_df, sites_of_interest_merge[['Region', 'River','Gauge','Order']], left_on='Station', right_on='Gauge')
+    peak_table_all = pd.merge(flat_df, sites_of_interest_merge[['Region', 'River','Gauge','Order']], left_on='Station', right_on='Gauge', how='outer')
 
     columns_to_move = ['Order','Region', 'River']
     new_order = columns_to_move + [col for col in peak_table_all.columns if col not in columns_to_move]
@@ -403,8 +421,15 @@ def create_map(data_dict, selected_station=None):
     # Create Folium map centred on Hagley (roughly in centre of WMD)
     m = folium.Map(location=[52.4083, -2.2272], zoom_start=10)
     
-    # Extract unique river names from the data_dict
-    unique_rivers = sorted(set(station_data.get('river_name', None) for station_data in data_dict.values() if 'river_name' in station_data))
+    # Extract unique river names from the data_dict, filtering out None values
+    river_names = [station_data.get('river_name') for station_data in data_dict.values()]
+    print("River Names:", river_names)
+
+    # Remove None values
+    river_names = [name for name in river_names if name is not None]
+
+    # Create a set of unique river names
+    unique_rivers = sorted(set(river_names))
 
     # Create river-color mapping by assigning colors from the palette
     river_color_mapping = {river: color_palette[i % len(color_palette)] for i, river in enumerate(unique_rivers)}
@@ -417,6 +442,9 @@ def create_map(data_dict, selected_station=None):
         popup_content = f"<b>{station_name}</b><br>{river_name}"
         
         if lat is not None and long is not None:
+            # Ensure river_name is a string
+            river_name = str(river_name)
+            
             # Select marker color based on river name
             marker_color = river_color_mapping.get(river_name, 'gray')  # Default to gray if river name not found
             # Add marker for station with selected color
@@ -440,9 +468,10 @@ def create_map(data_dict, selected_station=None):
 
     return map_html
 
+
 #### FUNCTION TO MAKE DICTIONARY OFFLINE AND THEN LOAD
 
-## Fetch and save data for all stations
+# # Fetch and save data for all stations
 # data_dict = fetch_all_station_data()
 
 # def fetch_and_save_all_station_data():
@@ -469,7 +498,7 @@ def create_map(data_dict, selected_station=None):
 
 ### CALL YOUR FUNCTIONS 
 # Load station data from JSON file
-file_path = "nested_dict.json"
+file_path = "nested_dict_extended.json"
 data_dict = load_station_data_from_json(file_path)
 
 if data_dict:
@@ -729,8 +758,8 @@ app.layout = dbc.Container([
                 clearable=False,
                 value="River Severn",  # Default value for the river dropdown
                 options=[
-                    {'label': river_name, 'value': river_name} for river_name in sorted(set([v['river_name'] for v in data_dict.values()]))
-                ],
+                        {'label': river_name, 'value': river_name} for river_name in sorted(set([v['river_name'] for v in data_dict.values() if v.get('river_name') is not None]))
+                        ],
                 style={'font-size': '16px'}
             ),
             dcc.Dropdown(
