@@ -201,7 +201,7 @@ def process_peak_table_all(max_values, sites_of_interest_merge):
     flat_df.reset_index(inplace=True)
 
 # Merge with 'sites_of_interest_merge' DataFrame
-    peak_table_all = pd.merge(flat_df, sites_of_interest_merge[['Region', 'River','Gauge','Order']], left_on='Station', right_on='Gauge', how='outer')
+    peak_table_all = pd.merge(flat_df, wmd_gauges[['Region', 'River','Gauge','Order']], left_on='Station', right_on='Gauge', how='outer')
 
     columns_to_move = ['Order','Region', 'River']
     new_order = columns_to_move + [col for col in peak_table_all.columns if col not in columns_to_move]
