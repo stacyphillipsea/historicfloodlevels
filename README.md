@@ -44,7 +44,7 @@ I have already done loads of work on this before using Git Hub, so earlier versi
 * Would be nice to include more icons, couldn't get it to work with a "To top" button
 * Should include data quality tag information in here somewhere
 * WISKI IDs list should be derived from the sites of interest merge using unique, currently it is a static list. Can compare this list with existing list to check info is correct
-
+* This is back to where it was before I messed it up
 
 ## Things to remember to run in VSCODE
 * rsconnect deploy dash . -n LevelsApp --entrypoint levels_app:app 
