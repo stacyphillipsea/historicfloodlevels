@@ -49,11 +49,20 @@ I have already done loads of work on this before using Git Hub, so earlier versi
 * New nested_data_dict it too big to upload to git so after faffing around with large file storage, i reset and just tell git to ignore the nested_dict_extended file
 
 ## Updates 29/05/2024
-* Updated the nested_dict to run through the WISKI sites list Harry D provided
+* Updated the nested_dict to run through the whole like of WISKI sites 
 * This returned some sites with multiple river names so this now just takes the first one in the list, and also None in the River name
 * Had to update the map and component code to be able to deal with Nones in the river list
 * Performed an outer join to make the peak table all, so that it isn't relying on the sites being in the sites of interest merge
+* There are stray stations at the bottom of the dataframe that aren't matched - this is due to the merge happening on name not on WISKI ID and there are errors in the names in the system
 * There are now 231 sites in the dataset
+* Not enough colours for river pins to be unique but still works, it just reuses colours
+* Updated zoom to zoom in more now there are so many pins
+
+## Updates 30/05/2024
+* Tried updating the merge so it worked on WISKI IDS but it broke the visualisations
+* Need to not change the df, max_values and process_peak_table_all because the dictionary structure doesn't work with the extra WISKI ID stored in there
+* Discarded changes!
+* Need to edit the WYE IDs so that they start 055
 
 
 ## Things to remember to run in VSCODE
