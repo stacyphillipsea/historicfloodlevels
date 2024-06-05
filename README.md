@@ -58,6 +58,7 @@ I have already done loads of work on this before using Git Hub, so earlier versi
 * Not enough colours for river pins to be unique but still works, it just reuses colours
 * Updated zoom to zoom in more now there are so many pins
 
+## Extending-site-list-2 branch
 ## Updates 30/05/2024
 * Tried updating the merge so it worked on WISKI IDS but it broke the visualisations
 * Need to not change the df, max_values and process_peak_table_all because the dictionary structure doesn't work with the extra WISKI ID stored in there
@@ -69,6 +70,7 @@ I have already done loads of work on this before using Git Hub, so earlier versi
 * Hashed out the Powerpoint functions to improve efficiency
 * Edited the WISKI IDs and data_dict to include River Wye stations
 * Created a processed and unprocessed ids list to help with data loading
+* Tidied up print statements to help identify sites that don't have data
 
 ## Things to remember to run in VSCODE
 * rsconnect deploy dash . -n LevelsApp --entrypoint levels_app:app 

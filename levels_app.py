@@ -108,20 +108,20 @@ def fetch_station_data(wiski_id):
                         'long': longitude
                     }
                 else:
-                    print(f"No readings found for {name} ({wiski_id})")
+                    print(f"No readings found for {name} (WISKI ID: {wiski_id})")
             else:
-                print(f"No measure items found for WISKI ID {wiski_id}")
+                print(f"No level measures found for {name} (WISKI ID: {wiski_id})")
         else:
-            print(f"No station items found for WISKI ID {wiski_id}")
+            print(f"No station found with WISKI ID: {wiski_id}")
     except requests.exceptions.RequestException as e:
-        print(f"Error fetching data for WISKI ID {wiski_id}: {e}")
+        print(f"Error fetching data for WISKI ID: {wiski_id}: {e}")
     return None
 
 # Fetch data for all stations
 def fetch_all_station_data():
     data_dict = {}
     processed_ids = {}  # Dictionary to track processed WISKI IDs and names
-    unprocessed_ids = {}  # Dictionary to track unprocessed WISKI IDs and names
+    unprocessed_ids = []  # List to track unprocessed WISKI IDs
     
     for wiski_id in WISKI_IDS:
         station_data = fetch_station_data(wiski_id)
@@ -129,10 +129,11 @@ def fetch_all_station_data():
             data_dict[station_data['name']] = station_data
             processed_ids[wiski_id] = station_data['name']  # Store WISKI ID and name
         else:
-            unprocessed_ids[wiski_id] = None  # Initialize with None, can update with name if available later
-    print(unprocessed_ids)
-
+            unprocessed_ids.append(wiski_id)  # Add unprocessed WISKI ID to the list
+    
+    print("Unprocessed WISKI IDs:", unprocessed_ids)
     return data_dict, processed_ids, unprocessed_ids
+
 
 # Find maximum values for each filter
 def find_max_values(df, filters):
@@ -403,19 +404,14 @@ def plot_historic_levels(filtered_df, selected_station, threshold_dict):
         return go.Figure()
 
 # Function to load station data from JSON file
+# Load station data from JSON file
 def load_station_data_from_json(file_path):
     try:
-        # Load data from JSON file
         with open(file_path, "r") as json_file:
             data_dict = json.load(json_file)
-        
-        # Convert date_values from JSON strings to DataFrames
-        for station_data in data_dict.values():
-            station_data['date_values'] = pd.read_json(StringIO(station_data['date_values']))
-
         return data_dict
     except FileNotFoundError:
-        print(f"File {file_path} not found.")
+        print(f"File not found: {file_path}")
         return None
 
 # Define a list of colors to use as a palette
@@ -480,29 +476,23 @@ def create_map(data_dict, selected_station=None):
 ### FUNCTION TO MAKE DICTIONARY OFFLINE AND THEN LOAD
 
 # Fetch and save data for all stations
-# data_dict, processed_ids, unprocessed_ids = fetch_all_station_data()
+def fetch_and_save_all_station_data():
+    data_dict, processed_ids, unprocessed_ids = fetch_all_station_data()
+    
+    # Convert DataFrame to JSON-serializable format
+    for key in data_dict:
+        data_dict[key]['date_values'] = data_dict[key]['date_values'].to_json(orient='records')
+    
+    # Specify the file path where you want to save the JSON file
+    file_path = "C:\\Users\\SPHILLIPS03\\Documents\\repos\\levels_app_folder\\nested_dict_extended.json"
+    
+    # Save the dictionary containing station data to a JSON file
+    with open(file_path, "w") as json_file:
+        json.dump(data_dict, json_file)
 
-# def fetch_and_save_all_station_data():
-#     data_dict = {}
-#     for wiski_id in WISKI_IDS:
-#         station_data = fetch_station_data(wiski_id)
-#         if station_data:
-#             # Convert DataFrame to JSON-serializable format
-#             date_values_json = station_data['date_values'].to_json(orient='records')
-#             # Replace DataFrame with JSON string in station_data dictionary
-#             station_data['date_values'] = date_values_json
-#             data_dict[station_data['name']] = station_data
+    print("JSON file saved successfully.")
 
-#     # Specify the file path where you want to save the JSON file
-#     file_path = "C:\\Users\\SPHILLIPS03\\Documents\\repos\\levels_app_folder\\extended_nested_dict.json"
-
-#     # Save the dictionary containing station data to a JSON file
-#     with open(file_path, "w") as json_file:
-#         json.dump(data_dict, json_file)
-
-#     print("JSON file saved successfully.")
-
-# fetch_and_save_all_station_data()
+fetch_and_save_all_station_data()
 
 ### CALL YOUR FUNCTIONS 
 # Load station data from JSON file
