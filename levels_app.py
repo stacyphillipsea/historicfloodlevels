@@ -9,8 +9,8 @@ from dash.dependencies import Input, Output
 import dash_bootstrap_components as dbc
 import plotly.graph_objects as go           # For Plotly charts
 import os                                   # For filepath operations
-from pptx import Presentation       # For Powerpoint
-from pptx.util import Pt, Inches
+# from pptx import Presentation       # For Powerpoint
+# from pptx.util import Pt, Inches
 import folium               # For map
 from io import StringIO     # To loadd JSON to dataframe
 
@@ -18,15 +18,6 @@ from io import StringIO     # To loadd JSON to dataframe
 # Define key constants
 BASE_URL = "http://environment.data.gov.uk/hydrology/id"
 BASE_STATIONS_URL = "http://environment.data.gov.uk/hydrology/id/stations"
-WISKI_IDS = ['2175', '2077', '2134', '2180', '2001', '2642', '2085', '2616', '2032', '2087', '2606', '2057', '2071',
-             '2618', '2165', '2102', '2153', '2132', '2008', '2086', '2002', '2128', '055829', '055811', '055807',
-             '055817', '055843', '4143', '4078', '4018', '4703', '4052', '4040', '4083', '4006', '4012', '4019',
-             '4069', '4039', '4066', '4081', '4878', '4003', '2090', '2019', '2091', '2093', '2050', '2049', '2048',
-             '452039', '2092', '2621', '2104', '2531', '055041', '055003', '055816']
-# ## WYE WISKI IDS
-# WISKI_IDS =['055002', '055028', '055811', '055040', '055021','055014', '055829', '055041', '055003', '055843',
-#             '055843', '055807', '055039', '055817', '055031', '055013', '055018']
-#WISKI_IDS = ['2175', '2077', '2134']
 MIN_DATE_STR = "2023-10-01"
 MAX_DATE_STR = "2024-02-29"
 MIN_DATE = datetime.strptime(MIN_DATE_STR, '%Y-%m-%d')
@@ -54,6 +45,20 @@ wmd_gauges = pd.read_csv('All_WMD_gauges_FETA.csv')
 WISKI_IDS = wmd_gauges['Site number'].dropna().tolist()
 WISKI_IDS = [f"{name}" for name in WISKI_IDS]
 
+# Function to modify IDs for the Wye
+def modify_ids(ids):
+    modified_ids = []
+    for id in ids:
+        if id.startswith('55'):
+            modified_ids.append('0' + id)
+        else:
+            modified_ids.append(id)
+    return modified_ids
+
+# Apply the function
+modified_wiski_ids = modify_ids(WISKI_IDS)
+WISKI_IDS = modified_wiski_ids
+
 # Isolate threshold/max values from metadata spreadsheet
 threshold_values = sites_of_interest_merge[sites_of_interest_merge['Threshold'].notnull()]
 threshold_values.loc[:, 'Threshold'] = threshold_values['Threshold'].astype(float) # Ensure original is modified, removing SettingWithCopyWarning
@@ -73,7 +78,6 @@ def fetch_station_data(wiski_id):
             name = str(label_field[1] if isinstance(label_field, list) else label_field)
             river_name = data['items'][0].get('riverName')
             
-            # Take the first item if river_name is a list
             if isinstance(river_name, list):
                 river_name = river_name[0]  # Take the first item
                 
@@ -113,18 +117,22 @@ def fetch_station_data(wiski_id):
         print(f"Error fetching data for WISKI ID {wiski_id}: {e}")
     return None
 
-
-
-
-
 # Fetch data for all stations
 def fetch_all_station_data():
     data_dict = {}
+    processed_ids = {}  # Dictionary to track processed WISKI IDs and names
+    unprocessed_ids = {}  # Dictionary to track unprocessed WISKI IDs and names
+    
     for wiski_id in WISKI_IDS:
         station_data = fetch_station_data(wiski_id)
         if station_data:
             data_dict[station_data['name']] = station_data
-    return data_dict
+            processed_ids[wiski_id] = station_data['name']  # Store WISKI ID and name
+        else:
+            unprocessed_ids[wiski_id] = None  # Initialize with None, can update with name if available later
+    print(unprocessed_ids)
+
+    return data_dict, processed_ids, unprocessed_ids
 
 # Find maximum values for each filter
 def find_max_values(df, filters):
@@ -423,13 +431,13 @@ def create_map(data_dict, selected_station=None):
     
     # Extract unique river names from the data_dict, filtering out None values
     river_names = [station_data.get('river_name') for station_data in data_dict.values()]
-    print("River Names:", river_names)
 
     # Remove None values
     river_names = [name for name in river_names if name is not None]
 
     # Create a set of unique river names
     unique_rivers = sorted(set(river_names))
+    print("River Names:", unique_rivers)
 
     # Create river-color mapping by assigning colors from the palette
     river_color_mapping = {river: color_palette[i % len(color_palette)] for i, river in enumerate(unique_rivers)}
@@ -469,10 +477,10 @@ def create_map(data_dict, selected_station=None):
     return map_html
 
 
-#### FUNCTION TO MAKE DICTIONARY OFFLINE AND THEN LOAD
+### FUNCTION TO MAKE DICTIONARY OFFLINE AND THEN LOAD
 
-# # Fetch and save data for all stations
-# data_dict = fetch_all_station_data()
+# Fetch and save data for all stations
+# data_dict, processed_ids, unprocessed_ids = fetch_all_station_data()
 
 # def fetch_and_save_all_station_data():
 #     data_dict = {}
@@ -486,7 +494,7 @@ def create_map(data_dict, selected_station=None):
 #             data_dict[station_data['name']] = station_data
 
 #     # Specify the file path where you want to save the JSON file
-#     file_path = "C:\\Users\\SPHILLIPS03\\Documents\\repos\\levels_app_folder\\nested_dict.json"
+#     file_path = "C:\\Users\\SPHILLIPS03\\Documents\\repos\\levels_app_folder\\extended_nested_dict.json"
 
 #     # Save the dictionary containing station data to a JSON file
 #     with open(file_path, "w") as json_file:
@@ -611,7 +619,8 @@ initial_map_html = create_map(data_dict)
 # output_presentation_path = "C:\\Users\\SPHILLIPS03\\Documents\\repos\\levels_app_folder_exports\Winter2324_PeakPlots.pptx"
 # prs.save(output_presentation_path)
 
-# asst_path = os.path.join(os.getcwd(), "assets_folder")
+# This is defined in the app initialisation so easier to keep it unhashed here
+asst_path = os.path.join(os.getcwd(), "assets_folder")
 
 ### MAKE YOUR APP
 # Initialize Dash app

@@ -67,6 +67,8 @@ I have already done loads of work on this before using Git Hub, so earlier versi
 ## Updates 05/06/2024
 * Increased the timeout time in Posit from 60 to 120
 * Hashed out the Powerpoint functions to improve efficiency
+* Edited the WISKI IDs and data_dict to include River Wye stations
+* Created a processed and unprocessed ids list to help with data loading
 
 ## Things to remember to run in VSCODE
 * rsconnect deploy dash . -n LevelsApp --entrypoint levels_app:app 
