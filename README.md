@@ -64,6 +64,9 @@ I have already done loads of work on this before using Git Hub, so earlier versi
 * Discarded changes!
 * Need to edit the WYE IDs so that they start 055
 
+## Updates 05/06/2024
+* Increased the timeout time in Posit from 60 to 120
+* Hashed out the Powerpoint functions to improve efficiency
 
 ## Things to remember to run in VSCODE
 * rsconnect deploy dash . -n LevelsApp --entrypoint levels_app:app 
