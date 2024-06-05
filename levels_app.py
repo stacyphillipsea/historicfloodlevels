@@ -71,65 +71,68 @@ def fetch_station_data(wiski_id):
         url_endpoint = f"{BASE_STATIONS_URL}?wiskiID={wiski_id}"
         response = requests.get(url_endpoint)
         response.raise_for_status()
-        data = json.loads(response.content)
-        
-        if 'items' in data and data['items']:
-            label_field = data['items'][0].get('label')
-            name = str(label_field[1] if isinstance(label_field, list) else label_field)
-            river_name = data['items'][0].get('riverName')
-            
-            if isinstance(river_name, list):
-                river_name = river_name[0]  # Take the first item
-                
-            latitude = data['items'][0].get('lat')
-            longitude = data['items'][0].get('long')
-            
-            measure_url = f"{BASE_URL}/measures?station.wiskiID={wiski_id}&observedProperty=waterLevel&periodName=15min"
-            response = requests.get(measure_url)
-            response.raise_for_status()
-            measure = json.loads(response.content)
-            
-            if 'items' in measure and measure['items']:
-                measure_id = measure['items'][0]['@id']
-                readings_url = f"{measure_id}/readings?mineq-date={MIN_DATE_STR}&maxeq-date={MAX_DATE_STR}"
-                response = requests.get(readings_url)
-                response.raise_for_status()
-                readings = json.loads(response.content)
-                readings_items = readings.get('items', [])
-                
-                if readings_items:
-                    df = pd.DataFrame.from_dict(readings_items)
-                    df['dateTime'] = pd.to_datetime(df['dateTime'])
-                    return {
-                        'name': name,
-                        'date_values': df[['dateTime', 'value']],
-                        'river_name': river_name,
-                        'lat': latitude,
-                        'long': longitude
-                    }
-                else:
-                    print(f"No readings found for {name} (WISKI ID:{wiski_id})")
-            else:
-                print(f"No level measures found for {name} (WISKI ID: {wiski_id})")
-        else:
+        data = response.json()
+
+        if not data.get('items'):
             print(f"No station found with the WISKI ID {wiski_id}")
+            return None
+
+        station = data['items'][0]
+        label_field = station.get('label')
+        name = str(label_field[1] if isinstance(label_field, list) else label_field)
+        river_name = station.get('riverName')
+        river_name = river_name[0] if isinstance(river_name, list) else river_name
+        latitude = station.get('lat')
+        longitude = station.get('long')
+
+        measure_url = f"{BASE_URL}/measures?station.wiskiID={wiski_id}&observedProperty=waterLevel&periodName=15min"
+        response = requests.get(measure_url)
+        response.raise_for_status()
+        measure = response.json()
+
+        if not measure.get('items'):
+            print(f"No level measures found for {name} (WISKI ID: {wiski_id})")
+            return None
+
+        measure_id = measure['items'][0]['@id']
+        readings_url = f"{measure_id}/readings?mineq-date={MIN_DATE_STR}&maxeq-date={MAX_DATE_STR}"
+        response = requests.get(readings_url)
+        response.raise_for_status()
+        readings = response.json()
+        readings_items = readings.get('items', [])
+
+        if not readings_items:
+            print(f"No readings found for {name} (WISKI ID: {wiski_id})")
+            return None
+
+        df = pd.DataFrame.from_dict(readings_items)
+        df['dateTime'] = pd.to_datetime(df['dateTime'])
+
+        return {
+            'name': name,
+            'date_values': df[['dateTime', 'value']],
+            'river_name': river_name,
+            'lat': latitude,
+            'long': longitude
+        }
     except requests.exceptions.RequestException as e:
         print(f"Error fetching data for WISKI ID {wiski_id}: {e}")
-    return None
+        return None
 
 # Fetch data for all stations
 def fetch_all_station_data():
     data_dict = {}
-    processed_ids = {}  # Dictionary to track processed WISKI IDs and names
-    unprocessed_ids = {}  # Dictionary to track unprocessed WISKI IDs and names
-    
+    processed_ids = {}
+    unprocessed_ids = {}
+
     for wiski_id in WISKI_IDS:
         station_data = fetch_station_data(wiski_id)
         if station_data:
             data_dict[station_data['name']] = station_data
-            processed_ids[wiski_id] = station_data['name']  # Store WISKI ID and name
+            processed_ids[wiski_id] = station_data['name']
         else:
-            unprocessed_ids[wiski_id] = None  
+            unprocessed_ids[wiski_id]
+
     print(unprocessed_ids)
     return data_dict, processed_ids, unprocessed_ids
 
@@ -479,20 +482,13 @@ def create_map(data_dict, selected_station=None):
 ### FUNCTION TO MAKE DICTIONARY OFFLINE AND THEN LOAD
 
 # def fetch_and_save_all_station_data():
-#     data_dict = {}
-#     for wiski_id in WISKI_IDS:
-#         station_data = fetch_station_data(wiski_id)
-#         if station_data:
-#             # Convert DataFrame to JSON-serializable format
-#             date_values_json = station_data['date_values'].to_json(orient='records')
-#             # Replace DataFrame with JSON string in station_data dictionary
-#             station_data['date_values'] = date_values_json
-#             data_dict[station_data['name']] = station_data
+#     data_dict, _, _ = fetch_all_station_data()
 
-#     # Specify the file path where you want to save the JSON file
+#     for station_data in data_dict.values():
+#         station_data['date_values'] = station_data['date_values'].to_json(orient='records')
+
 #     file_path = "C:\\Users\\SPHILLIPS03\\Documents\\repos\\levels_app_folder\\nested_dict_extended.json"
 
-#     # Save the dictionary containing station data to a JSON file
 #     with open(file_path, "w") as json_file:
 #         json.dump(data_dict, json_file)
 
