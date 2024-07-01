@@ -41,7 +41,7 @@ WISKI_IDS = wmd_gauges['Site number'].dropna().tolist()
 WISKI_IDS = [f"{name}" for name in WISKI_IDS]
 ### SUBSETTING FOR TESTING
 WISKI_IDS = WISKI_IDS[:3]
-WISKI_IDS =['2077', '2085','055807'] 
+WISKI_IDS =['2077', '2085','055807', '4069'] 
 
 # MET Office storms
 storms = pd.read_excel('Met Office named storms.xlsx')
@@ -88,11 +88,8 @@ if not logger.handlers:
 
 ### MAKE YOUR FUNCTIONS
 # Fetch data for a single station
-
-
 BASE_URL = "http://environment.data.gov.uk/hydrology/id"
 BASE_STATIONS_URL = "http://environment.data.gov.uk/hydrology/id/stations"
-MAX_DATE_STR = "2023-12-31"  # Replace with the actual max date
 
 successful_stations = {}  # Dictionary to store successful WISKI IDs and station names
 
@@ -159,9 +156,6 @@ def fetch_station_data(wiski_id):
         logger.info(f"Successful stations: {successful_stations}")
         print(f"Successful stations: {successful_stations}")
     return None
-
-
-
 
 # Fetch data for all stations
 def fetch_all_station_data():
@@ -542,10 +536,10 @@ else:
     print("Error loading data.")
 
 # Find and store maximum values for all stations
-#max_values = find_and_store_max_values(data_dict)
+max_values = find_and_store_max_values(data_dict)
 
 # Create peak table DataFrame
-#df, peak_table_all = process_peak_table_all(max_values, sites_of_interest_merge)
+df, peak_table_all = process_peak_table_all(max_values, sites_of_interest_merge)
 
 #####################################################
 #####################################################

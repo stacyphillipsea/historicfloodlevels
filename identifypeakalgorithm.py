@@ -113,28 +113,99 @@ identify_peaks_for_site(data_dict[site_name]['date_values'], site_name)
 
 
 
+
+
+# # Plot the peak river levels
+# fig = px.scatter(all_peaks_df, x='Peak Date', y='Peak Value', color='Site', 
+#                  title='Peak River Levels by Site')
+# fig.update_traces(marker=dict(size=8))
+# fig.show()
+
+# # Group by two-week intervals and count the number of peaks
+# all_peaks_df['Peak Date'] = pd.to_datetime(all_peaks_df['Peak Date'])
+# all_peaks_df['Period'] = all_peaks_df['Peak Date'].dt.to_period('2W').astype(str)
+
+# # Convert 'Period' back to datetime for sorting
+# all_peaks_df['Period_Start'] = pd.PeriodIndex(all_peaks_df['Period'], freq='2W').start_time
+
+# peak_counts = all_peaks_df.groupby(['Period_Start', 'Site']).size().reset_index(name='Count')
+
+# # Plot the bar chart
+# fig = px.bar(peak_counts, x='Period_Start', y='Count', color='Site', barmode='group',
+#              title='Peak River Levels by Site and Two-Week Intervals')
+# fig.update_layout(xaxis_title='Date (2-Week Periods)', yaxis_title='Number of Peaks')
+# fig.show()
+
+
+
+###### Assigning peaks to given storm events
+
 # Concatenate the dataframes
 all_peaks_df = pd.concat([peak_df_HerefordBridge.assign(Site='Hereford Bridge'),
                           peak_df_Diglis.assign(Site='Diglis'),
-                          peak_df_WelshBridge.assign(Site='Welsh Bridge')])
+                          peak_df_WelshBridge.assign(Site='Welsh Bridge'),
+                          peak_df_Tamworth.assign(Site='Tamworth')])
 
-# Plot the peak river levels
-fig = px.scatter(all_peaks_df, x='Peak Date', y='Peak Value', color='Site', 
-                 title='Peak River Levels by Site')
-fig.update_traces(marker=dict(size=8))
-fig.show()
-
-# Group by two-week intervals and count the number of peaks
 all_peaks_df['Peak Date'] = pd.to_datetime(all_peaks_df['Peak Date'])
-all_peaks_df['Period'] = all_peaks_df['Peak Date'].dt.to_period('2W').astype(str)
 
-# Convert 'Period' back to datetime for sorting
-all_peaks_df['Period_Start'] = pd.PeriodIndex(all_peaks_df['Period'], freq='2W').start_time
+# Creating storm lists
+storms = pd.read_excel('Met Office named storms.xlsx')
+storms['startdate'] = pd.to_datetime(storms['startdate'])
+storms['enddate'] = pd.to_datetime(storms['enddate'])
+# Adjusting the filter length
+storms['startdate'] = storms['startdate'] - timedelta(days=2)
+storms['enddate'] = storms['enddate'] + timedelta(days=2)
+storms.dtypes #should be datetime not object
 
-peak_counts = all_peaks_df.groupby(['Period_Start', 'Site']).size().reset_index(name='Count')
+# Create function to match date to storm
+def match_storm(date):
+    for _, storm in storms.iterrows():
+        if storm['startdate'] <= date <= storm['enddate']:
+            return storm['Name']
+    return None
 
-# Plot the bar chart
-fig = px.bar(peak_counts, x='Period_Start', y='Count', color='Site', barmode='group',
-             title='Peak River Levels by Site and Two-Week Intervals')
-fig.update_layout(xaxis_title='Date (2-Week Periods)', yaxis_title='Number of Peaks')
+# Apply the function to create a new column 'Storm_Name'
+all_peaks_df['Storm_Name'] = all_peaks_df['Peak Date'].apply(match_storm)
+all_peaks_df
+
+
+### making a plot to show the peak dates and storms
+all_peaks_df['Peak Date'] = pd.to_datetime(all_peaks_df['Peak Date'])
+
+# Separate data with and without storm names
+labeled_data = all_peaks_df.dropna(subset=['Storm_Name'])
+unlabeled_data = all_peaks_df[all_peaks_df['Storm_Name'].isnull()]
+
+# Plotting with Plotly
+fig = go.Figure()
+
+# Scatter plot for unlabeled data (without storm names)
+fig.add_trace(go.Scatter(
+    x=unlabeled_data['Peak Date'],
+    y=unlabeled_data['Peak Value'],
+    mode='markers',
+    marker=dict(color='blue'),
+    name='No Storm Name',
+    text=unlabeled_data['Site'],  # Display site name on hover
+))
+
+# Scatter plot for labeled data (with storm names)
+fig.add_trace(go.Scatter(
+    x=labeled_data['Peak Date'],
+    y=labeled_data['Peak Value'],
+    mode='markers',
+    marker=dict(color='red'),
+    name='Storm Name',
+    text=labeled_data.apply(lambda row: f"Site: {row['Site']}<br>Storm: {row['Storm_Name']}", axis=1),  # Display site and storm names on hover
+))
+
+# Customize layout
+fig.update_layout(
+    title='Peak Value vs Peak Date',
+    xaxis_title='Peak Date',
+    yaxis_title='Peak Value',
+    legend_title='Legend',
+)
+
+# Show plot
 fig.show()
