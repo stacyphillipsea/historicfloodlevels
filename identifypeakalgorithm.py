@@ -209,3 +209,54 @@ fig.update_layout(
 
 # Show plot
 fig.show()
+
+
+from plotly.subplots import make_subplots
+
+# Number of unique sites
+unique_sites = all_peaks_df['Site'].unique()
+
+# Create subplot grid
+fig = make_subplots(rows=len(unique_sites), cols=1, 
+                    subplot_titles=unique_sites)
+
+# Iterate over unique sites and add scatter plots
+for i, site in enumerate(unique_sites):
+    site_data = all_peaks_df[all_peaks_df['Site'] == site]
+    labeled_data = site_data.dropna(subset=['Storm_Name'])
+    unlabeled_data = site_data[site_data['Storm_Name'].isnull()]
+    
+    # Scatter plot for unlabeled data (without storm names)
+    fig.add_trace(go.Scatter(
+        x=unlabeled_data['Peak Date'],
+        y=unlabeled_data['Peak Value'],
+        mode='markers',
+        marker=dict(color='blue'),
+        name='No Storm Name',
+        text=unlabeled_data.apply(lambda row: f"Site: {row['Site']}", axis=1),  # Display site name on hover
+    ), row=i+1, col=1)
+    
+    # Scatter plot for labeled data (with storm names)
+    fig.add_trace(go.Scatter(
+        x=labeled_data['Peak Date'],
+        y=labeled_data['Peak Value'],
+        mode='markers',
+        marker=dict(color='red'),
+        name='Storm Name',
+        text=labeled_data.apply(lambda row: f"Site: {row['Site']}<br>Storm: {row['Storm_Name']}", axis=1),  # Display site and storm names on hover
+    ), row=i+1, col=1)
+
+    fig.update_xaxes(range=[datetime(2015, 1, 1), datetime.now()], row=i+1, col=1)
+
+# Update layout
+fig.update_layout(
+    title='Peak Value vs Peak Date by Site',
+    xaxis_title='Peak Date',
+    yaxis_title='Peak Value',
+    showlegend=False,  # Hide legend as subplots have individual legends
+    height=1000,  # Adjust height as needed
+    width=800,  # Adjust width as needed
+)
+
+# Show plot
+fig.show()
