@@ -41,7 +41,7 @@ WISKI_IDS = wmd_gauges['Site number'].dropna().tolist()
 WISKI_IDS = [f"{name}" for name in WISKI_IDS]
 ### SUBSETTING FOR TESTING
 WISKI_IDS = WISKI_IDS[:3]
-WISKI_IDS =['2077', '2085','055807', '4069', '2165'] 
+WISKI_IDS =['2077', '2085','055807', '4069', '2165', '2615', '4078'] 
 
 # MET Office storms
 storms = pd.read_excel('Met Office named storms.xlsx')
