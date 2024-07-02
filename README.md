@@ -30,7 +30,7 @@ Harry D has given me information on all historic storms and all sites in WMD wit
 * Haven't deployed as an app yet
 * Peak Table All uses sites of interest so because Bidford isn't on there it doesn't return all the results so just looking at df for now
 * Started playing about with peak finding algorithms. Current one is too sensitive
-* Added Tamworth to the list
+* Added Tamworth, Gloucester, Bidford to the list
 * Can assign storm name based on if the peak date is within the start and end date of the storm.
 * Made a plot to see how many peaks are found during storms or not - could use this to optimise peak settings? Data is currently just using threshold value and defaults
 * Using the threshold dataframe as the height values 
