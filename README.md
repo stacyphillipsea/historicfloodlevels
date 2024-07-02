@@ -32,7 +32,8 @@ Harry D has given me information on all historic storms and all sites in WMD wit
 * Started playing about with peak finding algorithms. Current one is too sensitive
 * Added Tamworth to the list
 * Can assign storm name based on if the peak date is within the start and end date of the storm.
-* Made a plot to see how manypeaks are found during storms or not - could use this to optimise peak settings? Data is currently just using threshold value and defaults
+* Made a plot to see how many peaks are found during storms or not - could use this to optimise peak settings? Data is currently just using threshold value and defaults
+* Using the threshold dataframe as the height values 
 
 
 ## Things to remember to run in VSCODE

@@ -2,8 +2,9 @@
 # Trying to find a way to identify peak automatically
 # Original code from https://medium.com/@chrisjpulliam/quickly-finding-peaks-in-mass-spectrometry-data-using-scipy-fcf3999c5057
 ######
-from scipy.signal import find_peaks
+from scipy.signal import find_peaks, find_peaks_cwt
 import pandas as pd
+import numpy as np
 import matplotlib.pyplot as plt
 import json
 from io import StringIO
@@ -29,7 +30,9 @@ def load_station_data_from_json(file_path):
         print(f"File {file_path} not found.")
         return None
 
-def identify_peaks_for_site(site_data, site_name):
+# Function to do peak analysis
+# Include the threshold dataframe made in historicfloodlevels.py
+def identify_peaks_for_site(site_data, site_name, thresholds_values):
     # Initial plot setup
     fig = go.FigureWidget()
     fig.add_trace(go.Scatter(x=site_data['dateTime'], y=site_data['value'], mode='lines', name='River levels'))
@@ -44,9 +47,16 @@ def identify_peaks_for_site(site_data, site_name):
         yaxis_title='Level (m)'
     )
 
+    # Retrieve the threshold value for the given site name
+    try:
+        threshold_value = thresholds_values.loc[thresholds_values['Gauge'] == site_name, 'Threshold'].values[0]
+    except IndexError:
+        print(f"No threshold found for {site_name}. Using default height value.")
+        threshold_value = 1.0
+
     # Function to update peaks
-    def update_peaks(prominence, height, distance):
-        peak_idx, _ = find_peaks(site_data['value'], prominence=prominence, height=height, distance=distance)
+    def update_peaks(prominence, distance):
+        peak_idx, _ = find_peaks(site_data['value'], prominence=prominence, height=threshold_value, distance=distance)
         peak_dates = site_data['dateTime'].iloc[peak_idx]
         peak_values = site_data['value'].iloc[peak_idx]
         with fig.batch_update():
@@ -55,15 +65,14 @@ def identify_peaks_for_site(site_data, site_name):
 
     # Create sliders
     prominence_slider = FloatSlider(value=0.4, min=0.1, max=2.0, step=0.1, description='Prominence')
-    height_slider = FloatSlider(value=1, min=0, max=5, step=0.1, description='Height')
     distance_slider = IntSlider(value=1, min=1, max=10, step=1, description='Distance')
 
     # Link sliders to the update function
-    interact(update_peaks, prominence=prominence_slider, height=height_slider, distance=distance_slider)
+    interact(update_peaks, prominence=prominence_slider, distance=distance_slider)
 
     # Function to extract peaks and display DataFrame
     def extract_peaks(b, site_name):
-        peak_idx, _ = find_peaks(site_data['value'], prominence=prominence_slider.value, height=height_slider.value, distance=distance_slider.value)
+        peak_idx, _ = find_peaks(site_data['value'], prominence=prominence_slider.value, height=threshold_value, distance=distance_slider.value)
         peak_dates = site_data['dateTime'].iloc[peak_idx]
         peak_values = site_data['value'].iloc[peak_idx]
         peaks_df_name = f"peak_df_{site_name.replace(' ', '')}"
@@ -87,19 +96,19 @@ data_dict = load_station_data_from_json(file_path)
 # Choose site name
 site_name = 'Diglis'
 # Call the function to identify peaks for the selected site
-identify_peaks_for_site(data_dict[site_name]['date_values'], site_name)
-
+identify_peaks_for_site(data_dict[site_name]['date_values'], site_name, threshold_values)
 
 
 # Choose site name
 site_name = 'Hereford Bridge'
 # Call the function to identify peaks for the selected site
-identify_peaks_for_site(data_dict[site_name]['date_values'], site_name)
+identify_peaks_for_site(data_dict[site_name]['date_values'], site_name, threshold_values)
+
 
 # Choose site name
 site_name = 'Welsh Bridge'
 # Call the function to identify peaks for the selected site
-identify_peaks_for_site(data_dict[site_name]['date_values'], site_name)
+identify_peaks_for_site(data_dict[site_name]['date_values'], site_name, threshold_values)
 
 
 
