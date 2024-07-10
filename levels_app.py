@@ -13,6 +13,8 @@ import os                                   # For filepath operations
 # from pptx.util import Pt, Inches
 import folium               # For map
 from io import StringIO     # To loadd JSON to dataframe
+import geopandas as gpd
+from shapely.geometry import Point
 
 ### GET YOUR DATA BITS
 # Define key constants
@@ -479,6 +481,50 @@ def create_map(data_dict, selected_station=None):
     return map_html
 
 
+
+#### Seeing if stations are in SHWG or SWWM
+def assign_regions_to_stations(data_dict, shapefile_path):
+    # Step 1: Prepare GeoDataFrame for Stations
+    stations = []
+    for station_name, info in data_dict.items():
+        if 'lat' in info and 'long' in info:
+            stations.append({
+                'StationName': station_name,
+                'geometry': Point(info['long'], info['lat'])  # Assuming 'lat' and 'long' are keys in your data_dict
+            })
+
+    gdf_stations = gpd.GeoDataFrame(stations, geometry='geometry')
+
+    # Assign CRS to gdf_stations if it's missing (assuming lat-long coordinates are in EPSG:4326)
+    if gdf_stations.crs is None:
+        gdf_stations.crs = 'EPSG:4326'
+
+    # Step 2: Load Shapefile with Polygons
+    gdf_polygons = gpd.read_file(shapefile_path)
+
+    # Step 3: Reproject gdf_polygons if necessary to match CRS of gdf_stations
+    if gdf_polygons.crs != gdf_stations.crs:
+        gdf_polygons = gdf_polygons.to_crs(gdf_stations.crs)
+
+    # Step 4: Perform Spatial Join
+    stations_with_regions = gpd.sjoin(gdf_stations, gdf_polygons, how='left')
+
+    # Step 5: Update data_dict with Region Information
+    for index, station in stations_with_regions.iterrows():
+        station_name = station['StationName']
+        region = station['Region']  # Assuming 'Region' is the attribute in your shapefile polygons
+        data_dict[station_name]['Region'] = region
+    
+    return data_dict
+
+# Example usage:
+shapefile_path = 'WMD_SHWG_SWWM.shp'  # Replace with the path to your shapefile
+
+data_dict = assign_regions_to_stations(data_dict, shapefile_path)
+
+
+
+
 ### FUNCTION TO MAKE DICTIONARY OFFLINE AND THEN LOAD
 
 # def fetch_and_save_all_station_data():
@@ -516,11 +562,12 @@ def process_csv_to_dict(csv_file, location_name):
 
     # Extract the necessary columns from DataFrame
     date_values_df = df[['dateTime', 'Value']].rename(columns={'Value': 'value'})
+    print(date_values_df.dtypes)
 
     # Update the corresponding part of data_dict (assuming data_dict is a global variable)
     global data_dict
     if location_name in data_dict:
-        data_dict[location_name]["date_values"] = date_values_df.to_dict('records')
+        data_dict[location_name]["date_values"] = date_values_df
         print(f"Data updated manually for {location_name}")
     else:
         print(f"Location '{location_name}' not found in data_dict.")
