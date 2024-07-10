@@ -78,6 +78,7 @@ I have already done loads of work on this before using Git Hub, so earlier versi
 * Corrected date of Elin & Fergus peak from 9th Nov to 9th Dec: 158 records change their peak times and dates as a result
 * Updated the data_dict with the Ross on Wye data from MTS
 * Turned this into a function so could be used elsewhere
+* Added spatial search to see if in SHWG or SWWM
 
 
 ## Things to remember to run in VSCODE
