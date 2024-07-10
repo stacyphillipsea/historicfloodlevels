@@ -25,7 +25,7 @@ MAX_DATE = datetime.strptime(MAX_DATE_STR, '%Y-%m-%d')
 DATE_FILTERS = {
     'Babet': ('2023-10-18', '2023-10-31', 'red'),
     'Ciaran': ('2023-11-01', '2023-11-08', 'blue'),
-    'Elin & Fergus': ('2023-11-09', '2023-12-17', 'black'),
+    'Elin & Fergus': ('2023-12-09', '2023-12-17', 'black'),
     'Gerrit': ('2023-12-26', '2024-01-02', 'pink'),
     'Henk': ('2024-01-02', '2024-01-11', 'green'),
     'Isha & Jocelyn': ('2024-01-21', '2024-01-27', 'orange'),
