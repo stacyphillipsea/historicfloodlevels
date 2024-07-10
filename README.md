@@ -72,6 +72,10 @@ I have already done loads of work on this before using Git Hub, so earlier versi
 * Created a processed and unprocessed ids list to help with data loading
 * Tidied up print statements to help identify sites that don't have data
 
+## Updates 10/07/2024
+* Changed deployment code to work with Python 10 (updated Python 12 won't deploy to Posit currently)
+* Corrected date of Elin & Fergus peak from 9th Nov to 9th Dec: 158 records change their peak times and dates as a result
+
 ## Things to remember to run in VSCODE
 * rsconnect deploy dash . -n LevelsApp --entrypoint levels_app:app 
 * pip freeze > requirements.txt
