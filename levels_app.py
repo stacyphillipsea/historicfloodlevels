@@ -506,24 +506,26 @@ if data_dict:
 else:
     print("Error loading data.")
 
-### Make a local patch to the Ross on Wye data using a csv created from MTS data
-# Import csv data
-ross_on_wye_MTS = pd.read_csv('Ross_on_Wye_Winter2324.csv')
+### Uploading specific datasets where it is missing in the open data (it might be in MTS instead)
+def process_csv_to_dict(csv_file, location_name):
+    # Import csv data
+    df = pd.read_csv(csv_file)
 
-# Convert 'Time/Date' to datetime objects
-ross_on_wye_MTS['Time/Date'] = pd.to_datetime(ross_on_wye_MTS['Time/Date'], format='%d/%m/%Y %H:%M')
+    # Convert 'Time/Date' to datetime objects directly
+    df['dateTime'] = pd.to_datetime(df['Time/Date'], format='%d/%m/%Y %H:%M')
 
-# Convert datetime to timestamp in milliseconds
-ross_on_wye_MTS['dateTime'] = ross_on_wye_MTS['Time/Date'].apply(lambda x: x.isoformat() + 'Z')
+    # Extract the necessary columns from DataFrame
+    date_values_df = df[['dateTime', 'Value']].rename(columns={'Value': 'value'})
 
-# Extract the necessary columns from DataFrame
-date_values_df = ross_on_wye_MTS[['dateTime', 'Value']].rename(columns={'Value': 'value'})
+    # Update the corresponding part of data_dict (assuming data_dict is a global variable)
+    global data_dict
+    if location_name in data_dict:
+        data_dict[location_name]["date_values"] = date_values_df.to_dict('records')
+        print(f"Data updated manually for {location_name}")
+    else:
+        print(f"Location '{location_name}' not found in data_dict.")
 
-data_dict["Ross On Wye"]["date_values"] = date_values_df
-
-data_dict['Ross On Wye']
-
-
+process_csv_to_dict('Ross_on_Wye_Winter2324.csv', "Ross On Wye")
 
 
 # Find and store maximum values for all stations
