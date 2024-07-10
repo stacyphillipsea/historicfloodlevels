@@ -74,7 +74,10 @@ I have already done loads of work on this before using Git Hub, so earlier versi
 
 ## Updates 10/07/2024
 * Changed deployment code to work with Python 10 (updated Python 12 won't deploy to Posit currently)
+* Made a local environment in which to run 310
 * Corrected date of Elin & Fergus peak from 9th Nov to 9th Dec: 158 records change their peak times and dates as a result
+* Updated the data_dict with the Ross on Wye data from MTS
+
 
 ## Things to remember to run in VSCODE
 * rsconnect deploy dash . -n LevelsApp --entrypoint levels_app:app 

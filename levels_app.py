@@ -506,6 +506,26 @@ if data_dict:
 else:
     print("Error loading data.")
 
+### Make a local patch to the Ross on Wye data using a csv created from MTS data
+# Import csv data
+ross_on_wye_MTS = pd.read_csv('Ross_on_Wye_Winter2324.csv')
+
+# Convert 'Time/Date' to datetime objects
+ross_on_wye_MTS['Time/Date'] = pd.to_datetime(ross_on_wye_MTS['Time/Date'], format='%d/%m/%Y %H:%M')
+
+# Convert datetime to timestamp in milliseconds
+ross_on_wye_MTS['dateTime'] = ross_on_wye_MTS['Time/Date'].apply(lambda x: x.isoformat() + 'Z')
+
+# Extract the necessary columns from DataFrame
+date_values_df = ross_on_wye_MTS[['dateTime', 'Value']].rename(columns={'Value': 'value'})
+
+data_dict["Ross On Wye"]["date_values"] = date_values_df
+
+data_dict['Ross On Wye']
+
+
+
+
 # Find and store maximum values for all stations
 max_values = find_and_store_max_values(data_dict)
 
