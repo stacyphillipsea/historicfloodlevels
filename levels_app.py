@@ -82,6 +82,7 @@ def fetch_station_data(wiski_id):
         station = data['items'][0]
         label_field = station.get('label')
         name = str(label_field[1] if isinstance(label_field, list) else label_field)
+        wiski_id = {wiski_id}
         river_name = station.get('riverName')
         river_name = river_name[0] if isinstance(river_name, list) else river_name
         latitude = station.get('lat')
@@ -480,9 +481,7 @@ def create_map(data_dict, selected_station=None):
 
     return map_html
 
-
-
-#### Seeing if stations are in SHWG or SWWM
+# Seeing if stations are in SHWG or SWWM
 def assign_regions_to_stations(data_dict, shapefile_path):
     # Step 1: Prepare GeoDataFrame for Stations
     stations = []
@@ -516,13 +515,6 @@ def assign_regions_to_stations(data_dict, shapefile_path):
         data_dict[station_name]['Region'] = region
     
     return data_dict
-
-# Example usage:
-shapefile_path = 'WMD_SHWG_SWWM.shp'  # Replace with the path to your shapefile
-
-data_dict = assign_regions_to_stations(data_dict, shapefile_path)
-
-
 
 
 ### FUNCTION TO MAKE DICTIONARY OFFLINE AND THEN LOAD
@@ -573,6 +565,10 @@ def process_csv_to_dict(csv_file, location_name):
         print(f"Location '{location_name}' not found in data_dict.")
 
 process_csv_to_dict('Ross_on_Wye_Winter2324.csv', "Ross On Wye")
+
+# Adding SHWG SWWM info
+shapefile_path = 'WMD_SHWG_SWWM.shp'  # Replace with the path to your shapefile
+data_dict = assign_regions_to_stations(data_dict, shapefile_path)
 
 
 # Find and store maximum values for all stations
