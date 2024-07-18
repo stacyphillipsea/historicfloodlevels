@@ -3,8 +3,9 @@
 # Original code from https://medium.com/@chrisjpulliam/quickly-finding-peaks-in-mass-spectrometry-data-using-scipy-fcf3999c5057
 ######
 from scipy.signal import find_peaks, find_peaks_cwt
-import pandas as pd
-import numpy as np
+import pandas as pd 
+import numpy as np, datetime
+from datetime import datetime, timedelta
 import matplotlib.pyplot as plt
 import json
 from io import StringIO
@@ -166,28 +167,25 @@ identify_peaks_for_site(data_dict[site_name]['date_values'], site_name, threshol
 # Choose site name
 site_name = 'Hereford Bridge'
 # Call the function to identify peaks for the selected site
-identify_peaks_for_site_manual(data_dict[site_name]['date_values'], site_name, threshold_values)
+identify_peaks_for_site(data_dict[site_name]['date_values'], site_name, threshold_values)
 
 
 # Choose site name
 site_name = 'Welsh Bridge'
 # Call the function to identify peaks for the selected site
-identify_peaks_for_site_manual(data_dict[site_name]['date_values'], site_name, threshold_values)
+identify_peaks_for_site(data_dict[site_name]['date_values'], site_name, threshold_values)
+
+
+# Choose site name
+site_name = 'Tamworth'
+# Call the function to identify peaks for the selected site
+identify_peaks_for_site(data_dict[site_name]['date_values'], site_name, threshold_values)
 
 
 
 
 
-
-
-
-
-
-
-
-
-
-
+## Binning plots into 2 week intervals to try and see if the same events were being picked up
 # # Plot the peak river levels
 # fig = px.scatter(all_peaks_df, x='Peak Date', y='Peak Value', color='Site', 
 #                  title='Peak River Levels by Site')
@@ -220,6 +218,7 @@ all_peaks_df = pd.concat([peak_df_HerefordBridge.assign(Site='Hereford Bridge'),
                           peak_df_Tamworth.assign(Site='Tamworth')])
 
 all_peaks_df['Peak Date'] = pd.to_datetime(all_peaks_df['Peak Date'])
+#all_peaks_df = peak_df_HawBridge.assign(Site='Haw Bridge')
 
 # Creating storm lists
 storms = pd.read_excel('Met Office named storms.xlsx')
@@ -284,6 +283,9 @@ fig.update_layout(
 fig.show()
 
 
+
+
+# Making the plot so it is in subplots for all available sites
 from plotly.subplots import make_subplots
 
 # Number of unique sites

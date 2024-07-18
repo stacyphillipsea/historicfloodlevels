@@ -62,3 +62,87 @@
 2024-07-02 09:39:57,248 - INFO - Successful stations: {'2077': 'Welsh Bridge', '2085': 'Diglis', '055807': 'Hereford Bridge', '4069': 'Tamworth', '2165': 'Gloucester'}
 2024-07-02 09:39:57,814 - INFO - Successful station fetched: Gloucester (2165)
 2024-07-02 09:39:57,815 - INFO - Successful stations: {'2077': 'Welsh Bridge', '2085': 'Diglis', '055807': 'Hereford Bridge', '4069': 'Tamworth', '2165': 'Gloucester'}
+2024-07-02 11:32:46,003 - INFO - Successful station fetched: Welsh Bridge (2077)
+2024-07-02 11:32:46,004 - INFO - Successful stations: {'2077': 'Welsh Bridge'}
+2024-07-02 11:32:46,869 - INFO - Successful station fetched: Diglis (2085)
+2024-07-02 11:32:46,870 - INFO - Successful stations: {'2077': 'Welsh Bridge', '2085': 'Diglis'}
+2024-07-02 11:32:47,644 - INFO - Successful station fetched: Hereford Bridge (055807)
+2024-07-02 11:32:47,646 - INFO - Successful stations: {'2077': 'Welsh Bridge', '2085': 'Diglis', '055807': 'Hereford Bridge'}
+2024-07-02 11:32:48,716 - INFO - Successful station fetched: Tamworth (4069)
+2024-07-02 11:32:48,717 - INFO - Successful stations: {'2077': 'Welsh Bridge', '2085': 'Diglis', '055807': 'Hereford Bridge', '4069': 'Tamworth'}
+2024-07-02 11:32:49,828 - INFO - Successful station fetched: Gloucester (2165)
+2024-07-02 11:32:49,829 - INFO - Successful stations: {'2077': 'Welsh Bridge', '2085': 'Diglis', '055807': 'Hereford Bridge', '4069': 'Tamworth', '2165': 'Gloucester'}
+2024-07-02 11:32:51,179 - INFO - Successful station fetched: Bidford On Avon (2615)
+2024-07-02 11:32:51,181 - INFO - Successful stations: {'2077': 'Welsh Bridge', '2085': 'Diglis', '055807': 'Hereford Bridge', '4069': 'Tamworth', '2165': 'Gloucester', '2615': 'Bidford On Avon'}
+2024-07-02 11:32:51,766 - INFO - Successful station fetched: Welsh Bridge (2077)
+2024-07-02 11:32:51,767 - INFO - Successful stations: {'2077': 'Welsh Bridge', '2085': 'Diglis', '055807': 'Hereford Bridge', '4069': 'Tamworth', '2165': 'Gloucester', '2615': 'Bidford On Avon'}
+2024-07-02 11:32:53,177 - INFO - Successful station fetched: Diglis (2085)
+2024-07-02 11:32:53,178 - INFO - Successful stations: {'2077': 'Welsh Bridge', '2085': 'Diglis', '055807': 'Hereford Bridge', '4069': 'Tamworth', '2165': 'Gloucester', '2615': 'Bidford On Avon'}
+2024-07-02 11:32:53,818 - INFO - Successful station fetched: Hereford Bridge (055807)
+2024-07-02 11:32:53,820 - INFO - Successful stations: {'2077': 'Welsh Bridge', '2085': 'Diglis', '055807': 'Hereford Bridge', '4069': 'Tamworth', '2165': 'Gloucester', '2615': 'Bidford On Avon'}
+2024-07-02 11:32:54,507 - INFO - Successful station fetched: Tamworth (4069)
+2024-07-02 11:32:54,509 - INFO - Successful stations: {'2077': 'Welsh Bridge', '2085': 'Diglis', '055807': 'Hereford Bridge', '4069': 'Tamworth', '2165': 'Gloucester', '2615': 'Bidford On Avon'}
+2024-07-02 11:32:55,358 - INFO - Successful station fetched: Gloucester (2165)
+2024-07-02 11:32:55,359 - INFO - Successful stations: {'2077': 'Welsh Bridge', '2085': 'Diglis', '055807': 'Hereford Bridge', '4069': 'Tamworth', '2165': 'Gloucester', '2615': 'Bidford On Avon'}
+2024-07-02 11:32:55,941 - INFO - Successful station fetched: Bidford On Avon (2615)
+2024-07-02 11:32:55,943 - INFO - Successful stations: {'2077': 'Welsh Bridge', '2085': 'Diglis', '055807': 'Hereford Bridge', '4069': 'Tamworth', '2165': 'Gloucester', '2615': 'Bidford On Avon'}
+2024-07-02 12:23:19,788 - INFO - Successful station fetched: Welsh Bridge (2077)
+2024-07-02 12:23:19,789 - INFO - Successful stations: {'2077': 'Welsh Bridge'}
+2024-07-02 12:23:20,584 - INFO - Successful station fetched: Diglis (2085)
+2024-07-02 12:23:20,586 - INFO - Successful stations: {'2077': 'Welsh Bridge', '2085': 'Diglis'}
+2024-07-02 12:23:22,017 - INFO - Successful station fetched: Hereford Bridge (055807)
+2024-07-02 12:23:22,018 - INFO - Successful stations: {'2077': 'Welsh Bridge', '2085': 'Diglis', '055807': 'Hereford Bridge'}
+2024-07-02 12:23:22,873 - INFO - Successful station fetched: Tamworth (4069)
+2024-07-02 12:23:22,875 - INFO - Successful stations: {'2077': 'Welsh Bridge', '2085': 'Diglis', '055807': 'Hereford Bridge', '4069': 'Tamworth'}
+2024-07-02 12:23:23,701 - INFO - Successful station fetched: Gloucester (2165)
+2024-07-02 12:23:23,703 - INFO - Successful stations: {'2077': 'Welsh Bridge', '2085': 'Diglis', '055807': 'Hereford Bridge', '4069': 'Tamworth', '2165': 'Gloucester'}
+2024-07-02 12:23:24,789 - INFO - Successful station fetched: Bidford On Avon (2615)
+2024-07-02 12:23:24,791 - INFO - Successful stations: {'2077': 'Welsh Bridge', '2085': 'Diglis', '055807': 'Hereford Bridge', '4069': 'Tamworth', '2165': 'Gloucester', '2615': 'Bidford On Avon'}
+2024-07-02 12:23:26,432 - INFO - Successful station fetched: Doveridge (4078)
+2024-07-02 12:23:26,434 - INFO - Successful stations: {'2077': 'Welsh Bridge', '2085': 'Diglis', '055807': 'Hereford Bridge', '4069': 'Tamworth', '2165': 'Gloucester', '2615': 'Bidford On Avon', '4078': 'Doveridge'}
+2024-07-02 12:23:27,170 - INFO - Successful station fetched: Welsh Bridge (2077)
+2024-07-02 12:23:27,171 - INFO - Successful stations: {'2077': 'Welsh Bridge', '2085': 'Diglis', '055807': 'Hereford Bridge', '4069': 'Tamworth', '2165': 'Gloucester', '2615': 'Bidford On Avon', '4078': 'Doveridge'}
+2024-07-02 12:23:28,032 - INFO - Successful station fetched: Diglis (2085)
+2024-07-02 12:23:28,034 - INFO - Successful stations: {'2077': 'Welsh Bridge', '2085': 'Diglis', '055807': 'Hereford Bridge', '4069': 'Tamworth', '2165': 'Gloucester', '2615': 'Bidford On Avon', '4078': 'Doveridge'}
+2024-07-02 12:23:28,757 - INFO - Successful station fetched: Hereford Bridge (055807)
+2024-07-02 12:23:28,759 - INFO - Successful stations: {'2077': 'Welsh Bridge', '2085': 'Diglis', '055807': 'Hereford Bridge', '4069': 'Tamworth', '2165': 'Gloucester', '2615': 'Bidford On Avon', '4078': 'Doveridge'}
+2024-07-02 12:23:29,763 - INFO - Successful station fetched: Tamworth (4069)
+2024-07-02 12:23:29,765 - INFO - Successful stations: {'2077': 'Welsh Bridge', '2085': 'Diglis', '055807': 'Hereford Bridge', '4069': 'Tamworth', '2165': 'Gloucester', '2615': 'Bidford On Avon', '4078': 'Doveridge'}
+2024-07-02 12:23:30,309 - INFO - Successful station fetched: Gloucester (2165)
+2024-07-02 12:23:30,310 - INFO - Successful stations: {'2077': 'Welsh Bridge', '2085': 'Diglis', '055807': 'Hereford Bridge', '4069': 'Tamworth', '2165': 'Gloucester', '2615': 'Bidford On Avon', '4078': 'Doveridge'}
+2024-07-02 12:23:30,717 - INFO - Successful station fetched: Bidford On Avon (2615)
+2024-07-02 12:23:30,718 - INFO - Successful stations: {'2077': 'Welsh Bridge', '2085': 'Diglis', '055807': 'Hereford Bridge', '4069': 'Tamworth', '2165': 'Gloucester', '2615': 'Bidford On Avon', '4078': 'Doveridge'}
+2024-07-02 12:23:32,332 - INFO - Successful station fetched: Doveridge (4078)
+2024-07-02 12:23:32,333 - INFO - Successful stations: {'2077': 'Welsh Bridge', '2085': 'Diglis', '055807': 'Hereford Bridge', '4069': 'Tamworth', '2165': 'Gloucester', '2615': 'Bidford On Avon', '4078': 'Doveridge'}
+2024-07-03 16:00:23,376 - INFO - Successful station fetched: Welsh Bridge (2077)
+2024-07-03 16:00:23,406 - INFO - Successful stations: {'2077': 'Welsh Bridge'}
+2024-07-03 16:00:25,359 - INFO - Successful station fetched: Diglis (2085)
+2024-07-03 16:00:25,361 - INFO - Successful stations: {'2077': 'Welsh Bridge', '2085': 'Diglis'}
+2024-07-03 16:00:27,609 - INFO - Successful station fetched: Hereford Bridge (055807)
+2024-07-03 16:00:27,610 - INFO - Successful stations: {'2077': 'Welsh Bridge', '2085': 'Diglis', '055807': 'Hereford Bridge'}
+2024-07-03 16:00:28,964 - INFO - Successful station fetched: Tamworth (4069)
+2024-07-03 16:00:28,966 - INFO - Successful stations: {'2077': 'Welsh Bridge', '2085': 'Diglis', '055807': 'Hereford Bridge', '4069': 'Tamworth'}
+2024-07-03 16:00:30,890 - INFO - Successful station fetched: Gloucester (2165)
+2024-07-03 16:00:30,892 - INFO - Successful stations: {'2077': 'Welsh Bridge', '2085': 'Diglis', '055807': 'Hereford Bridge', '4069': 'Tamworth', '2165': 'Gloucester'}
+2024-07-03 16:00:32,672 - INFO - Successful station fetched: Bidford On Avon (2615)
+2024-07-03 16:00:32,673 - INFO - Successful stations: {'2077': 'Welsh Bridge', '2085': 'Diglis', '055807': 'Hereford Bridge', '4069': 'Tamworth', '2165': 'Gloucester', '2615': 'Bidford On Avon'}
+2024-07-03 16:00:34,747 - INFO - Successful station fetched: Doveridge (4078)
+2024-07-03 16:00:34,749 - INFO - Successful stations: {'2077': 'Welsh Bridge', '2085': 'Diglis', '055807': 'Hereford Bridge', '4069': 'Tamworth', '2165': 'Gloucester', '2615': 'Bidford On Avon', '4078': 'Doveridge'}
+2024-07-03 16:00:37,323 - INFO - Successful station fetched: Haw Bridge (2057)
+2024-07-03 16:00:37,325 - INFO - Successful stations: {'2077': 'Welsh Bridge', '2085': 'Diglis', '055807': 'Hereford Bridge', '4069': 'Tamworth', '2165': 'Gloucester', '2615': 'Bidford On Avon', '4078': 'Doveridge', '2057': 'Haw Bridge'}
+2024-07-03 16:00:37,955 - INFO - Successful station fetched: Welsh Bridge (2077)
+2024-07-03 16:00:37,956 - INFO - Successful stations: {'2077': 'Welsh Bridge', '2085': 'Diglis', '055807': 'Hereford Bridge', '4069': 'Tamworth', '2165': 'Gloucester', '2615': 'Bidford On Avon', '4078': 'Doveridge', '2057': 'Haw Bridge'}
+2024-07-03 16:00:39,843 - INFO - Successful station fetched: Diglis (2085)
+2024-07-03 16:00:39,845 - INFO - Successful stations: {'2077': 'Welsh Bridge', '2085': 'Diglis', '055807': 'Hereford Bridge', '4069': 'Tamworth', '2165': 'Gloucester', '2615': 'Bidford On Avon', '4078': 'Doveridge', '2057': 'Haw Bridge'}
+2024-07-03 16:00:40,955 - INFO - Successful station fetched: Hereford Bridge (055807)
+2024-07-03 16:00:40,957 - INFO - Successful stations: {'2077': 'Welsh Bridge', '2085': 'Diglis', '055807': 'Hereford Bridge', '4069': 'Tamworth', '2165': 'Gloucester', '2615': 'Bidford On Avon', '4078': 'Doveridge', '2057': 'Haw Bridge'}
+2024-07-03 16:00:42,423 - INFO - Successful station fetched: Tamworth (4069)
+2024-07-03 16:00:42,424 - INFO - Successful stations: {'2077': 'Welsh Bridge', '2085': 'Diglis', '055807': 'Hereford Bridge', '4069': 'Tamworth', '2165': 'Gloucester', '2615': 'Bidford On Avon', '4078': 'Doveridge', '2057': 'Haw Bridge'}
+2024-07-03 16:00:43,000 - INFO - Successful station fetched: Gloucester (2165)
+2024-07-03 16:00:43,002 - INFO - Successful stations: {'2077': 'Welsh Bridge', '2085': 'Diglis', '055807': 'Hereford Bridge', '4069': 'Tamworth', '2165': 'Gloucester', '2615': 'Bidford On Avon', '4078': 'Doveridge', '2057': 'Haw Bridge'}
+2024-07-03 16:00:43,943 - INFO - Successful station fetched: Bidford On Avon (2615)
+2024-07-03 16:00:43,944 - INFO - Successful stations: {'2077': 'Welsh Bridge', '2085': 'Diglis', '055807': 'Hereford Bridge', '4069': 'Tamworth', '2165': 'Gloucester', '2615': 'Bidford On Avon', '4078': 'Doveridge', '2057': 'Haw Bridge'}
+2024-07-03 16:00:44,473 - INFO - Successful station fetched: Doveridge (4078)
+2024-07-03 16:00:44,475 - INFO - Successful stations: {'2077': 'Welsh Bridge', '2085': 'Diglis', '055807': 'Hereford Bridge', '4069': 'Tamworth', '2165': 'Gloucester', '2615': 'Bidford On Avon', '4078': 'Doveridge', '2057': 'Haw Bridge'}
+2024-07-03 16:00:45,847 - INFO - Successful station fetched: Haw Bridge (2057)
+2024-07-03 16:00:45,848 - INFO - Successful stations: {'2077': 'Welsh Bridge', '2085': 'Diglis', '055807': 'Hereford Bridge', '4069': 'Tamworth', '2165': 'Gloucester', '2615': 'Bidford On Avon', '4078': 'Doveridge', '2057': 'Haw Bridge'}
