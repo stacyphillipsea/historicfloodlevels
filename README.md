@@ -19,7 +19,8 @@ Harry D has given me information on all historic storms and all sites in WMD wit
 * Can assign storm name based on if the peak date is within the start and end date of the storm.
 * Made a plot to see how many peaks are found during storms or not - could use this to optimise peak settings? Data is currently just using threshold value and defaults
 * Using the threshold dataframe as the height values 
-* Settings for prominence and distance will need to be different for SHWG and SWWM because of how the hydrographs vary
+* Removed one data spike from Tamworth
+* Settings for prominence and distance will need to be different for SHWG and SWWM because of how the hydrographs vary - settings do not pick up any peaks for Tamworth
 
 ## Things that could be improved
 * Haven't touched any of the visualisations yet

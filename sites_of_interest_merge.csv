@@ -36,7 +36,7 @@ Order,Region,River,Gauge,Site type,Site sub-type,Site number,Site status,Nationa
 36,SWWM,Trent,Great Haywood,Surface water sites,Surface water level (including tide and lake level) - continuous,4006,open,SJ9936023090,null
 37,SWWM,Trent,Yoxall,Surface water sites,River flow - continuous,4012,open,SK1321017720,null
 38,SWWM,Trent,Drakelow,Surface water sites,River flow - continuous,4019,open,SK2391020390,null
-39,SWWM,Tame,Tamworth,Surface water sites,Surface water level (including tide and lake level) - continuous,4069,open,SK2058003760,null
+39,SWWM,Tame,Tamworth,Surface water sites,Surface water level (including tide and lake level) - continuous,4069,open,SK2058003760,1.8
 40,SWWM,Rea,Calthorpe Park,Surface water sites,River flow - continuous,4039,open,SP0707084710,null
 41,SWWM,Cole,Coleshill,Surface water sites,River flow - continuous,4066,open,SP1817087360,null
 42,SWWM,Tame,Bescot,Surface water sites,River flow - continuous,4081,open,SP0140095690,null

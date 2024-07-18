@@ -153,9 +153,20 @@ def identify_peaks_for_site(site_data, site_name, thresholds_values):
         print(f"At {site_name} there have been {num_peaks} peak levels above {threshold_value}m between {min_peak_date} and {max_peak_date}")
 
 
+
+
 # Load station data
 file_path = "historic_nested_dict.json"
 data_dict = load_station_data_from_json(file_path)
+
+
+# Erroneous peak identified in daily data for Tamworth.
+# Change it before running the identify peaks
+# Set the condition for the specific date
+condition = data_dict['Tamworth']['date_values']['dateTime'] == '2002-03-14 14:45:00'
+
+# Change 'Peak Value' to 1 where the condition is True
+data_dict['Tamworth']['date_values'].loc[condition, 'value'] = 1
 
 
 # Choose site name
