@@ -93,69 +93,131 @@ BASE_STATIONS_URL = "http://environment.data.gov.uk/hydrology/id/stations"
 
 successful_stations = {}  # Dictionary to store successful WISKI IDs and station names
 
+import requests
+import json
+import pandas as pd
+from datetime import datetime
+
+# Define key constants
+BASE_URL = "http://environment.data.gov.uk/hydrology/id"
+BASE_STATIONS_URL = "http://environment.data.gov.uk/hydrology/id/stations"
+MAX_DATE_STR = "2024-02-29"
+MAX_DATE = datetime.strptime(MAX_DATE_STR, '%Y-%m-%d')
+
+# Initialize a dictionary to track successful stations
+successful_stations = {}
+
+def convert_eaAreaName(ea_area_name):
+    if ea_area_name == "Midlands - Staffordshire Warwickshire and West Midlands":
+        return "SWWM"
+    elif ea_area_name == "Midlands - Shropshire Herefordshire Worcestershire and Gloucestershire":
+        return "SHWG"
+    else:
+        return "Not in WMD"
+
+def fetch_json(url):
+    """Helper function to fetch and load JSON data from a URL."""
+    response = requests.get(url)
+    response.raise_for_status()
+    return response.json()
+
+def extract_same_as_url(item_data):
+    """Extract 'sameAs' URL from item_data."""
+    items = item_data.get('items', {})
+    if isinstance(items, dict):
+        return items.get('sameAs', {}).get('@id')
+    elif isinstance(items, list) and items:
+        return items[0].get('sameAs', {}).get('@id')
+    return None
+
+def extract_stage_scale_data(same_as_data):
+    """Extract stage scale data including 'typicalRangeHigh' and 'typicalRangeLow'."""
+    stage_scale = same_as_data.get('items', {}).get('stageScale', {})
+    ea_area_name = same_as_data.get('items', {}).get('eaAreaName')
+
+    return {
+        'typical_range_high': stage_scale.get('typicalRangeHigh'),
+        'typical_range_low': stage_scale.get('typicalRangeLow'),
+        'catchment': same_as_data.get('items', {}).get('catchmentName'),
+        'eaAreaName': convert_eaAreaName(ea_area_name),
+        'eaRegionName': same_as_data.get('items', {}).get('eaRegionName')
+    }
+
 def fetch_station_data(wiski_id):
     try:
+        # Fetch the initial station data
         url_endpoint = f"{BASE_STATIONS_URL}?wiskiID={wiski_id}"
-        response = requests.get(url_endpoint)
-        response.raise_for_status()
-        data = json.loads(response.content)
-        
-        if 'items' in data and data['items']:
-            label_field = data['items'][0].get('label')
-            name = str(label_field[1] if isinstance(label_field, list) else label_field)
-            river_name = data['items'][0].get('riverName')
-            latitude = data['items'][0].get('lat')
-            longitude = data['items'][0].get('long')
-            dateOpened_str = data['items'][0].get('dateOpened')
-            
-            # Check if dateOpened_str is None and set it to "01/01/2000" if it is
-            if dateOpened_str is None:
-                dateOpened_str = "01/01/2000"
-                logger.info("No stationOpened date found. Default to 01/01/2000")
-                print("No stationOpened date found. Default to 01/01/2000")
-            
-            measure_url = f"{BASE_URL}/measures?station.wiskiID={wiski_id}&observedProperty=waterLevel&periodName=daily&valueType=max"
-            response = requests.get(measure_url)
-            response.raise_for_status()
-            measure = json.loads(response.content)
-            
-            if 'items' in measure and measure['items']:
-                measure_id = measure['items'][0]['@id']
-                readings_url = f"{measure_id}/readings?mineq-date={dateOpened_str}&maxeq-date={MAX_DATE_STR}"
-                response = requests.get(readings_url)
-                response.raise_for_status()
-                readings = json.loads(response.content)
-                readings_items = readings.get('items', [])
-                
-                if readings_items:
-                    df = pd.DataFrame.from_dict(readings_items)
-                    df['dateTime'] = pd.to_datetime(df['dateTime'])
-                    successful_stations[wiski_id] = name  # Add successful WISKI ID and name to the dictionary
-                    logger.info(f"Successful station fetched: {name} ({wiski_id})")
-                    return {
-                        'name': name,
-                        'date_values': df[['dateTime', 'value']],
-                        'river_name': river_name,
-                        'lat': latitude,
-                        'long': longitude
-                    }
-                else:
-                    logger.info(f"No readings found for {name} ({wiski_id})")
-                    print(f"No readings found for {name} ({wiski_id})")
-            else:
-                logger.info(f"No measure items found for WISKI ID {wiski_id}")
-                print(f"No measure items found for WISKI ID {wiski_id}")
-        else:
-            logger.info(f"No station items found for WISKI ID {wiski_id}")
+        data = fetch_json(url_endpoint)
+
+        if not data.get('items'):
             print(f"No station items found for WISKI ID {wiski_id}")
+            return None
+
+        item = data['items'][0]
+        item_id_url = item.get('@id')
+
+        # Fetch data from item_id URL to get 'sameAs'
+        item_data = fetch_json(item_id_url)
+        same_as_url = extract_same_as_url(item_data)
+        
+        if same_as_url:
+            same_as_data = fetch_json(same_as_url)
+            stage_scale_data = extract_stage_scale_data(same_as_data)
+            typical_range_high = stage_scale_data['typical_range_high']
+            typical_range_low = stage_scale_data['typical_range_low']
+            print(f"Stage Scale Data: {stage_scale_data}")
+        else:
+            print("No 'sameAs' URL found")
+            typical_range_high = typical_range_low = None
+            stage_scale_data = {}
+
+        # Extract basic details
+        label_field = item.get('label')
+        name = str(label_field[1] if isinstance(label_field, list) else label_field)
+        river_name = item.get('riverName')
+        latitude = item.get('lat')
+        longitude = item.get('long')
+        dateOpened_str = item.get('dateOpened') or "01/01/2000"
+
+        # Fetch measures and readings data
+        measure_url = f"{BASE_URL}/measures?station.wiskiID={wiski_id}&observedProperty=waterLevel&periodName=daily&valueType=max"
+        measure = fetch_json(measure_url)
+
+        if not measure.get('items'):
+            print(f"No measure items found for WISKI ID {wiski_id}")
+            return None
+
+        measure_id = measure['items'][0]['@id']
+        readings_url = f"{measure_id}/readings?mineq-date={dateOpened_str}&maxeq-date={MAX_DATE_STR}"
+        readings = fetch_json(readings_url)
+        readings_items = readings.get('items', [])
+
+        if readings_items:
+            df = pd.DataFrame.from_dict(readings_items)
+            df['dateTime'] = pd.to_datetime(df['dateTime'])
+            successful_stations[wiski_id] = name  # Add successful WISKI ID and name to the dictionary
+            print(f"Successful station fetched: {name} ({wiski_id})")
+            return {
+                'name': name,
+                'date_values': df[['dateTime', 'value']],
+                'river_name': river_name,
+                'lat': latitude,
+                'long': longitude,
+                **stage_scale_data,
+                'dateOpened_str': dateOpened_str,
+                'threshold': typical_range_high
+            }
+        else:
+            print(f"No readings found for {name} ({wiski_id})")
+            return None
+
     except requests.exceptions.RequestException as e:
-        logger.error(f"Error fetching data for WISKI ID {wiski_id}: {e}")
         print(f"Error fetching data for WISKI ID {wiski_id}: {e}")
     finally:
-        # Log the dictionary of successful WISKI IDs and station names at the end of the function
-        logger.info(f"Successful stations: {successful_stations}")
+        # Print the dictionary of successful WISKI IDs and station names at the end of the function
         print(f"Successful stations: {successful_stations}")
     return None
+
 
 # Fetch data for all stations
 def fetch_all_station_data():

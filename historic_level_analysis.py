@@ -22,29 +22,30 @@ sites_of_interest_merge = pd.read_csv('sites_of_interest_merge.csv')
 file_path = "historic_nested_dict.json"
 
 #### Changed the approach and have now nested the thresholds within the data_dict
-# Get thresholds and create a combined dictionary
-def load_combined_data(file_path, sites_of_interest_merge):
-    try:
-        # Load data from JSON file
-        with open(file_path, "r") as json_file:
-            data_dict = json.load(json_file)
+### DON'T NEED THIS NOW I HAVE IT ALL IN ONE DICTIONARY ALREADY
+# # Get thresholds and create a combined dictionary
+# def load_combined_data(file_path, sites_of_interest_merge):
+#     try:
+#         # Load data from JSON file
+#         with open(file_path, "r") as json_file:
+#             data_dict = json.load(json_file)
         
-        # Convert date_values from JSON strings to DataFrames
-        for station_name, station_data in data_dict.items():
-            station_data['date_values'] = pd.read_json(StringIO(station_data['date_values']), convert_dates=['dateTime'], date_unit='ms')
+#         # Convert date_values from JSON strings to DataFrames
+#         for station_name, station_data in data_dict.items():
+#             station_data['date_values'] = pd.read_json(StringIO(station_data['date_values']), convert_dates=['dateTime'], date_unit='ms')
         
-        # Get thresholds and add to the data_dict
-        threshold_values = sites_of_interest_merge[sites_of_interest_merge['Threshold'].notnull()]
-        threshold_values.loc[:, 'Threshold'] = threshold_values['Threshold'].astype(float)
-        threshold_dict = threshold_values.set_index('Gauge')['Threshold'].to_dict()
+#         # Get thresholds and add to the data_dict
+#         threshold_values = sites_of_interest_merge[sites_of_interest_merge['Threshold'].notnull()]
+#         threshold_values.loc[:, 'Threshold'] = threshold_values['Threshold'].astype(float)
+#         threshold_dict = threshold_values.set_index('Gauge')['Threshold'].to_dict()
         
-        for station_name in data_dict.keys():
-            data_dict[station_name]['threshold'] = threshold_dict.get(station_name, None)
+#         for station_name in data_dict.keys():
+#             data_dict[station_name]['threshold'] = threshold_dict.get(station_name, None)
         
-        return data_dict
-    except FileNotFoundError:
-        print(f"File {file_path} not found.")
-        return None
+#         return data_dict
+#     except FileNotFoundError:
+#         print(f"File {file_path} not found.")
+#         return None
 
 # Load combined data
 data_dict = load_combined_data(file_path, sites_of_interest_merge)
@@ -67,7 +68,7 @@ def calculate_days_above_threshold(site_name, data_dict):
     
     # Determine the start year (earliest year in the dataset) and end year (current year)
     start_year = df['date'].dt.year.min() + 1
-    end_year = datetime.datetime.now().year - 1
+    end_year = datetime.now().year - 1
     
     results = {}
     for year in range(start_year, end_year + 1):
@@ -184,6 +185,8 @@ for site_name in data_dict.keys():
     else:
         print(f"No data available for site {site_name}.")
 
+
+
 ### Making a heatmap to show this in matrix format for all sites
 ### This doesn't show all the sites, the normalised one below does
 def prepare_heatmap_data(data_dict):
@@ -198,7 +201,7 @@ def prepare_heatmap_data(data_dict):
 
         df['date'] = df['dateTime'].dt.normalize()
         start_year = df['date'].dt.year.min() + 1
-        end_year = datetime.datetime.now().year - 1
+        end_year = datetime.now().year - 1
 
         for year in range(start_year, end_year + 1):
             start_date = pd.Timestamp(year, 10, 1)
@@ -257,7 +260,7 @@ def prepare_heatmap_data(data_dict):
 
         df['date'] = df['dateTime'].dt.normalize()
         start_year = df['date'].dt.year.min() + 1
-        end_year = datetime.datetime.now().year - 1
+        end_year = datetime.now().year - 1
 
         for year in range(start_year, end_year + 1):
             start_date = pd.Timestamp(year, 10, 1)

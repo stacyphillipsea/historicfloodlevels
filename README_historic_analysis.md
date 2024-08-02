@@ -13,8 +13,12 @@ I have started a new Read Me for my analysis, where I am trying to see if there 
 * Heatmap that pivots and shows all sites together with a continuous colour scale
 * Normalised heatmap by the maximum number of days above threshold to allow comparison of sites
 
+* Thresholds now come straight from the API so don't need to combine the datasets
+* Bunch of other metadata brought in with it too
+* Have made a new data import script withthe new approach
+
 ## Things that could be improved
 * Non-normalised heatmap is not showing all sites, normalised one is
-* I now know how to get at the typical high values from the API - TRY THIS!!
+
 
 
