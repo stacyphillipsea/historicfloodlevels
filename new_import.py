@@ -102,27 +102,15 @@ catchment_wiski_ids['severn_uplands_list']
 # Define key constants
 BASE_URL = "http://environment.data.gov.uk/hydrology/id"
 BASE_STATIONS_URL = "http://environment.data.gov.uk/hydrology/id/stations"
-
-#MIN_DATE_STR = "2015-10-01"
 MAX_DATE_STR = "2024-02-29"
-#MIN_DATE = datetime.strptime(MIN_DATE_STR, '%Y-%m-%d')
 MAX_DATE = datetime.strptime(MAX_DATE_STR, '%Y-%m-%d')
 
-
-## Load data
-# Metadata spreadsheet
-sites_of_interest_merge = pd.read_csv('sites_of_interest_merge.csv')
-
-# Historic records
-gaugeboard_data = pd.read_csv('gaugeboard_data.csv')
+# Initialize a dictionary to track successful stations
+successful_stations = {}
 
 # WMD gauge list
-wmd_gauges = pd.read_csv('All_WMD_gauges_FETA.csv')
-WISKI_IDS = wmd_gauges['Site number'].dropna().tolist()
-WISKI_IDS = [f"{name}" for name in WISKI_IDS]
-### SUBSETTING FOR TESTING
-WISKI_IDS = WISKI_IDS[:3]
-WISKI_IDS = catchment_wiski_ids['worcestershire_middle_severn_list'] 
+#WISKI_IDS = catchment_wiski_ids['worcestershire_middle_severn_list'] 
+WISKI_IDS = all_severn_wiski_ids
 
 # MET Office storms
 storms = pd.read_excel('Met Office named storms.xlsx')
@@ -133,12 +121,6 @@ storms['startdate'] = storms['startdate'] - timedelta(days=2)
 storms['enddate'] = storms['enddate'] + timedelta(days=2)
 
 DATE_FILTERS = {row['Name']: (str(row['startdate']), str(row['enddate']), 'blue') for _, row in storms.iterrows()}
-
-
-# Isolate threshold/max values from metadata spreadsheet
-threshold_values = sites_of_interest_merge[sites_of_interest_merge['Threshold'].notnull()]
-threshold_values.loc[:, 'Threshold'] = threshold_values['Threshold'].astype(float) # Ensure original is modified, removing SettingWithCopyWarning
-threshold_dict = threshold_values.set_index('Gauge')['Threshold'].to_dict()
 
 #### SETUP LOGGING
 # Ensure the logs directory exists
@@ -163,30 +145,6 @@ if not logger.handlers:
     # Add handlers to the logger
     logger.addHandler(console_handler)
     logger.addHandler(file_handler)
-
-
-
-
-### MAKE YOUR FUNCTIONS
-# Fetch data for a single station
-BASE_URL = "http://environment.data.gov.uk/hydrology/id"
-BASE_STATIONS_URL = "http://environment.data.gov.uk/hydrology/id/stations"
-
-successful_stations = {}  # Dictionary to store successful WISKI IDs and station names
-
-import requests
-import json
-import pandas as pd
-from datetime import datetime
-
-# Define key constants
-BASE_URL = "http://environment.data.gov.uk/hydrology/id"
-BASE_STATIONS_URL = "http://environment.data.gov.uk/hydrology/id/stations"
-MAX_DATE_STR = "2024-02-29"
-MAX_DATE = datetime.strptime(MAX_DATE_STR, '%Y-%m-%d')
-
-# Initialize a dictionary to track successful stations
-successful_stations = {}
 
 def convert_eaAreaName(ea_area_name):
     if ea_area_name == "Midlands - Staffordshire Warwickshire and West Midlands":
@@ -309,44 +267,52 @@ def fetch_all_station_data():
             data_dict[station_data['name']] = station_data
     return data_dict
 
-# Find maximum values for each filter
-def find_max_values(df, filters):
-    max_values = {}
-    # Ensure 'dateTime' column is in datetime format
-    if not pd.api.types.is_datetime64_any_dtype(df['dateTime']):
-        df['dateTime'] = pd.to_datetime(df['dateTime'])
-    for filter_name, date_range in filters.items():
-        min_date, max_date, color = date_range
-        condition = (df['dateTime'] >= min_date) & (df['dateTime'] <= max_date)
-        filtered_df = df[condition].dropna()  # Drop rows with NaN values
-        if not filtered_df.empty:
-            max_value_row = filtered_df.loc[filtered_df['value'].idxmax(), ['dateTime', 'value']]
-            max_value_row['value'] = round(max_value_row['value'], 2)  # Round the maximum value to 2 decimal places
-            max_values[filter_name] = max_value_row
-    return max_values
-
-# Find and store maximum values for all stations
-def find_and_store_max_values(data_dict):
-    max_values = {}
-    for station_name, station_data in data_dict.items():
-        df = station_data.get('date_values')
-        if df is not None:
-            max_values[station_name] = find_max_values(df, DATE_FILTERS)
-    return max_values
-
-#Generate storm info for the peak table
-def generate_storm_info():
-    storm_info = []
-    for storm, (start_date, end_date, _) in DATE_FILTERS.items():
-        formatted_start_date = datetime.strptime(start_date, '%Y-%m-%d').strftime('%d %b %Y')
-        formatted_end_date = datetime.strptime(end_date, '%Y-%m-%d').strftime('%d %b %Y')
-        storm_info.append(html.Div([
-            html.P(f"{storm}: {formatted_start_date} to {formatted_end_date}", style={'font-size': '14px'}),
-        ]))
-    return storm_info
-
-
 # Function to load station data from JSON file
+# def load_station_data_from_json(file_path):
+    try:
+        # Load data from JSON file
+        with open(file_path, "r") as json_file:
+            data_dict = json.load(json_file)
+        
+        # Convert date_values from JSON strings to DataFrames
+        for station_data in data_dict.values():
+            station_data['date_values'] = pd.read_json(StringIO(station_data['date_values']))
+
+        return data_dict
+    except FileNotFoundError:
+        print(f"File {file_path} not found.")
+        return None
+
+
+#### FUNCTION TO MAKE DICTIONARY OFFLINE AND THEN LOAD
+
+# # Fetch and save data for all stations
+data_dict = fetch_all_station_data()
+
+def fetch_and_save_all_station_data():
+    data_dict = {}
+    for wiski_id in WISKI_IDS:
+        station_data = fetch_station_data(wiski_id)
+        if station_data:
+            # Convert DataFrame to JSON-serializable format
+            date_values_json = station_data['date_values'].to_json(orient='records')
+            # Replace DataFrame with JSON string in station_data dictionary
+            station_data['date_values'] = date_values_json
+            data_dict[station_data['name']] = station_data
+
+    # Specify the file path where you want to save the JSON file
+    file_path = "C:\\Users\\SPHILLIPS03\\Documents\\repos\\historicfloodlevels\\historic_nested_dict.json"
+
+    # Save the dictionary containing station data to a JSON file
+    with open(file_path, "w") as json_file:
+        json.dump(data_dict, json_file)
+
+    print("JSON file saved successfully.")
+
+fetch_and_save_all_station_data()
+
+
+
 def load_station_data_from_json(file_path):
     try:
         # Load data from JSON file
@@ -363,32 +329,6 @@ def load_station_data_from_json(file_path):
         return None
 
 
-# #### FUNCTION TO MAKE DICTIONARY OFFLINE AND THEN LOAD
-
-# # # Fetch and save data for all stations
-# data_dict = fetch_all_station_data()
-
-# def fetch_and_save_all_station_data():
-#     data_dict = {}
-#     for wiski_id in WISKI_IDS:
-#         station_data = fetch_station_data(wiski_id)
-#         if station_data:
-#             # Convert DataFrame to JSON-serializable format
-#             date_values_json = station_data['date_values'].to_json(orient='records')
-#             # Replace DataFrame with JSON string in station_data dictionary
-#             station_data['date_values'] = date_values_json
-#             data_dict[station_data['name']] = station_data
-
-#     # Specify the file path where you want to save the JSON file
-#     file_path = "C:\\Users\\SPHILLIPS03\\Documents\\repos\\historicfloodlevels\\historic_nested_dict.json"
-
-#     # Save the dictionary containing station data to a JSON file
-#     with open(file_path, "w") as json_file:
-#         json.dump(data_dict, json_file)
-
-#     print("JSON file saved successfully.")
-
-# fetch_and_save_all_station_data()
 
 ### CALL YOUR FUNCTIONS 
 # Load station data from JSON file
@@ -400,27 +340,6 @@ if data_dict:
 else:
     print("Error loading data.")
 
-# Find and store maximum values for all stations
-max_values = find_and_store_max_values(data_dict)
-
-# Create peak table DataFrame
-df, peak_table_all = process_peak_table_all(max_values, sites_of_interest_merge)
 
 #####################################################
 #####################################################
-
-## Categorising by SHWG and SWWM
-# Initialize lists for SHWG and SWWM stations
-shwg_stations = []
-swwm_stations = []
-
-# Iterate through the data_dict and filter stations
-for station, details in data_dict.items():
-    if details['eaAreaName'] == 'SHWG':
-        shwg_stations.append(station)
-    elif details['eaAreaName'] == 'SWWM':
-        swwm_stations.append(station)
-
-print("SHWG Stations:", shwg_stations)
-print("SWWM Stations:", swwm_stations)
-

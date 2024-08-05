@@ -15,40 +15,10 @@ import plotly.express as px
 from ipywidgets import interact, FloatSlider, IntSlider, Button, VBox
 import ipywidgets as widgets
 from IPython.display import display
+import os
 
 
-# Load data
-sites_of_interest_merge = pd.read_csv('sites_of_interest_merge.csv')
-file_path = "historic_nested_dict.json"
 
-#### Changed the approach and have now nested the thresholds within the data_dict
-### DON'T NEED THIS NOW I HAVE IT ALL IN ONE DICTIONARY ALREADY
-# # Get thresholds and create a combined dictionary
-# def load_combined_data(file_path, sites_of_interest_merge):
-#     try:
-#         # Load data from JSON file
-#         with open(file_path, "r") as json_file:
-#             data_dict = json.load(json_file)
-        
-#         # Convert date_values from JSON strings to DataFrames
-#         for station_name, station_data in data_dict.items():
-#             station_data['date_values'] = pd.read_json(StringIO(station_data['date_values']), convert_dates=['dateTime'], date_unit='ms')
-        
-#         # Get thresholds and add to the data_dict
-#         threshold_values = sites_of_interest_merge[sites_of_interest_merge['Threshold'].notnull()]
-#         threshold_values.loc[:, 'Threshold'] = threshold_values['Threshold'].astype(float)
-#         threshold_dict = threshold_values.set_index('Gauge')['Threshold'].to_dict()
-        
-#         for station_name in data_dict.keys():
-#             data_dict[station_name]['threshold'] = threshold_dict.get(station_name, None)
-        
-#         return data_dict
-#     except FileNotFoundError:
-#         print(f"File {file_path} not found.")
-#         return None
-
-
-# Function to load station data from JSON file
 def load_station_data_from_json(file_path):
     try:
         # Load data from JSON file
@@ -63,7 +33,8 @@ def load_station_data_from_json(file_path):
     except FileNotFoundError:
         print(f"File {file_path} not found.")
         return None
-    
+
+
 ### CALL YOUR FUNCTIONS 
 # Load station data from JSON file
 file_path = "historic_nested_dict.json"
@@ -206,7 +177,6 @@ for site_name in data_dict.keys():
 
 
 
-
 ################
 # Prepare and plot heatmaps (normalised and regular)
 ################
@@ -301,3 +271,132 @@ plot_heatmap(heatmap_df, value_column, title)
 # For normalized data
 normalized_heatmap_df, normalized_value_column, normalized_title = prepare_heatmap_data(data_dict, normalize=True)
 plot_heatmap(normalized_heatmap_df, normalized_value_column, normalized_title)
+
+
+
+####################################
+### Grouping by catchment ##
+####################################
+
+# Ensure the directory exists
+output_dir = "html_heatmaps"
+os.makedirs(output_dir, exist_ok=True)
+
+def prepare_heatmap_data(data_dict, normalize=False):
+    rows = []
+
+    for site_name, site_data in data_dict.items():
+        df = site_data['date_values']
+        threshold = site_data['threshold']
+        catchment_name = site_data.get('catchment', 'Unknown Catchment')  # Assuming catchment info is available
+
+        if threshold is None:
+            continue
+
+        # Ensure dateTime is in datetime format
+        df['dateTime'] = pd.to_datetime(df['dateTime'], errors='coerce')
+        if df['dateTime'].isnull().all():
+            print(f"No valid dateTime data for site {site_name}. Skipping.")
+            continue
+
+        df['date'] = df['dateTime'].dt.normalize()
+        start_year = df['date'].dt.year.min() + 1
+        end_year = datetime.now().year - 1
+
+        for year in range(start_year, end_year + 1):
+            start_date = pd.Timestamp(year, 10, 1)
+            end_date = pd.Timestamp(year + 1, 3, 1)
+            winter_period_data = df[(df['date'] >= start_date) & (df['date'] <= end_date)]
+            above_threshold = (winter_period_data['value'] > threshold).sum()
+
+            rows.append({
+                'catchment_name': catchment_name,
+                'site_name': site_name,
+                'year': f"{year}-{year + 1}",
+                'days_above_threshold': above_threshold
+            })
+
+    df = pd.DataFrame(rows)
+
+    # Filter out rows where 'days_above_threshold' is NaN
+    df = df.dropna(subset=['days_above_threshold'])
+
+    # Filter out sites with fewer than 10 years of data
+    site_years_count = df.groupby('site_name')['year'].nunique()
+    valid_sites = site_years_count[site_years_count >= 10].index
+    df = df[df['site_name'].isin(valid_sites)]
+
+    # Remove sites with all values as 0
+    pivot_df = df.pivot_table(index='site_name', values='days_above_threshold', aggfunc='sum')
+    valid_sites = pivot_df[pivot_df.sum(axis=1) > 0].index
+    df = df[df['site_name'].isin(valid_sites)]
+    
+    if normalize:
+        # Normalize data by site within each catchment
+        df['days_above_threshold_normalized'] = df.groupby(['catchment_name', 'site_name'])['days_above_threshold'].transform(lambda x: x / x.max())
+        value_column = 'days_above_threshold_normalized'
+    else:
+        value_column = 'days_above_threshold'
+    
+    return df, value_column
+
+def plot_heatmap(df, value_column, title, filename):
+    heatmap_data = df.pivot(index='site_name', columns='year', values=value_column)
+    
+    fig = px.imshow(
+        heatmap_data,
+        color_continuous_scale='Plasma',
+        labels={'color': value_column.replace('_', ' ').title()},
+        title=title
+    )
+    
+    fig.update_layout(
+        xaxis_title='Winter Period',
+        yaxis_title='Site Name',
+        yaxis=dict(
+            tickmode='array',
+            tickvals=list(heatmap_data.index),
+            ticktext=list(heatmap_data.index)
+        ),
+        xaxis=dict(
+            tickmode='array',
+            tickvals=list(heatmap_data.columns),
+            ticktext=list(heatmap_data.columns)
+        ),
+        height=800,  # Adjust overall height of the plot
+        width=1200,  # Adjust overall width of the plot
+        coloraxis_colorbar=dict(
+            title=value_column.replace('_', ' ').title(),
+            lenmode='fraction',
+            len=0.5,  # Set colorbar length as fraction of the plot height
+            thickness=20  # Adjust thickness of the colorbar
+        )
+    )
+
+    # Save the plot as an HTML file
+    fig.write_html(filename)
+    print(f"Saved heatmap to {filename}")
+
+def plot_heatmaps_by_catchment(data_dict, normalize=False):
+    heatmap_df, value_column = prepare_heatmap_data(data_dict, normalize)
+    
+    catchments = heatmap_df['catchment_name'].unique()
+    for catchment in catchments:
+        catchment_df = heatmap_df[heatmap_df['catchment_name'] == catchment]
+        title = f"Heatmap of {'Normalized ' if normalize else ''}Days Above Threshold for Catchment: {catchment}"
+        filename = f"{catchment}_heatmap_{'normalized' if normalize else 'raw'}.html"
+        file_path = os.path.join(output_dir, filename)
+        plot_heatmap(catchment_df, value_column, title, file_path)
+
+def plot_aggregated_heatmap(data_dict, normalize=False):
+    heatmap_df, value_column = prepare_heatmap_data(data_dict, normalize)
+    title = f"Heatmap of {'Normalized ' if normalize else ''}Days Above Threshold for All Sites"
+    filename = f"aggregated_heatmap_{'normalized' if normalize else 'raw'}.html"
+    file_path = os.path.join(output_dir, filename)
+    plot_heatmap(heatmap_df, value_column, title, file_path)
+
+# Example usage
+#plot_heatmaps_by_catchment(data_dict, normalize=False)
+plot_heatmaps_by_catchment(data_dict, normalize=True)
+#plot_aggregated_heatmap(data_dict, normalize=False)
+plot_aggregated_heatmap(data_dict, normalize=True)

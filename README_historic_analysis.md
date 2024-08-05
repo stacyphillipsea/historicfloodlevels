@@ -13,6 +13,8 @@ I have started a new Read Me for my analysis, where I am trying to see if there 
 * Heatmap that pivots and shows all sites together with a continuous colour scale
 * Normalised heatmap by the maximum number of days for that given site above threshold to allow comparison of sites
 * Combined the code for the normalised and non-normalised preparation and plotting so it's much cleaner now
+* Makes and saves html heatmaps for each catchment and all data
+* Filters out the sites with NaNs for days above threshold, and for sites with < 10 years of data
 
 * Thresholds now come straight from the API so don't need to combine the datasets
 * Bunch of other metadata brought in with it too
