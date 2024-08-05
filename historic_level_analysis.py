@@ -641,3 +641,164 @@ def plot_catchment_rolling_mean(data_dict):
 
 # Call the function to plot normalized rolling means for each catchment
 plot_catchment_rolling_mean(data_dict)
+
+ 
+################################################
+##### Catchment averages ########
+################################################
+
+##### Line charts
+
+import pandas as pd
+import plotly.graph_objects as go
+from datetime import datetime
+
+def calculate_days_above_threshold(site_name, data_dict):
+    # Retrieve the relevant data and threshold
+    df = data_dict[site_name]['date_values']
+    threshold = data_dict[site_name]['threshold']
+    
+    if threshold is None:
+        print(f"No threshold defined for site {site_name}.")
+        return pd.DataFrame()  # Return an empty DataFrame if no threshold is defined
+    
+    # Convert dateTime to just a date
+    df['date'] = df['dateTime'].dt.normalize()
+    
+    # Determine the start year (earliest year in the dataset) and end year (current year)
+    start_year = df['date'].dt.year.min() + 1
+    end_year = datetime.now().year - 1
+    
+    results = {}
+    for year in range(start_year, end_year + 1):
+        start_date = pd.Timestamp(year, 10, 1)  # October 1st of the current year
+        end_date = pd.Timestamp(year + 1, 3, 1)  # 1st March of the next year
+        
+        # Filter data for the current winter period
+        winter_period_data = df[(df['date'] >= start_date) & (df['date'] <= end_date)]
+        
+        # Calculate the number of days the value is greater than the threshold
+        total_days = len(winter_period_data)
+        above_threshold = (winter_period_data['value'] > threshold).sum()
+        percent = round((above_threshold / total_days * 100), 1) if total_days > 0 else 0.0
+        
+        # Store results for the current winter period
+        results[f"Winter {year}-{year + 1}"] = {
+            'above_threshold': above_threshold,
+            'percent': percent
+        }
+    
+    # Convert results to DataFrame
+    results_df = pd.DataFrame(results).T
+    return results_df
+
+def calculate_catchment_averages(data_dict):
+    # Group sites by catchment
+    catchment_sites = {}
+    for site_name, site_data in data_dict.items():
+        catchment_name = site_data.get('catchment', 'Unknown Catchment')
+        if catchment_name not in catchment_sites:
+            catchment_sites[catchment_name] = []
+        catchment_sites[catchment_name].append(site_name)
+    
+    # Data structure to hold average days above threshold per catchment and year
+    catchment_averages = {}
+    
+    for catchment_name, sites in catchment_sites.items():
+        print(f"Processing catchment: {catchment_name}")
+        
+        yearly_totals = {}
+        for site_name in sites:
+            results_df = calculate_days_above_threshold(site_name, data_dict)
+            for index, row in results_df.iterrows():
+                year = index.split('-')[0].split(' ')[1]  # Extract the year from index
+                if year not in yearly_totals:
+                    yearly_totals[year] = []
+                yearly_totals[year].append(row['above_threshold'])
+        
+        # Calculate average for each year in the catchment
+        avg_per_year = {year: sum(days) / len(days) if days else 0 for year, days in yearly_totals.items()}
+        catchment_averages[catchment_name] = avg_per_year
+    
+    return catchment_averages
+
+def plot_catchment_averages(catchment_averages):
+    fig = go.Figure()
+    
+    # Prepare data for plotting
+    for catchment_name, avg_days in catchment_averages.items():
+        years = sorted(avg_days.keys())
+        averages = [avg_days[year] for year in years]
+        
+        fig.add_trace(
+            go.Scatter(
+                x=years,
+                y=averages,
+                mode='lines+markers',
+                line=dict(width=2),
+                marker=dict(size=8),
+                name=f'{catchment_name}'
+            )
+        )
+    
+    # Update layout
+    fig.update_layout(
+        title='Average Days Above Threshold by Catchment and Year',
+        xaxis_title='Year',
+        yaxis_title='Average Days Above Threshold',
+        xaxis=dict(tickvals=[str(year) for year in range(min(map(int, years)), max(map(int, years)) + 1)]),
+        yaxis=dict(range=[0, max(max(avg_days.values(), default=0) for avg_days in catchment_averages.values()) * 1.1])
+    )
+    
+    # Show the plot
+    fig.show()
+
+# Call the function to calculate and plot average days above threshold by catchment
+catchment_averages = calculate_catchment_averages(data_dict)
+plot_catchment_averages(catchment_averages)
+
+
+#### Stacked bar chart
+# Added total values for the highest 5 years but this is inappropriate for the dataset
+
+def plot_catchment_averages_stacked_bar(catchment_averages, color_mapping):
+    # Exclude the 'Unknown Catchment'
+    catchment_averages = {k: v for k, v in catchment_averages.items() if k != 'Unknown Catchment'}
+    
+    years = sorted({year for avg_days in catchment_averages.values() for year in avg_days.keys()})
+    fig = go.Figure()
+    
+    # Add traces for each catchment with specified colors
+    for catchment_name, avg_days in catchment_averages.items():
+        values = [avg_days.get(year, 0) for year in years]
+        fig.add_trace(
+            go.Bar(
+                x=years,
+                y=values,
+                name=catchment_name,
+                marker_color=color_mapping.get(catchment_name, 'gray')  # Use the color specified in the mapping or default to gray
+            )
+        )
+    
+    # Create bar chart
+    fig.update_layout(
+        title='Average Days Above Threshold by Catchment and Year (Stacked Bar Chart)',
+        xaxis_title='Year',
+        yaxis_title='Average Days Above Threshold',
+        barmode='stack'
+    )
+
+    fig.show()
+
+# Define a color palette
+color_mapping = {
+    'Severn Vale': '#1b9e77',  
+    'Warwickshire Avon': '#d95f02',  
+    'Shropshire Middle Severn': '#7570b3',  
+    'Worcestershire Middle Severn': '#e7298a',  
+    'Wye': '#66a61e',  
+    'Severn Uplands': '#e6ab02',  
+    'Teme': '#a6761d',    
+}
+
+plot_catchment_averages_stacked_bar(catchment_averages, color_mapping)
