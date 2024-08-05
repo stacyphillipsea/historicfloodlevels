@@ -6,7 +6,7 @@ from scipy.signal import find_peaks, find_peaks_cwt
 import pandas as pd 
 import numpy as np
 import datetime
-from datetime import timedelta
+from datetime import datetime
 import matplotlib.pyplot as plt
 import json
 from io import StringIO
@@ -47,8 +47,27 @@ file_path = "historic_nested_dict.json"
 #         print(f"File {file_path} not found.")
 #         return None
 
-# Load combined data
-data_dict = load_combined_data(file_path, sites_of_interest_merge)
+
+# Function to load station data from JSON file
+def load_station_data_from_json(file_path):
+    try:
+        # Load data from JSON file
+        with open(file_path, "r") as json_file:
+            data_dict = json.load(json_file)
+        
+        # Convert date_values from JSON strings to DataFrames
+        for station_data in data_dict.values():
+            station_data['date_values'] = pd.read_json(StringIO(station_data['date_values']))
+
+        return data_dict
+    except FileNotFoundError:
+        print(f"File {file_path} not found.")
+        return None
+    
+### CALL YOUR FUNCTIONS 
+# Load station data from JSON file
+file_path = "historic_nested_dict.json"
+data_dict = load_station_data_from_json(file_path)
 
 ## Setup winter periods
 # Function to calculate the number of days above threshold for each winter period
@@ -187,9 +206,12 @@ for site_name in data_dict.keys():
 
 
 
-### Making a heatmap to show this in matrix format for all sites
-### This doesn't show all the sites, the normalised one below does
-def prepare_heatmap_data(data_dict):
+
+################
+# Prepare and plot heatmaps (normalised and regular)
+################
+
+def prepare_heatmap_data(data_dict, normalize=False):
     rows = []
 
     for site_name, site_data in data_dict.items():
@@ -199,63 +221,10 @@ def prepare_heatmap_data(data_dict):
         if threshold is None:
             continue
 
-        df['date'] = df['dateTime'].dt.normalize()
-        start_year = df['date'].dt.year.min() + 1
-        end_year = datetime.now().year - 1
-
-        for year in range(start_year, end_year + 1):
-            start_date = pd.Timestamp(year, 10, 1)
-            end_date = pd.Timestamp(year + 1, 3, 1)
-            winter_period_data = df[(df['date'] >= start_date) & (df['date'] <= end_date)]
-            above_threshold = (winter_period_data['value'] > threshold).sum()
-
-            rows.append({
-                'site_name': site_name,
-                'year': f"{year}-{year + 1}",
-                'days_above_threshold': above_threshold
-            })
-
-    return pd.DataFrame(rows)
-
-# Example usage with data_dict
-heatmap_df = prepare_heatmap_data(data_dict)
-
-print(heatmap_df.head())
-
-def plot_heatmap(df):
-    heatmap_data = df.pivot(index='site_name', columns='year', values='days_above_threshold')
-    
-    fig = px.imshow(
-        heatmap_data,
-        color_continuous_scale='Viridis',
-        labels={'color': 'Days Above Threshold'},
-        title='Heatmap of Days Above Threshold by Site and Year'
-    )
-    
-    fig.update_layout(
-        xaxis_title='Winter Period',
-        yaxis_title='Site Name'
-    )
-    
-    fig.show()
-
-# Plot the heatmap
-plot_heatmap(heatmap_df)
-
-
-
-
-### Normalised values with all sites
-
-# Prepare data and normalize
-def prepare_heatmap_data(data_dict):
-    rows = []
-
-    for site_name, site_data in data_dict.items():
-        df = site_data['date_values']
-        threshold = site_data['threshold']
-
-        if threshold is None:
+        # Ensure dateTime is in datetime format
+        df['dateTime'] = pd.to_datetime(df['dateTime'], errors='coerce')
+        if df['dateTime'].isnull().all():
+            print(f"No valid dateTime data for site {site_name}. Skipping.")
             continue
 
         df['date'] = df['dateTime'].dt.normalize()
@@ -276,58 +245,48 @@ def prepare_heatmap_data(data_dict):
 
     df = pd.DataFrame(rows)
     
-    # Normalize the data
-    max_days = df['days_above_threshold'].max()
-    if max_days > 0:
-        df['days_above_threshold_normalized'] = df['days_above_threshold'] / max_days
+    if normalize:
+        # Normalize data by site
+        df['days_above_threshold_normalized'] = df.groupby('site_name')['days_above_threshold'].transform(lambda x: x / x.max())
+        value_column = 'days_above_threshold_normalized'
+        title = 'Heatmap of Normalized Days Above Threshold by Site and Year'
     else:
-        df['days_above_threshold_normalized'] = df['days_above_threshold']  # Handle case where max_days is 0
+        value_column = 'days_above_threshold'
+        title = 'Heatmap of Days Above Threshold by Site and Year'
     
-    print("Prepared DataFrame:")
-    print(df.head())  # Debug: print the first few rows of the DataFrame
-    print(f"Max days for normalization: {max_days}")
+    return df, value_column, title
     
-    return df
+def plot_heatmap(df, value_column, title):
+    heatmap_data = df.pivot(index='site_name', columns='year', values=value_column)
+    
+    # Debugging: Print the heatmap data
+    print("Heatmap Data (Pivot Table):")
 
-# Plot the heatmap with continuous color scheme
-def plot_heatmap(df):
-    # Create pivot table for normalized days above threshold
-    heatmap_data_normalized = df.pivot(index='site_name', columns='year', values='days_above_threshold_normalized')
     
-    # Debug: Check the pivoted data
-    print("Pivoted Heatmap Data:")
-    print(heatmap_data_normalized)
-    print("Site names:", heatmap_data_normalized.index)
-    print("Years:", heatmap_data_normalized.columns)
-
-    # Create the heatmap for normalized days above threshold
     fig = px.imshow(
-        heatmap_data_normalized,
-        color_continuous_scale='sunsetdark',
-        labels={'color': 'Normalized Days Above Threshold'},
-        title='Heatmap of Normalized Days Above Threshold by Site and Year'
+        heatmap_data,
+        color_continuous_scale='Viridis',
+        labels={'color': value_column.replace('_', ' ').title()},
+        title=title
     )
-
-    # Ensure the layout accommodates all site names
+    
     fig.update_layout(
         xaxis_title='Winter Period',
         yaxis_title='Site Name',
         yaxis=dict(
             tickmode='array',
-            tickvals=list(heatmap_data_normalized.index),
-            ticktext=list(heatmap_data_normalized.index)
+            tickvals=list(heatmap_data.index),
+            ticktext=list(heatmap_data.index)
         ),
         xaxis=dict(
             tickmode='array',
-            tickvals=list(heatmap_data_normalized.columns),
-            ticktext=list(heatmap_data_normalized.columns)
+            tickvals=list(heatmap_data.columns),
+            ticktext=list(heatmap_data.columns)
         ),
         height=800,  # Adjust overall height of the plot
         width=1200,  # Adjust overall width of the plot
         coloraxis_colorbar=dict(
-            title='Normalized Days Above Threshold',
-            tickvals=[0, 1],  # Set specific tick values for colorbar
-            ticktext=['0', '1'],  # Set tick labels for colorbar
+            title=value_column.replace('_', ' ').title(),
             lenmode='fraction',
             len=0.5,  # Set colorbar length as fraction of the plot height
             thickness=20  # Adjust thickness of the colorbar
@@ -335,9 +294,10 @@ def plot_heatmap(df):
     )
     fig.show()
 
-# Prepare the data
-heatmap_df = prepare_heatmap_data(data_dict)
+# Example usage with data_dict
+heatmap_df, value_column, title = prepare_heatmap_data(data_dict, normalize=False)
+plot_heatmap(heatmap_df, value_column, title)
 
-# Plot the heatmap
-plot_heatmap(heatmap_df)
-
+# For normalized data
+normalized_heatmap_df, normalized_value_column, normalized_title = prepare_heatmap_data(data_dict, normalize=True)
+plot_heatmap(normalized_heatmap_df, normalized_value_column, normalized_title)
