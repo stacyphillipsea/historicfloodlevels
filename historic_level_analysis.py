@@ -400,3 +400,244 @@ def plot_aggregated_heatmap(data_dict, normalize=False):
 plot_heatmaps_by_catchment(data_dict, normalize=True)
 #plot_aggregated_heatmap(data_dict, normalize=False)
 plot_aggregated_heatmap(data_dict, normalize=True)
+
+
+###############################################
+######## Playing about with rolling means #####
+###############################################
+
+
+import pandas as pd
+import plotly.graph_objects as go
+from datetime import datetime
+
+def calculate_days_above_threshold(site_name, data_dict, rolling_window=5):
+    # Retrieve the relevant data and threshold
+    df = data_dict[site_name]['date_values']
+    threshold = data_dict[site_name]['threshold']
+    
+    if threshold is None:
+        print(f"No threshold defined for site {site_name}.")
+        return pd.DataFrame(), None  # Return an empty DataFrame and None for the average if no threshold is defined
+    
+    # Convert dateTime to just a date
+    df['date'] = df['dateTime'].dt.normalize()
+    
+    # Determine the start year (earliest year in the dataset) and end year (current year)
+    start_year = df['date'].dt.year.min() + 1
+    end_year = datetime.now().year - 1
+    
+    results = {}
+    for year in range(start_year, end_year + 1):
+        start_date = pd.Timestamp(year, 10, 1)  # October 1st of the current year
+        end_date = pd.Timestamp(year + 1, 3, 1)  # 1st March of the next year
+        
+        # Filter data for the current winter period
+        winter_period_data = df[(df['date'] >= start_date) & (df['date'] <= end_date)]
+        
+        # Calculate the number of days the value is greater than the threshold
+        total_days = len(winter_period_data)
+        above_threshold = (winter_period_data['value'] > threshold).sum()
+        percent = round((above_threshold / total_days * 100), 1) if total_days > 0 else 0.0
+        
+        # Store results for the current winter period
+        results[f"Winter {year}-{year + 1}"] = {
+            'above_threshold': above_threshold,
+            'percent': percent
+        }
+    
+    # Convert results to DataFrame
+    results_df = pd.DataFrame(results).T
+    
+    # Ensure 'above_threshold' column is present
+    if 'above_threshold' not in results_df.columns:
+        print(f"'above_threshold' column is missing in results_df for site {site_name}.")
+    
+    # Calculate the rolling mean of the number of days above threshold
+    if 'above_threshold' in results_df.columns:
+        results_df['rolling_mean'] = results_df['above_threshold'].rolling(window=rolling_window, min_periods=1).mean()
+    
+    # Calculate the average number of days above threshold
+    average_days = results_df['above_threshold'].mean() if not results_df.empty else None
+    
+    return results_df, average_days
+
+def plot_rolling_mean(results_df, site_name):
+    # Format the index to show just the year range
+    results_df.index = results_df.index.str.replace('Winter ', '')
+    
+    # Ensure the index is sorted in chronological order
+    results_df = results_df.sort_index()
+
+    # Create the line chart for rolling mean
+    fig = go.Figure()
+
+    # Add line for rolling mean
+    fig.add_trace(
+        go.Scatter(
+            x=results_df.index,
+            y=results_df['rolling_mean'],
+            mode='lines+markers',
+            line=dict(color='blue', width=2),
+            marker=dict(size=8, color='blue'),
+            name='Rolling Mean'
+        )
+    )
+    
+    # Update layout
+    fig.update_layout(
+        title=f'Rolling Mean of Days Above Threshold for Each Winter Period at {site_name}',
+        xaxis_title='Winter Period',
+        yaxis_title='Rolling Mean of Days Above Threshold',
+        xaxis_tickangle=-90
+    )
+    
+    # Show the plot
+    fig.show()
+
+
+
+# Iterate through each site in data_dict
+for site_name in data_dict.keys():
+    print(f"Processing site: {site_name}")
+    
+    # Calculate results and average
+    results_df, average_days = calculate_days_above_threshold(site_name, data_dict)
+    
+    if not results_df.empty:
+        # Print the results DataFrame for debugging
+        print(f"Results DataFrame for {site_name}:\n{results_df}")
+        
+        # Plot the rolling mean
+        plot_rolling_mean(results_df, site_name)
+    else:
+        print(f"No data available for site {site_name}.")
+
+
+import pandas as pd
+import plotly.graph_objects as go
+from datetime import datetime
+
+def calculate_days_above_threshold(site_name, data_dict, rolling_window=5):
+    # Retrieve the relevant data and threshold
+    df = data_dict[site_name]['date_values']
+    threshold = data_dict[site_name]['threshold']
+    
+    if threshold is None:
+        print(f"No threshold defined for site {site_name}.")
+        return pd.DataFrame(), None  # Return an empty DataFrame and None for the average if no threshold is defined
+    
+    # Convert dateTime to just a date
+    df['date'] = df['dateTime'].dt.normalize()
+    
+    # Determine the start year (earliest year in the dataset) and end year (current year)
+    start_year = df['date'].dt.year.min() + 1
+    end_year = datetime.now().year - 1
+    
+    results = {}
+    for year in range(start_year, end_year + 1):
+        start_date = pd.Timestamp(year, 10, 1)  # October 1st of the current year
+        end_date = pd.Timestamp(year + 1, 3, 1)  # 1st March of the next year
+        
+        # Filter data for the current winter period
+        winter_period_data = df[(df['date'] >= start_date) & (df['date'] <= end_date)]
+        
+        # Calculate the number of days the value is greater than the threshold
+        total_days = len(winter_period_data)
+        above_threshold = (winter_period_data['value'] > threshold).sum()
+        percent = round((above_threshold / total_days * 100), 1) if total_days > 0 else 0.0
+        
+        # Store results for the current winter period
+        results[f"Winter {year}-{year + 1}"] = {
+            'above_threshold': above_threshold,
+            'percent': percent
+        }
+    
+    # Convert results to DataFrame
+    results_df = pd.DataFrame(results).T
+    
+    # Calculate the rolling mean of the number of days above threshold
+    if 'above_threshold' in results_df.columns:
+        results_df['rolling_mean'] = results_df['above_threshold'].rolling(window=rolling_window, min_periods=1).mean()
+    
+        # Normalize the rolling mean by the maximum days experienced at the site
+        max_days = results_df['above_threshold'].max() if not results_df.empty else 1
+        results_df['normalized_rolling_mean'] = results_df['rolling_mean'] / max_days
+    
+    # Calculate the average number of days above threshold
+    average_days = results_df['above_threshold'].mean() if not results_df.empty else None
+    
+    return results_df, average_days
+
+def plot_catchment_rolling_mean(data_dict):
+    # Group sites by catchment
+    catchment_sites = {}
+    for site_name, site_data in data_dict.items():
+        catchment_name = site_data.get('catchment', 'Unknown Catchment')
+        if catchment_name not in catchment_sites:
+            catchment_sites[catchment_name] = []
+        catchment_sites[catchment_name].append(site_name)
+    
+    for catchment_name, sites in catchment_sites.items():
+        fig = go.Figure()
+        
+        # Collect all winter periods to ensure x-axis consistency
+        all_winter_periods = set()
+        
+        # First pass to collect all winter periods
+        for site_name in sites:
+            results_df, average_days = calculate_days_above_threshold(site_name, data_dict)
+            if not results_df.empty:
+                all_winter_periods.update(results_df.index)
+        
+        # Create a DataFrame to sort winter periods
+        all_winter_periods_df = pd.DataFrame({
+            'winter_period': list(all_winter_periods)
+        })
+        all_winter_periods_df['start_year'] = all_winter_periods_df['winter_period'].apply(
+            lambda x: int(x.split('-')[0].split(' ')[1])
+        )
+        all_winter_periods_df.sort_values(by='start_year', inplace=True)
+        sorted_winter_periods = all_winter_periods_df['winter_period'].tolist()
+        
+        for site_name in sites:
+            print(f"Processing site: {site_name} for catchment: {catchment_name}")
+            
+            # Calculate results and average
+            results_df, average_days = calculate_days_above_threshold(site_name, data_dict)
+            
+            if not results_df.empty:
+                # Reindex results_df to ensure all periods are included
+                results_df = results_df.reindex(sorted_winter_periods, fill_value=0)
+                
+                # Normalize the rolling mean by the maximum value across all sites
+                if 'normalized_rolling_mean' in results_df.columns:
+                    max_normalized_value = results_df['normalized_rolling_mean'].max()
+                    if max_normalized_value > 0:
+                        results_df['normalized_rolling_mean'] = results_df['normalized_rolling_mean'] / max_normalized_value
+                    
+                    # Add line for normalized rolling mean
+                    fig.add_trace(
+                        go.Scatter(
+                            x=results_df.index,
+                            y=results_df['normalized_rolling_mean'],
+                            mode='lines+markers',
+                            line=dict(width=2),
+                            marker=dict(size=8),
+                            name=f'{site_name} Normalized Rolling Mean'
+                        )
+                    )
+        
+        # Update layout
+        fig.update_layout(
+            title=f'Normalized Rolling Mean of Days Above Threshold for Each Winter Period in {catchment_name}',
+            xaxis_title='Winter Period',
+            yaxis_title='Normalized Rolling Mean of Days Above Threshold',
+            xaxis_tickangle=-90
+        )
+        
+        # Show the plot
+        fig.show()
+
+# Call the function to plot normalized rolling means for each catchment
+plot_catchment_rolling_mean(data_dict)
