@@ -18,7 +18,6 @@ from IPython.display import display
 import os
 
 
-
 def load_station_data_from_json(file_path):
     try:
         # Load data from JSON file
@@ -802,3 +801,273 @@ color_mapping = {
 }
 
 plot_catchment_averages_stacked_bar(catchment_averages, color_mapping)
+
+###########################################
+############ Comparing with issue criteria
+###########################################
+
+# Initialize a list to hold the extracted data
+extracted_data = []
+
+# Loop through the dictionary and extract the 'name' and 'threshold'
+for key, value in data_dict.items():
+    extracted_data.append({'name': value['name'], 'threshold': value['threshold']})
+
+# Convert the list of dictionaries to a DataFrame
+thresholds = pd.DataFrame(extracted_data)
+
+# Display the DataFrame
+print(thresholds)
+
+
+issue_criteria = pd.read_excel('issue_criteria.xlsx')
+issue_criteria = issue_criteria.rename(columns={'RES': 'flood_alert_threshold'})
+
+
+# Filter the issue_criteria DataFrame where Level is "FA"
+issue_criteria_filtered = issue_criteria[issue_criteria['Level'] == 'FA']
+
+# Merge the DataFrames on the matching columns ('name' and 'Gauge')
+merged_df = pd.merge(thresholds, issue_criteria_filtered, left_on='name', right_on='Gauge')
+
+# Calculate the difference between the thresholds and round to 1 decimal place
+merged_df['threshold_difference'] = (merged_df['threshold'] - merged_df['flood_alert_threshold']).round(1)
+
+# Filter out rows where threshold_difference is 0
+filtered_df = merged_df[merged_df['threshold_difference'] != 0]
+
+# Sort the DataFrame by threshold_difference in ascending order
+sorted_df = filtered_df.sort_values(by='threshold_difference', ascending=True)
+
+# Optionally, select only the columns of interest
+result_df = sorted_df[['name', 'threshold', 'flood_alert_threshold', 'threshold_difference']]
+
+# Display the result DataFrame
+result_df
+
+######################################################
+## Getting tables out of docx (converted from doc)
+######################################################
+
+
+#### Used to have the Mean water and datum copying across but it looks like it has broken when i was playing with the sentence case
+#### Can't get it back at the moment, try again tomorrow!
+
+import os
+import pandas as pd
+from docx import Document
+import win32com.client
+from dateutil.parser import parse, ParserError
+
+def convert_doc_to_docx(doc_path):
+    print(f"Converting {doc_path} to .docx")
+    if not os.path.exists(doc_path):
+        print(f"File not found: {doc_path}")
+        return None
+    
+    try:
+        word = win32com.client.Dispatch("Word.Application")
+        word.Visible = False
+        doc = word.Documents.Open(os.path.abspath(doc_path))
+        docx_path = os.path.splitext(doc_path)[0] + ".docx"
+        doc.SaveAs(docx_path, FileFormat=16)  # 16 corresponds to the .docx format
+        doc.Close()
+        word.Quit()
+        return docx_path
+    except Exception as e:
+        print(f"Failed to convert {doc_path} to .docx: {e}")
+        return None
+
+def extract_relevant_table_from_docx(docx_path):
+    print(f"Processing document: {docx_path}")
+    try:
+        doc = Document(docx_path)
+    except Exception as e:
+        print(f"Failed to read document {docx_path}: {e}")
+        return None
+    
+    tables = doc.tables
+    if len(tables) == 0:
+        print(f"No tables found in document: {docx_path}")
+        return None
+    elif len(tables) == 1:
+        print(f"Found one table in document, extracting it")
+        return extract_table_data(tables[0])
+    elif len(tables) >= 2:
+        print(f"Found two or more tables in document, extracting the second one")
+        return extract_table_data(tables[1])
+    else:
+        print(f"Unexpected number of tables in document: {docx_path}")
+        return None
+
+def remove_duplicate_columns(df):
+    if df.columns.duplicated().any():
+        print("Duplicate columns found. Removing duplicates.")
+        df = df.loc[:, ~df.columns.duplicated()]
+    return df
+
+def replace_blank_headers(df):
+    df.columns = [col if col.strip() else "Date" for col in df.columns]
+    return df
+
+def is_date(string):
+    try:
+        parse(string, dayfirst=True)
+        return True
+    except (ValueError, ParserError):
+        return False
+
+def process_date_column(df):
+    if "Date" in df.columns:
+        df["Info"] = df["Date"].apply(lambda x: x if not is_date(x) else pd.NA)
+        df["Date"] = df["Date"].apply(lambda x: x if is_date(x) else pd.NA)
+    return df
+
+def update_mts_threshold_name(df):
+    if "Info" in df.columns:
+        # Check for specific words in the "Info" column
+        for i in range(len(df)):
+            if pd.notna(df.at[i, "Info"]):
+                if "Mean Water Level" in df.at[i, "Info"]:
+                    df.at[i, "MTS Threshold Name"] = "Mean Water Level"
+                    df.at[i, "Info"] = pd.NA  # Set Info to null
+                elif "STATION DATUM" in df.at[i, "Info"]:
+                    df.at[i, "MTS Threshold Name"] = "STATION DATUM"
+                    df.at[i, "Info"] = pd.NA  # Set Info to null
+    return df
+
+def convert_to_sentence_case(text):
+    if pd.isna(text):
+        return text
+    return text.capitalize()
+
+def rename_columns(df):
+    # Strip any leading or trailing whitespace from the column names
+    df.columns = [col.strip() for col in df.columns]
+    
+    # Define column mapping
+    column_mapping = {
+        "Warning to issue\n(ta name & code)": "Warning",
+        "Mts threshold name": "Threshold",
+        "Flooded areas & actions": "Actions",
+        "M.a.l.d": "MALD",
+        "M.a.o.d": "MAOD",
+        "Date": "Date",
+        "Info": "Info",
+        "Station": "Station"
+    }
+    
+    # Print columns for debugging
+    print("Original columns:", df.columns.tolist())
+    
+    # Rename columns using the mapping
+    df.rename(columns={key: column_mapping.get(key, key) for key in df.columns}, inplace=True)
+    
+    # Print renamed columns for debugging
+    print("Renamed columns:", df.columns.tolist())
+    
+    return df
+
+def extract_table_data(table):
+    data = []
+    for row in table.rows:
+        text = [convert_to_sentence_case(cell.text.strip()) for cell in row.cells]
+        data.append(text)
+    
+    if len(data) < 2:
+        print("Not enough rows to create headers.")
+        return pd.DataFrame(data)  # Return data as is if less than 2 rows
+    
+    # Use the first row as headers
+    headers = data[0]
+    rows = data[1:]
+    
+    df = pd.DataFrame(rows, columns=headers)
+    
+    # Remove duplicate columns and replace blank headers
+    df = remove_duplicate_columns(df)
+    df = replace_blank_headers(df)
+    
+    # Process the "Date" column and move non-date values to "Info"
+    df = process_date_column(df)
+    
+    # Update "MTS Threshold Name" based on the "Info" column
+    df = update_mts_threshold_name(df)
+    
+    # Rename columns to new names
+    df = rename_columns(df)
+    
+    return df
+
+def write_tables_to_excel(tables, doc_names, excel_path):
+    if not tables:
+        print("No tables found to write to Excel.")
+        return
+    
+    with pd.ExcelWriter(excel_path, engine='openpyxl') as writer:
+        for doc_name, table in zip(doc_names, tables):
+            if not table.empty:
+                sheet_name = f"{doc_name}_Table"
+                print(f"Writing table from {doc_name} to sheet {sheet_name}")
+                table.to_excel(writer, sheet_name=sheet_name, index=False)
+
+def write_all_to_excel(tables, doc_names, all_path):
+    if not tables:
+        print("No tables found to write to all.")
+        return
+    
+    all_data = []
+    for doc_name, table in zip(doc_names, tables):
+        if not table.empty:
+            table['Station'] = doc_name  # Add a column with the document name
+            all_data.append(table)
+    
+    if all_data:
+        all_df = pd.concat(all_data, ignore_index=True)
+        # Ensure the sixth column is labeled "Date"
+        if len(all_df.columns) >= 6 and all_df.columns[5] == "Date":
+            all_df.rename(columns={all_df.columns[5]: "Date"}, inplace=True)
+        # Rename columns to new names in the summary file
+        all_df = rename_columns(all_df)
+        print(f"Writing all to {all_path}")
+        all_df.to_excel(all_path, index=False)
+
+def convert_docx_to_excel(docx_dir, output_excel_path, all_excel_path):
+    if not os.path.exists(docx_dir):
+        print(f"Directory does not exist: {docx_dir}")
+        return
+    
+    doc_names = []
+    tables = []
+    
+    for file_name in os.listdir(docx_dir):
+        file_path = os.path.join(docx_dir, file_name)
+        if file_name.endswith('.doc'):
+            docx_file = convert_doc_to_docx(file_path)
+            if docx_file:
+                doc_name = os.path.splitext(os.path.basename(docx_file))[0]
+                doc_names.append(doc_name)
+                table = extract_relevant_table_from_docx(docx_file)
+                tables.append(table)
+        elif file_name.endswith('.docx'):
+            doc_name = os.path.splitext(os.path.basename(file_path))[0]
+            doc_names.append(doc_name)
+            table = extract_relevant_table_from_docx(file_path)
+            tables.append(table)
+    
+    if not tables:
+        print(f"No tables found in directory: {docx_dir}")
+        return
+    
+    print(f"Output file will be saved to: {output_excel_path}")
+    write_tables_to_excel(tables, doc_names, output_excel_path)
+    
+    # Write all
+    print(f"Summary file will be saved to: {all_excel_path}")
+    write_all_to_excel(tables, doc_names, all_excel_path)
+
+# Example usage:
+docx_directory = 'C:\\Users\\SPHILLIPS03\\Documents\\repos\\historicfloodlevels\\thermometer_sheets'
+output_excel_file = 'C:\\Users\\SPHILLIPS03\\Documents\\repos\\historicfloodlevels\\thermometer_by_gauge.xlsx'
+all_excel_file = 'C:\\Users\\SPHILLIPS03\\Documents\\repos\\historicfloodlevels\\thermometer_all.xlsx'
+convert_docx_to_excel(docx_directory, output_excel_file, all_excel_file)

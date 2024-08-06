@@ -22,7 +22,7 @@ I have started a new Read Me for my analysis, where I am trying to see if there 
 * Have made a new data import script withthe new approach
 
 ## Things that could be improved
-**
+* Started playing about with converting all the thermometer sheets - kind of works! This should exist somewhere else though
 
 
 
