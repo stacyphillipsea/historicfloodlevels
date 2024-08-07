@@ -52,6 +52,9 @@ def calculate_days_above_threshold(site_name, data_dict):
         print(f"No threshold defined for site {site_name}.")
         return pd.DataFrame(), None  # Return an empty DataFrame and None for the average if no threshold is defined
     
+    # Ensure dateTime is in datetime format
+    df['dateTime'] = pd.to_datetime(df['dateTime'], errors='coerce')
+    
     # Convert dateTime to just a date
     df['date'] = df['dateTime'].dt.normalize()
     
@@ -80,12 +83,23 @@ def calculate_days_above_threshold(site_name, data_dict):
             'percent': percent
         }
     
+    # Debug: Print intermediate results dictionary
+    print(f"Results created for site {site_name}")
+    
+    if not results:
+        print(f"No results found for site {site_name}.")
+        return pd.DataFrame(), None
+    
     # Convert results to DataFrame
-    results_df = pd.DataFrame(results).T
+    results_df = pd.DataFrame.from_dict(results, orient='index')
     
     # Ensure start_date and end_date are datetime objects
-    results_df['start_date'] = pd.to_datetime(results_df['start_date'])
-    results_df['end_date'] = pd.to_datetime(results_df['end_date'])
+    try:
+        results_df['start_date'] = pd.to_datetime(results_df['start_date'], errors='coerce')
+        results_df['end_date'] = pd.to_datetime(results_df['end_date'], errors='coerce')
+    except KeyError as e:
+        print(f"KeyError: {e}. Available columns: {results_df.columns}")
+        return pd.DataFrame(), None
     
     # Format each of the columns
     results_df['start_date'] = results_df['start_date'].dt.date
@@ -155,8 +169,11 @@ def plot_days_above_threshold_graph_objects(results_df, site_name, average_days)
         textfont_size=10
     )
 
-    # Show the plot
-    fig.show()
+    # Return the figure object instead of showing it
+    return fig
+
+# Store plots in a dictionary
+plots = {}
 
 # Iterate through each site in data_dict
 for site_name in data_dict.keys():
@@ -170,7 +187,13 @@ for site_name in data_dict.keys():
         # print(results_df)
         
         # Plot the results with average line
-        plot_days_above_threshold_graph_objects(results_df, site_name, average_days)
+        fig = plot_days_above_threshold_graph_objects(results_df, site_name, average_days)
+        
+        # Store the figure object in the plots dictionary
+        plots[site_name] = fig
+
+        print("Plot has made and stored in plots dictionary")
+        print(f"Access using plots['{site_name}'].show()")
     else:
         print(f"No data available for site {site_name}.")
 
@@ -281,6 +304,9 @@ plot_heatmap(normalized_heatmap_df, normalized_value_column, normalized_title)
 output_dir = "html_heatmaps"
 os.makedirs(output_dir, exist_ok=True)
 
+# Dictionary to store plot objects
+plot_objects = {}
+
 def prepare_heatmap_data(data_dict, normalize=False):
     rows = []
 
@@ -376,20 +402,25 @@ def plot_heatmap(df, value_column, title, filename):
     fig.write_html(filename)
     print(f"Saved heatmap to {filename}")
 
+    # Store the figure object in the dictionary
+    plot_objects[title] = fig
+    print(f"Plot saved: access via plot_objects['{title}'].show()")
+
+
 def plot_heatmaps_by_catchment(data_dict, normalize=False):
     heatmap_df, value_column = prepare_heatmap_data(data_dict, normalize)
     
     catchments = heatmap_df['catchment_name'].unique()
     for catchment in catchments:
         catchment_df = heatmap_df[heatmap_df['catchment_name'] == catchment]
-        title = f"Heatmap of {'Normalized ' if normalize else ''}Days Above Threshold for Catchment: {catchment}"
+        title = f"{'Normalized ' if normalize else ''} Heatmap for Days Above Threshold for Catchment: {catchment}"
         filename = f"{catchment}_heatmap_{'normalized' if normalize else 'raw'}.html"
         file_path = os.path.join(output_dir, filename)
         plot_heatmap(catchment_df, value_column, title, file_path)
 
 def plot_aggregated_heatmap(data_dict, normalize=False):
     heatmap_df, value_column = prepare_heatmap_data(data_dict, normalize)
-    title = f"Heatmap of {'Normalized ' if normalize else ''}Days Above Threshold for All Sites"
+    title = f"{'Normalized ' if normalize else ''} Heatmap for Days Above Threshold for All Sites"
     filename = f"aggregated_heatmap_{'normalized' if normalize else 'raw'}.html"
     file_path = os.path.join(output_dir, filename)
     plot_heatmap(heatmap_df, value_column, title, file_path)
