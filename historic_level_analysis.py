@@ -57,8 +57,6 @@ def calculate_days_above_threshold(site_name, data_dict):
     
     # Convert dateTime to just a date
     df['date'] = df['dateTime'].dt.normalize()
-    
-    # Determine the start year (earliest year in the dataset) and end year (current year)
     start_year = df['date'].dt.year.min() + 1
     end_year = datetime.now().year - 1
     
