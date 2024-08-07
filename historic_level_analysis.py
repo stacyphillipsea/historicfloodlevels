@@ -993,6 +993,113 @@ convert_docx_to_excel(docx_directory, output_excel_file, all_excel_file)
 ## ALL THE ABOVE WORKS ####
 ##################################
 
+###### Can extract date and times from powerpoints, can do full comma seperated, struggles otherwise
+import re
+import pandas as pd
+from pptx import Presentation
+import os
+
+def extract_text_from_pptx(file_path):
+    prs = Presentation(file_path)
+    text_entries = []
+
+    for slide in prs.slides:
+        for shape in slide.shapes:
+            if shape.has_text_frame:
+                text = shape.text_frame.text
+                if text:  # Only consider non-empty text
+                    text_entries.append((file_path, text))
+
+    return text_entries
+
+def batch_extract_text_from_pptx_to_df(directory):
+    all_text_entries = []
+
+    for filename in os.listdir(directory):
+        if filename.endswith(".pptx"):
+            file_path = os.path.join(directory, filename)
+            text_entries = extract_text_from_pptx(file_path)
+            all_text_entries.extend(text_entries)
+
+    # Extract base name (without path and extension), remove suffix and extra parts
+    df = pd.DataFrame(all_text_entries, columns=["Filename", "Text"])
+    df['Station'] = df['Filename'].apply(lambda x: os.path.basename(x).replace(' Gaugeboard.pptx', ''))
+    df = df.drop(columns=['Filename'])  # Drop the original Filename column
+    
+    # Ensure 'Station' is the first column
+    df = df[['Station', 'Text']]
+    
+    return df
+
+def extract_dates_and_value(text):
+    # Define regex patterns for dates and values
+    date_pattern = r"(\d{1,2} [A-Za-z]+ \d{4})"
+    comma_separated_date_pattern = r"(\d{1,2} [A-Za-z]+ \d{4})(?:, (\d{1,2} [A-Za-z]+ \d{4}))?"
+    value_pattern = r"(\d+\.\d+)"
+    
+    # Extract dates and value from the text
+    date_matches = re.findall(date_pattern, text)
+    comma_separated_date_matches = re.findall(comma_separated_date_pattern, text)
+    value_match = re.search(value_pattern, text)
+    
+    dates = set()
+    value = None
+    
+    if date_matches:
+        for date in date_matches:
+            if date:
+                dates.add(date)
+    
+    if comma_separated_date_matches:
+        for date_tuple in comma_separated_date_matches:
+            for date in date_tuple:
+                if date:
+                    dates.add(date)
+    
+    if value_match:
+        value = float(value_match.group(0))
+    
+    return list(dates), value
+
+def process_extracted_texts(df):
+    # Extract dates and value from text
+    expanded_rows = []
+    
+    for _, row in df.iterrows():
+        dates, value = extract_dates_and_value(row['Text'])
+        if value is not None and dates:
+            for date in dates:
+                expanded_rows.append({
+                    'Station': row['Station'],
+                    'Date': date,
+                    'Value': value,
+                    'Original Text': row['Text']  # Keep the original text for verification
+                })
+    
+    # Create DataFrame from expanded rows
+    expanded_df = pd.DataFrame(expanded_rows)
+    
+    # Convert 'Date' column to datetime format
+    expanded_df['Date'] = pd.to_datetime(expanded_df['Date'], format='%d %B %Y', errors='coerce')
+    expanded_df = expanded_df.dropna(subset=['Date'])  # Drop rows where Date couldn't be parsed
+    
+    # Sort first by Station, then by Date, and by Value in descending order
+    expanded_df = expanded_df.sort_values(by=['Station', 'Value'], ascending=[True,  False])
+    
+    return expanded_df
+
+# Specify the directory containing PowerPoint files
+pptx_directory = 'C:\\Users\\SPHILLIPS03\\Documents\\repos\\historicfloodlevels\\gaugeboards'
 
 
+# Extract text from all PowerPoint files in the specified directory and store in DataFrame
+df = batch_extract_text_from_pptx_to_df(pptx_directory)
 
+# Process the DataFrame to extract dates, create separate rows for each date, and sort by Station and Date
+processed_df = process_extracted_texts(df)
+
+# Save processed DataFrame to a CSV file if needed
+processed_df.to_csv("processed_extracted_texts_expanded_sorted_with_text.csv", index=False)
+
+# Print processed DataFrame
+processed_df
