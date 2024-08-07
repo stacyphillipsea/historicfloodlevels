@@ -43,19 +43,27 @@ data_dict = load_station_data_from_json(file_path)
 # Function to calculate the number of days above threshold for each winter period
 # Returns a dataframe and the average
 
+import pandas as pd
+import plotly.graph_objects as go
+from datetime import datetime
+
 def calculate_days_above_threshold(site_name, data_dict):
-    # Retrieve the relevant data and threshold
     df = data_dict[site_name]['date_values']
     threshold = data_dict[site_name]['threshold']
     
     if threshold is None:
         print(f"No threshold defined for site {site_name}.")
-        return pd.DataFrame(), None  # Return an empty DataFrame and None for the average if no threshold is defined
+        return pd.DataFrame(), 0.0  # Ensure average_days is a float
     
-    # Ensure dateTime is in datetime format
-    df['dateTime'] = pd.to_datetime(df['dateTime'], errors='coerce')
+    # Ensure the 'dateTime' column is in datetime format
+    if not pd.api.types.is_datetime64_any_dtype(df['dateTime']):
+        try:
+            df['dateTime'] = pd.to_datetime(df['dateTime'])
+        except Exception as e:
+            print(f"Error converting 'dateTime' to datetime format: {e}")
+            return pd.DataFrame(), 0.0
     
-    # Convert dateTime to just a date
+    # Normalize the date to remove the time part
     df['date'] = df['dateTime'].dt.normalize()
     start_year = df['date'].dt.year.min() + 1
     end_year = datetime.now().year - 1
@@ -65,52 +73,22 @@ def calculate_days_above_threshold(site_name, data_dict):
         start_date = pd.Timestamp(year, 10, 1)  # October 1st of the current year
         end_date = pd.Timestamp(year + 1, 3, 1)  # 1st March of the next year
         
-        # Filter data for the current winter period
         winter_period_data = df[(df['date'] >= start_date) & (df['date'] <= end_date)]
         
-        # Calculate the number of days the value is greater than the threshold
         total_days = len(winter_period_data)
         above_threshold = (winter_period_data['value'] > threshold).sum()
         percent = round((above_threshold / total_days * 100), 1) if total_days > 0 else 0.0
         
-        # Store results for the current winter period
         results[f"Winter {year}-{year + 1}"] = {
-            'start_date': start_date,
-            'end_date': end_date,
             'above_threshold': above_threshold,
             'percent': percent
         }
     
-    # Debug: Print intermediate results dictionary
-    print(f"Results created for site {site_name}")
-    
-    if not results:
-        print(f"No results found for site {site_name}.")
-        return pd.DataFrame(), None
-    
-    # Convert results to DataFrame
-    results_df = pd.DataFrame.from_dict(results, orient='index')
-    
-    # Ensure start_date and end_date are datetime objects
-    try:
-        results_df['start_date'] = pd.to_datetime(results_df['start_date'], errors='coerce')
-        results_df['end_date'] = pd.to_datetime(results_df['end_date'], errors='coerce')
-    except KeyError as e:
-        print(f"KeyError: {e}. Available columns: {results_df.columns}")
-        return pd.DataFrame(), None
-    
-    # Format each of the columns
-    results_df['start_date'] = results_df['start_date'].dt.date
-    results_df['end_date'] = results_df['end_date'].dt.date
-    results_df['above_threshold'] = pd.to_numeric(results_df['above_threshold'])
-    results_df['percent'] = pd.to_numeric(results_df['percent'])
-    
-    # Calculate the average number of days above threshold
-    average_days = results_df['above_threshold'].mean() if not results_df.empty else None
+    results_df = pd.DataFrame(results).T
+    average_days = float(results_df['above_threshold'].mean()) if not results_df.empty else 0.0
     
     return results_df, average_days
 
-## Make a plot with that dataframe, colour the top 5, and add an average line
 def plot_days_above_threshold_graph_objects(results_df, site_name, average_days):
     # Format the index to show just the year range
     results_df.index = results_df.index.str.replace('Winter ', '')
@@ -124,8 +102,8 @@ def plot_days_above_threshold_graph_objects(results_df, site_name, average_days)
     # Assign colors based on whether the year is in the top 5
     colors = results_df.index.map(lambda x: 'red' if x in top_5_years else 'blue')
 
-    # Prepare text for data labels, excluding 0 values
-    text_labels = results_df['above_threshold'].apply(lambda x: str(x) if x > 0 else '')
+    # Prepare text for data labels, only for top 5 values
+    text_labels = results_df.apply(lambda row: str(row['above_threshold']) if row.name in top_5_years else '', axis=1)
 
     # Create the bar chart with specified colors
     fig = go.Figure()
@@ -167,7 +145,7 @@ def plot_days_above_threshold_graph_objects(results_df, site_name, average_days)
         textfont_size=10
     )
 
-    # Return the figure object instead of showing it
+    # Return the figure object
     return fig
 
 # Store plots in a dictionary
@@ -190,11 +168,10 @@ for site_name in data_dict.keys():
         # Store the figure object in the plots dictionary
         plots[site_name] = fig
 
-        print("Plot has made and stored in plots dictionary")
+        print("Plot has been made and stored in plots dictionary")
         print(f"Access using plots['{site_name}'].show()")
     else:
         print(f"No data available for site {site_name}.")
-
 
 
 ################
@@ -477,13 +454,13 @@ def calculate_days_above_threshold(site_name, data_dict, rolling_window=5):
     # Convert results to DataFrame
     results_df = pd.DataFrame(results).T
     
-    # Ensure 'above_threshold' column is present
-    if 'above_threshold' not in results_df.columns:
-        print(f"'above_threshold' column is missing in results_df for site {site_name}.")
-    
     # Calculate the rolling mean of the number of days above threshold
     if 'above_threshold' in results_df.columns:
         results_df['rolling_mean'] = results_df['above_threshold'].rolling(window=rolling_window, min_periods=1).mean()
+    
+        # Normalize the rolling mean by the maximum days experienced at the site
+        max_days = results_df['above_threshold'].max() if not results_df.empty else 1
+        results_df['normalized_rolling_mean'] = results_df['rolling_mean'] / max_days
     
     # Calculate the average number of days above threshold
     average_days = results_df['above_threshold'].mean() if not results_df.empty else None
@@ -520,82 +497,7 @@ def plot_rolling_mean(results_df, site_name):
         xaxis_tickangle=-90
     )
     
-    # Show the plot
-    fig.show()
-
-
-
-# Iterate through each site in data_dict
-for site_name in data_dict.keys():
-    print(f"Processing site: {site_name}")
-    
-    # Calculate results and average
-    results_df, average_days = calculate_days_above_threshold(site_name, data_dict)
-    
-    if not results_df.empty:
-        # Print the results DataFrame for debugging
-        print(f"Results DataFrame for {site_name}:\n{results_df}")
-        
-        # Plot the rolling mean
-        plot_rolling_mean(results_df, site_name)
-    else:
-        print(f"No data available for site {site_name}.")
-
-
-import pandas as pd
-import plotly.graph_objects as go
-from datetime import datetime
-
-def calculate_days_above_threshold(site_name, data_dict, rolling_window=5):
-    # Retrieve the relevant data and threshold
-    df = data_dict[site_name]['date_values']
-    threshold = data_dict[site_name]['threshold']
-    
-    if threshold is None:
-        print(f"No threshold defined for site {site_name}.")
-        return pd.DataFrame(), None  # Return an empty DataFrame and None for the average if no threshold is defined
-    
-    # Convert dateTime to just a date
-    df['date'] = df['dateTime'].dt.normalize()
-    
-    # Determine the start year (earliest year in the dataset) and end year (current year)
-    start_year = df['date'].dt.year.min() + 1
-    end_year = datetime.now().year - 1
-    
-    results = {}
-    for year in range(start_year, end_year + 1):
-        start_date = pd.Timestamp(year, 10, 1)  # October 1st of the current year
-        end_date = pd.Timestamp(year + 1, 3, 1)  # 1st March of the next year
-        
-        # Filter data for the current winter period
-        winter_period_data = df[(df['date'] >= start_date) & (df['date'] <= end_date)]
-        
-        # Calculate the number of days the value is greater than the threshold
-        total_days = len(winter_period_data)
-        above_threshold = (winter_period_data['value'] > threshold).sum()
-        percent = round((above_threshold / total_days * 100), 1) if total_days > 0 else 0.0
-        
-        # Store results for the current winter period
-        results[f"Winter {year}-{year + 1}"] = {
-            'above_threshold': above_threshold,
-            'percent': percent
-        }
-    
-    # Convert results to DataFrame
-    results_df = pd.DataFrame(results).T
-    
-    # Calculate the rolling mean of the number of days above threshold
-    if 'above_threshold' in results_df.columns:
-        results_df['rolling_mean'] = results_df['above_threshold'].rolling(window=rolling_window, min_periods=1).mean()
-    
-        # Normalize the rolling mean by the maximum days experienced at the site
-        max_days = results_df['above_threshold'].max() if not results_df.empty else 1
-        results_df['normalized_rolling_mean'] = results_df['rolling_mean'] / max_days
-    
-    # Calculate the average number of days above threshold
-    average_days = results_df['above_threshold'].mean() if not results_df.empty else None
-    
-    return results_df, average_days
+    return fig
 
 def plot_catchment_rolling_mean(data_dict):
     # Group sites by catchment
@@ -605,6 +507,9 @@ def plot_catchment_rolling_mean(data_dict):
         if catchment_name not in catchment_sites:
             catchment_sites[catchment_name] = []
         catchment_sites[catchment_name].append(site_name)
+    
+    # Dictionary to store catchment plots
+    catchment_plots = {}
     
     for catchment_name, sites in catchment_sites.items():
         fig = go.Figure()
@@ -664,64 +569,48 @@ def plot_catchment_rolling_mean(data_dict):
             xaxis_tickangle=-90
         )
         
-        # Show the plot
-        fig.show()
+        # Store the plot in the catchment_plots dictionary
+        catchment_plots[catchment_name] = fig
+    
+    return catchment_plots
 
-# Call the function to plot normalized rolling means for each catchment
-plot_catchment_rolling_mean(data_dict)
+# Store individual plots
+individual_plots = {}
+catchment_plots = {}
+
+# Iterate through each site in data_dict
+for site_name in data_dict.keys():
+    print(f"Processing site: {site_name}")
+    
+    # Calculate results and average
+    results_df, average_days = calculate_days_above_threshold(site_name, data_dict)
+    
+    if not results_df.empty:
+        # Print the results DataFrame for debugging
+        # print(f"Results DataFrame for {site_name}:\n{results_df}")
+        
+        # Plot the rolling mean and store it
+        individual_plots[site_name] = plot_rolling_mean(results_df, site_name)
+    else:
+        print(f"No data available for site {site_name}.")
+
+# Call the function to plot normalized rolling means for each catchment and store plots
+catchment_plots = plot_catchment_rolling_mean(data_dict)
+
+# Print instructions for accessing plots
+for site_name in individual_plots:
+    print(f"Access individual plot for site '{site_name}' using individual_plots['{site_name}'].show()")
+
+for catchment_name in catchment_plots:
+    print(f"Access catchment plot for '{catchment_name}' using catchment_plots['{catchment_name}'].show()")
+
 
  
 ################################################
 ##### Catchment averages ########
 ################################################
 
-##### Line charts
-
-import pandas as pd
-import plotly.graph_objects as go
-from datetime import datetime
-
-def calculate_days_above_threshold(site_name, data_dict):
-    # Retrieve the relevant data and threshold
-    df = data_dict[site_name]['date_values']
-    threshold = data_dict[site_name]['threshold']
-    
-    if threshold is None:
-        print(f"No threshold defined for site {site_name}.")
-        return pd.DataFrame()  # Return an empty DataFrame if no threshold is defined
-    
-    # Convert dateTime to just a date
-    df['date'] = df['dateTime'].dt.normalize()
-    
-    # Determine the start year (earliest year in the dataset) and end year (current year)
-    start_year = df['date'].dt.year.min() + 1
-    end_year = datetime.now().year - 1
-    
-    results = {}
-    for year in range(start_year, end_year + 1):
-        start_date = pd.Timestamp(year, 10, 1)  # October 1st of the current year
-        end_date = pd.Timestamp(year + 1, 3, 1)  # 1st March of the next year
-        
-        # Filter data for the current winter period
-        winter_period_data = df[(df['date'] >= start_date) & (df['date'] <= end_date)]
-        
-        # Calculate the number of days the value is greater than the threshold
-        total_days = len(winter_period_data)
-        above_threshold = (winter_period_data['value'] > threshold).sum()
-        percent = round((above_threshold / total_days * 100), 1) if total_days > 0 else 0.0
-        
-        # Store results for the current winter period
-        results[f"Winter {year}-{year + 1}"] = {
-            'above_threshold': above_threshold,
-            'percent': percent
-        }
-    
-    # Convert results to DataFrame
-    results_df = pd.DataFrame(results).T
-    return results_df
-
 def calculate_catchment_averages(data_dict):
-    # Group sites by catchment
     catchment_sites = {}
     for site_name, site_data in data_dict.items():
         catchment_name = site_data.get('catchment', 'Unknown Catchment')
@@ -729,7 +618,6 @@ def calculate_catchment_averages(data_dict):
             catchment_sites[catchment_name] = []
         catchment_sites[catchment_name].append(site_name)
     
-    # Data structure to hold average days above threshold per catchment and year
     catchment_averages = {}
     
     for catchment_name, sites in catchment_sites.items():
@@ -737,14 +625,14 @@ def calculate_catchment_averages(data_dict):
         
         yearly_totals = {}
         for site_name in sites:
-            results_df = calculate_days_above_threshold(site_name, data_dict)
-            for index, row in results_df.iterrows():
-                year = index.split('-')[0].split(' ')[1]  # Extract the year from index
-                if year not in yearly_totals:
-                    yearly_totals[year] = []
-                yearly_totals[year].append(row['above_threshold'])
+            results_df, _ = calculate_days_above_threshold(site_name, data_dict)  # Unpack the tuple correctly
+            if isinstance(results_df, pd.DataFrame):  # Ensure results_df is a DataFrame
+                for index, row in results_df.iterrows():
+                    year = index.split('-')[1]  # Extract the year from index
+                    if year not in yearly_totals:
+                        yearly_totals[year] = []
+                    yearly_totals[year].append(row['above_threshold'])
         
-        # Calculate average for each year in the catchment
         avg_per_year = {year: sum(days) / len(days) if days else 0 for year, days in yearly_totals.items()}
         catchment_averages[catchment_name] = avg_per_year
     
@@ -753,7 +641,6 @@ def calculate_catchment_averages(data_dict):
 def plot_catchment_averages(catchment_averages):
     fig = go.Figure()
     
-    # Prepare data for plotting
     for catchment_name, avg_days in catchment_averages.items():
         years = sorted(avg_days.keys())
         averages = [avg_days[year] for year in years]
@@ -769,7 +656,6 @@ def plot_catchment_averages(catchment_averages):
             )
         )
     
-    # Update layout
     fig.update_layout(
         title='Average Days Above Threshold by Catchment and Year',
         xaxis_title='Year',
@@ -778,25 +664,14 @@ def plot_catchment_averages(catchment_averages):
         yaxis=dict(range=[0, max(max(avg_days.values(), default=0) for avg_days in catchment_averages.values()) * 1.1])
     )
     
-    # Show the plot
-    fig.show()
-
-# Call the function to calculate and plot average days above threshold by catchment
-catchment_averages = calculate_catchment_averages(data_dict)
-plot_catchment_averages(catchment_averages)
-
-
-#### Stacked bar chart
-# Added total values for the highest 5 years but this is inappropriate for the dataset
+    return fig
 
 def plot_catchment_averages_stacked_bar(catchment_averages, color_mapping):
-    # Exclude the 'Unknown Catchment'
     catchment_averages = {k: v for k, v in catchment_averages.items() if k != 'Unknown Catchment'}
     
     years = sorted({year for avg_days in catchment_averages.values() for year in avg_days.keys()})
     fig = go.Figure()
     
-    # Add traces for each catchment with specified colors
     for catchment_name, avg_days in catchment_averages.items():
         values = [avg_days.get(year, 0) for year in years]
         fig.add_trace(
@@ -808,15 +683,22 @@ def plot_catchment_averages_stacked_bar(catchment_averages, color_mapping):
             )
         )
     
-    # Create bar chart
     fig.update_layout(
         title='Average Days Above Threshold by Catchment and Year (Stacked Bar Chart)',
         xaxis_title='Year',
         yaxis_title='Average Days Above Threshold',
         barmode='stack'
     )
+    
+    return fig
 
-    fig.show()
+# Call the function to calculate and plot average days above threshold by catchment
+catchment_averages = calculate_catchment_averages(data_dict)
+
+# Plot line chart
+line_chart_fig = plot_catchment_averages(catchment_averages)
+print("Call chart using 'line_chart_fig.show()'")
+line_chart_fig.write_html("line_chart_averages.html")
 
 # Define a color palette
 color_mapping = {
@@ -829,49 +711,54 @@ color_mapping = {
     'Teme': '#a6761d',    
 }
 
-plot_catchment_averages_stacked_bar(catchment_averages, color_mapping)
+# Plot stacked bar chart
+stacked_bar_chart_fig = plot_catchment_averages_stacked_bar(catchment_averages, color_mapping)
+print("Call chart using 'stacked_bar_chart_fig.show()'")
+stacked_bar_chart_fig.write_html("stacked_bar_chart_averages.html")
+
 
 ###########################################
 ############ Comparing with issue criteria
 ###########################################
+def process_threshold_data(data_dict, issue_criteria_path):
 
-# Initialize a list to hold the extracted data
-extracted_data = []
+    # Initialize a list to hold the extracted data
+    extracted_data = []
 
-# Loop through the dictionary and extract the 'name' and 'threshold'
-for key, value in data_dict.items():
-    extracted_data.append({'name': value['name'], 'threshold': value['threshold']})
+    # Loop through the dictionary and extract the 'name' and 'threshold'
+    for key, value in data_dict.items():
+        extracted_data.append({'name': value['name'], 'threshold': value['threshold']})
 
-# Convert the list of dictionaries to a DataFrame
-thresholds = pd.DataFrame(extracted_data)
+    # Convert the list of dictionaries to a DataFrame
+    thresholds = pd.DataFrame(extracted_data)
 
-# Display the DataFrame
-print(thresholds)
+    # Load and process the issue criteria data
+    issue_criteria = pd.read_excel(issue_criteria_path)
+    issue_criteria = issue_criteria.rename(columns={'RES': 'flood_alert_threshold'})
 
+    # Filter the issue_criteria DataFrame where Level is "FA"
+    issue_criteria_filtered = issue_criteria[issue_criteria['Level'] == 'FA']
 
-issue_criteria = pd.read_excel('issue_criteria.xlsx')
-issue_criteria = issue_criteria.rename(columns={'RES': 'flood_alert_threshold'})
+    # Merge the DataFrames on the matching columns ('name' and 'Gauge')
+    merged_df = pd.merge(thresholds, issue_criteria_filtered, left_on='name', right_on='Gauge')
 
+    # Calculate the difference between the thresholds and round to 1 decimal place
+    merged_df['threshold_difference'] = (merged_df['threshold'] - merged_df['flood_alert_threshold']).round(1)
 
-# Filter the issue_criteria DataFrame where Level is "FA"
-issue_criteria_filtered = issue_criteria[issue_criteria['Level'] == 'FA']
+    # Filter out rows where threshold_difference is 0
+    filtered_df = merged_df[merged_df['threshold_difference'] != 0]
 
-# Merge the DataFrames on the matching columns ('name' and 'Gauge')
-merged_df = pd.merge(thresholds, issue_criteria_filtered, left_on='name', right_on='Gauge')
+    # Sort the DataFrame by threshold_difference in ascending order
+    sorted_df = filtered_df.sort_values(by='threshold_difference', ascending=True)
 
-# Calculate the difference between the thresholds and round to 1 decimal place
-merged_df['threshold_difference'] = (merged_df['threshold'] - merged_df['flood_alert_threshold']).round(1)
+    # Select only the columns of interest
+    result_df = sorted_df[['name', 'threshold', 'flood_alert_threshold', 'threshold_difference']]
 
-# Filter out rows where threshold_difference is 0
-filtered_df = merged_df[merged_df['threshold_difference'] != 0]
+    # Return the result DataFrame
+    return result_df
 
-# Sort the DataFrame by threshold_difference in ascending order
-sorted_df = filtered_df.sort_values(by='threshold_difference', ascending=True)
-
-# Optionally, select only the columns of interest
-result_df = sorted_df[['name', 'threshold', 'flood_alert_threshold', 'threshold_difference']]
-
-# Display the result DataFrame
+issue_criteria_path = 'issue_criteria.xlsx'
+result_df = process_threshold_data(data_dict, issue_criteria_path)
 result_df
 
 ######################################################
@@ -987,13 +874,13 @@ def rename_columns(df):
     }
     
     # Print columns for debugging
-    print("Original columns:", df.columns.tolist())
+    # print("Original columns:", df.columns.tolist())
     
     # Rename columns using the mapping
     df.rename(columns={key: column_mapping.get(key, key) for key in df.columns}, inplace=True)
     
     # Print renamed columns for debugging
-    print("Renamed columns:", df.columns.tolist())
+    # print("Renamed columns:", df.columns.tolist())
     
     return df
 
@@ -1100,3 +987,12 @@ docx_directory = 'C:\\Users\\SPHILLIPS03\\Documents\\repos\\historicfloodlevels\
 output_excel_file = 'C:\\Users\\SPHILLIPS03\\Documents\\repos\\historicfloodlevels\\thermometer_by_gauge.xlsx'
 all_excel_file = 'C:\\Users\\SPHILLIPS03\\Documents\\repos\\historicfloodlevels\\thermometer_all.xlsx'
 convert_docx_to_excel(docx_directory, output_excel_file, all_excel_file)
+
+
+##############################
+## ALL THE ABOVE WORKS ####
+##################################
+
+
+
+
