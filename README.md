@@ -80,6 +80,10 @@ I have already done loads of work on this before using Git Hub, so earlier versi
 * Turned this into a function so could be used elsewhere
 * Added spatial search to see if in SHWG or SWWM - now that is there, how do I get it into the peak table all
 
+## Updates 08/10/2024 (SEPT2024FloodLevels branch)
+* Copied files to make a new FETA to look at September 2024 analysis
+* Have managed to publish to a new app in sept24_levels_app folder (broke the multipage one...)
+* Want to try the peak ID because different rivers had differnt events and all responded differently
 
 ## Things to remember to run in VSCODE
 * rsconnect deploy dash . -n LevelsApp --entrypoint levels_app:app 
