@@ -1,0 +1,22 @@
+# This is a Databricks asset bundle definition for levels_app_folder.
+# The file was generated automatically by the Databricks extension. 
+# It's based on the configuration located in `.databricks/project.json`.
+# If you don't want this file to be created automatically, remove the `.databricks/project.json`.
+# See https://docs.databricks.com/dev-tools/bundles/index.html for documentation.
+
+bundle:
+  name: levels_app_folder
+
+targets:
+  dev:
+    mode: development
+    default: true
+    workspace:
+      host: https://adb-7393756451346106.6.azuredatabricks.net
+      root_path: /Users/stacy.phillips1@environment-agency.gov.uk/.ide/levels_app_folder-8651ad27
+
+  ## Optionally, there could be 'staging' or 'prod' targets here.
+  #
+  # prod:
+  #   workspace:
+  #     host: https://adb-7393756451346106.6.azuredatabricks.net
