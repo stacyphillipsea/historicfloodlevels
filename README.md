@@ -85,6 +85,8 @@ I have already done loads of work on this before using Git Hub, so earlier versi
 * Have managed to publish to a new app in sept24_levels_app folder (broke the multipage one...)
 * Want to try the peak ID because different rivers had differnt events and all responded differently
 * Realised that some river names are blank and so can't be accessed via the dropdown - tried to get it to fix at source when doing the JSON call but ran into difficulties. If riverName isn't available it won't be in the API response, rather than it just being blank. Instead I fixed it by iterating throughthe data_dict after it has been created and replacing the value 
+* Lengthened the period of time I was looking at. NEED TO DOUBLE CHECK THAT THE CODE IS SAVING THE JSON IN THE RIGHT PLACE, I DON'T THINK i KEPT THIUS WHEN I REVERTED THE CHANGES
+* Almost got last years data in there as a comparison but I broke it so I reverted the changes
 
 ## Things to remember to run in VSCODE
 * rsconnect deploy dash . -n LevelsApp --entrypoint levels_app:app 

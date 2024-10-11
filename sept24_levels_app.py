@@ -26,13 +26,14 @@ from shapely.geometry import Point
 BASE_URL = "http://environment.data.gov.uk/hydrology/id"
 BASE_STATIONS_URL = "http://environment.data.gov.uk/hydrology/id/stations"
 MIN_DATE_STR = "2024-09-18"
-MAX_DATE_STR = "2024-10-06"
+MAX_DATE_STR = "2024-10-10"
 MIN_DATE = datetime.strptime(MIN_DATE_STR, '%Y-%m-%d')
 MAX_DATE = datetime.strptime(MAX_DATE_STR, '%Y-%m-%d')
 DATE_FILTERS = {
     'Early September': ('2024-09-20', '2024-09-25', 'cornflowerblue'),
     'Late September': ('2024-09-26', '2024-09-30', 'red'),
     'October': ('2024-09-30', '2024-10-04', 'green'),
+    'October 8-9': ('2024-10-06', '2024-10-10', 'orange'),
 }
 
 ## Load data

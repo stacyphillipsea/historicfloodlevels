@@ -1,0 +1,969 @@
+Gauge,Storm,Date,Level
+Bidford On Avon,Early September,2024-09-24,3.19
+Bidford On Avon,Late September,2024-09-28,3.57
+Bidford On Avon,Early October,2024-09-30,2.77
+Bidford On Avon,October 9th,2024-10-05,2.34
+Rugby,Early September,2024-09-24,2.15
+Rugby,Late September,2024-09-27,2.56
+Rugby,Early October,2024-10-02,2.53
+Rugby,October 9th,2024-10-08,1.08
+Stareton,Early September,2024-09-25,0.68
+Stareton,Late September,2024-09-28,1.61
+Stareton,Early October,2024-10-03,1.53
+Stareton,October 9th,2024-10-05,0.84
+Stratford,Early September,2024-09-24,1.01
+Stratford,Late September,2024-09-28,1.49
+Stratford,Early October,2024-09-30,1.16
+Stratford,October 9th,2024-10-05,0.91
+Warwick,Early September,2024-09-25,1.78
+Warwick,Late September,2024-09-28,2.6
+Warwick,Early October,2024-10-03,2.23
+Warwick,October 9th,2024-10-05,1.66
+Old Budbrooke Road,Early September,2024-09-23,0.6
+Old Budbrooke Road,Late September,2024-09-26,0.86
+Old Budbrooke Road,Early October,2024-10-01,0.49
+Old Budbrooke Road,October 9th,2024-10-08,1.18
+Rothwell Road,Early September,2024-09-23,0.11
+Rothwell Road,Late September,2024-09-26,0.22
+Rothwell Road,Early October,2024-10-01,0.13
+Rothwell Road,October 9th,2024-10-08,0.44
+Wedgnock Lane,Early September,2024-09-23,0.57
+Wedgnock Lane,Late September,2024-09-26,0.93
+Wedgnock Lane,Early October,2024-09-30,0.55
+Wedgnock Lane,October 9th,2024-10-08,1.2
+Broom,Early September,2024-09-23,0.43
+Broom,Late September,2024-09-27,1.49
+Broom,Early October,2024-09-30,1.25
+Broom,October 9th,2024-10-09,0.93
+Henley River,Early September,2024-09-23,0.44
+Henley River,Late September,2024-09-27,0.73
+Henley River,Early October,2024-09-30,0.76
+Henley River,October 9th,2024-10-08,0.88
+Little Alne,Early September,2024-09-23,1.1
+Little Alne,Late September,2024-09-27,2.6
+Little Alne,Early October,2024-09-30,2.23
+Little Alne,October 9th,2024-10-09,2.72
+Studley,Early September,2024-09-22,0.95
+Studley,Late September,2024-09-26,1.48
+Studley,Early October,2024-09-30,1.26
+Studley,October 9th,2024-10-08,0.96
+Walton,Early September,2024-09-24,2.63
+Walton,Late September,2024-09-27,2.61
+Walton,Early October,2024-10-02,1.93
+Walton,October 9th,2024-10-09,1.44
+Wellesbourne,Early September,2024-09-24,1.32
+Wellesbourne,Late September,2024-09-27,1.33
+Wellesbourne,Early October,2024-10-02,0.56
+Wellesbourne,October 9th,2024-10-09,0.36
+Eathorpe,Early September,2024-09-24,2.57
+Eathorpe,Late September,2024-09-27,2.58
+Eathorpe,Early October,2024-10-02,2.32
+Eathorpe,October 9th,2024-10-05,1.22
+Kites Hardwick,Early September,2024-09-24,2.24
+Kites Hardwick,Late September,2024-09-27,2.24
+Kites Hardwick,Early October,2024-10-02,2.17
+Kites Hardwick,October 9th,2024-10-09,1.03
+Southam,Early September,2024-09-24,2.05
+Southam,Late September,2024-09-27,2.0
+Southam,Early October,2024-10-02,1.57
+Southam,October 9th,2024-10-09,1.11
+Longford,Early September,2024-09-22,1.33
+Longford,Late September,2024-09-27,1.23
+Longford,Early October,2024-09-30,1.16
+Longford,October 9th,2024-10-08,1.47
+Charterhouse Bridge,Early September,2024-09-22,0.8
+Charterhouse Bridge,Late September,2024-09-27,0.63
+Charterhouse Bridge,Early October,2024-09-30,0.68
+Charterhouse Bridge,October 9th,2024-10-08,0.96
+Hall Green Road,Early September,2024-09-22,1.58
+Hall Green Road,Late September,2024-09-27,1.57
+Hall Green Road,Early October,2024-09-30,1.54
+Hall Green Road,October 9th,2024-10-08,1.84
+"Hope Street, Coventry",Early September,2024-09-22,1.24
+"Hope Street, Coventry",Late September,2024-09-27,1.34
+"Hope Street, Coventry",Early October,2024-09-30,1.48
+"Hope Street, Coventry",October 9th,2024-10-08,1.9
+Kenilworth,Early September,2024-09-23,0.88
+Kenilworth,Late September,2024-09-27,1.01
+Kenilworth,Early October,2024-09-30,0.99
+Kenilworth,October 9th,2024-10-09,1.36
+Kenilworth Whateleys Drive,Early September,2024-09-23,0.87
+Kenilworth Whateleys Drive,Late September,2024-09-27,0.6
+Kenilworth Whateleys Drive,Early October,2024-09-30,0.64
+Kenilworth Whateleys Drive,October 9th,2024-10-08,1.06
+Shipston,Early September,2024-09-24,3.58
+Shipston,Late September,2024-09-27,3.46
+Shipston,Early October,2024-10-02,2.14
+Shipston,October 9th,2024-10-09,2.47
+Sir Henry Parkes Road,Early September,2024-09-23,0.95
+Sir Henry Parkes Road,Late September,2024-09-26,1.03
+Sir Henry Parkes Road,Early October,2024-09-30,1.09
+Sir Henry Parkes Road,October 9th,2024-10-08,1.5
+Torrington Avenue,Early September,2024-09-23,0.55
+Torrington Avenue,Late September,2024-09-26,0.7
+Torrington Avenue,Early October,2024-09-30,0.81
+Torrington Avenue,October 9th,2024-10-08,1.25
+Churchover,Early September,2024-09-24,1.55
+Churchover,Late September,2024-09-27,1.62
+Churchover,Early October,2024-10-02,1.6
+Churchover,October 9th,2024-10-09,1.24
+Clay Coton,Early September,2024-09-24,2.19
+Clay Coton,Late September,2024-09-27,2.07
+Clay Coton,Early October,2024-10-01,2.14
+Clay Coton,October 9th,2024-10-08,1.42
+Lilbourne,Early September,2024-09-24,1.49
+Lilbourne,Late September,2024-09-27,1.52
+Lilbourne,Early October,2024-10-02,1.57
+Lilbourne,October 9th,2024-10-09,0.74
+Bredon,Early September,2024-09-25,1.78
+Bredon,Late September,2024-09-29,2.52
+Bredon,Early October,2024-09-30,2.45
+Bredon,October 9th,2024-10-05,1.49
+Evesham,Early September,2024-09-24,2.04
+Evesham,Late September,2024-09-28,2.88
+Evesham,Early October,2024-09-30,1.97
+Evesham,October 9th,2024-10-05,1.43
+Pershore,Early September,2024-09-23,3.55
+Pershore,Late September,2024-09-28,4.02
+Pershore,Early October,2024-10-02,3.54
+Pershore,October 9th,2024-10-08,3.54
+Besford Bridge,Early September,2024-09-24,0.71
+Besford Bridge,Late September,2024-09-28,1.81
+Besford Bridge,Early October,2024-10-01,1.63
+Besford Bridge,October 9th,2024-10-09,1.01
+Childswickham,Early September,2024-09-23,0.83
+Childswickham,Late September,2024-09-27,0.87
+Childswickham,Early October,2024-09-30,0.44
+Childswickham,October 9th,2024-10-08,0.72
+Feckenham,Early September,2024-09-22,0.33
+Feckenham,Late September,2024-09-27,0.7
+Feckenham,Early October,2024-09-30,0.56
+Feckenham,October 9th,2024-10-08,0.38
+Hinton,Early September,2024-09-23,2.97
+Hinton,Late September,2024-09-27,3.25
+Hinton,Early October,2024-09-30,1.04
+Hinton,October 9th,2024-10-09,2.8
+Offenham,Early September,2024-09-24,1.94
+Offenham,Late September,2024-09-27,2.2
+Offenham,Early October,2024-10-01,1.05
+Offenham,October 9th,2024-10-09,1.86
+Sedgeberrow,Early September,2024-09-23,2.5
+Sedgeberrow,Late September,2024-09-27,3.2
+Sedgeberrow,Early October,2024-09-30,0.88
+Sedgeberrow,October 9th,2024-10-09,2.38
+Toddington,Early September,2024-09-23,1.47
+Toddington,Late September,2024-09-27,1.6
+Toddington,Early October,2024-09-30,0.84
+Toddington,October 9th,2024-10-08,1.47
+Wyre Piddle,Early September,2024-09-24,0.55
+Wyre Piddle,Late September,2024-09-27,1.15
+Wyre Piddle,Early October,2024-10-01,1.0
+Wyre Piddle,October 9th,2024-10-09,0.76
+Aston Bridge,Early September,2024-09-22,1.75
+Aston Bridge,Late September,2024-09-27,1.5
+Aston Bridge,Early October,2024-10-01,2.74
+Aston Bridge,October 9th,2024-10-08,1.28
+Doveridge,Early September,2024-09-22,1.41
+Doveridge,Late September,2024-09-27,1.28
+Doveridge,Early October,2024-10-01,2.29
+Doveridge,October 9th,2024-10-08,1.15
+Hatton,Early September,2024-09-22,1.38
+Hatton,Late September,2024-09-27,1.16
+Hatton,Early October,2024-10-01,2.09
+Hatton,October 9th,2024-10-08,1.01
+Marston On Dove,Early September,2024-09-22,0.93
+Marston On Dove,Late September,2024-09-27,0.85
+Marston On Dove,Early October,2024-10-01,1.34
+Marston On Dove,October 9th,2024-10-08,0.8
+Rocester Dove,Early September,2024-09-22,0.6
+Rocester Dove,Late September,2024-09-27,0.66
+Rocester Dove,Early October,2024-10-01,1.11
+Rocester Dove,October 9th,2024-10-08,0.37
+Horsebottoms,Early September,2024-09-22,0.46
+Horsebottoms,Late September,2024-09-27,0.4
+Horsebottoms,Early October,2024-09-30,0.71
+Horsebottoms,October 9th,2024-10-07,0.39
+Sutton Mill,Early September,2024-09-22,1.06
+Sutton Mill,Late September,2024-09-27,0.83
+Sutton Mill,Early October,2024-10-01,1.47
+Sutton Mill,October 9th,2024-10-07,0.71
+Anslow,Early September,2024-09-22,0.39
+Anslow,Late September,2024-09-27,0.4
+Anslow,Early October,2024-09-30,0.55
+Anslow,October 9th,2024-10-07,0.32
+Marchington,Early September,2024-09-22,0.3
+Marchington,Late September,2024-09-27,0.25
+Marchington,Early October,2024-09-30,0.67
+Marchington,October 9th,2024-10-06,0.2
+Uttoxeter Park,Early September,2024-09-22,0.52
+Uttoxeter Park,Late September,2024-09-27,0.35
+Uttoxeter Park,Early October,2024-09-30,0.59
+Uttoxeter Park,October 9th,2024-10-07,0.43
+Adderley,Early September,2024-09-21,0.88
+Adderley,Late September,2024-09-27,0.32
+Adderley,Early October,2024-09-30,0.58
+Adderley,October 9th,2024-10-07,0.67
+Basford Bridge,Early September,2024-09-22,1.32
+Basford Bridge,Late September,2024-09-27,0.89
+Basford Bridge,Early October,2024-09-30,1.86
+Basford Bridge,October 9th,2024-10-08,1.05
+Cheadle,Early September,2024-09-21,0.82
+Cheadle,Late September,2024-09-27,0.28
+Cheadle,Early October,2024-09-30,0.39
+Cheadle,October 9th,2024-10-07,0.58
+Flint Mill,Early September,2024-09-22,1.02
+Flint Mill,Late September,2024-09-27,0.72
+Flint Mill,Early October,2024-09-30,1.58
+Flint Mill,October 9th,2024-10-08,0.86
+Froghall,Early September,2024-09-22,0.61
+Froghall,Late September,2024-09-27,0.43
+Froghall,Early October,2024-09-30,1.06
+Froghall,October 9th,2024-10-08,0.7
+Leasows Farm,Early September,2024-09-22,1.5
+Leasows Farm,Late September,2024-09-27,0.56
+Leasows Farm,Early October,2024-09-30,1.08
+Leasows Farm,October 9th,2024-10-08,1.01
+Leek,Early September,2024-09-21,0.44
+Leek,Late September,2024-09-27,0.42
+Leek,Early October,2024-09-30,0.55
+Leek,October 9th,2024-10-07,0.43
+Quixhill,Early September,2024-09-22,0.74
+Quixhill,Late September,2024-09-27,0.52
+Quixhill,Early October,2024-10-01,1.42
+Quixhill,October 9th,2024-10-08,0.89
+Upper Tean,Early September,2024-09-21,1.46
+Upper Tean,Late September,2024-09-27,0.35
+Upper Tean,Early October,2024-09-30,0.67
+Upper Tean,October 9th,2024-10-07,0.73
+Wallgrange,Early September,2024-09-22,0.7
+Wallgrange,Late September,2024-09-27,0.35
+Wallgrange,Early October,2024-09-30,1.12
+Wallgrange,October 9th,2024-10-08,0.42
+Waterhouses,Early September,2024-09-22,0.46
+Waterhouses,Late September,2024-09-27,0.5
+Waterhouses,Early October,2024-09-30,0.91
+Waterhouses,October 9th,2024-10-07,0.48
+Agnes Meadow,Early September,2024-09-21,0.64
+Agnes Meadow,Late September,2024-09-27,0.46
+Agnes Meadow,Early October,2024-09-30,0.83
+Agnes Meadow,October 9th,2024-10-06,0.21
+Ashbourne,Early September,2024-09-22,0.51
+Ashbourne,Late September,2024-09-27,0.42
+Ashbourne,Early October,2024-09-30,0.72
+Ashbourne,October 9th,2024-10-06,0.26
+Ilam,Early September,2024-09-22,0.59
+Ilam,Late September,2024-09-27,0.65
+Ilam,Early October,2024-09-30,1.1
+Ilam,October 9th,2024-10-08,0.33
+Izaak Walton,Early September,2024-09-22,0.56
+Izaak Walton,Late September,2024-09-27,0.44
+Izaak Walton,Early October,2024-10-01,0.79
+Izaak Walton,October 9th,2024-10-08,0.43
+Mayfield,Early September,2024-09-22,0.97
+Mayfield,Late September,2024-09-27,1.0
+Mayfield,Early October,2024-10-01,1.77
+Mayfield,October 9th,2024-10-08,0.57
+Charlton Kings,Early September,2024-09-23,1.03
+Charlton Kings,Late September,2024-09-27,0.84
+Charlton Kings,Early October,2024-09-30,0.62
+Charlton Kings,October 9th,2024-10-08,0.66
+Arle,Early September,2024-09-20,2.84
+Arle,Late September,2024-09-26,1.38
+Arle,Early October,2024-09-30,0.95
+Arle,October 9th,2024-10-08,1.36
+Cox'S Flume,Early September,2024-09-23,1.43
+Cox'S Flume,Late September,2024-09-27,1.42
+Cox'S Flume,Early October,2024-09-30,1.2
+Cox'S Flume,October 9th,2024-10-08,1.29
+Merestones Road,Early September,2024-09-20,1.23
+Merestones Road,Late September,2024-09-27,0.67
+Merestones Road,Early October,2024-09-30,0.31
+Merestones Road,October 9th,2024-10-08,0.46
+Prestbury Road,Early September,2024-09-20,0.28
+Prestbury Road,Late September,2024-09-26,0.18
+Prestbury Road,Early October,2024-09-30,0.1
+Prestbury Road,October 9th,2024-10-08,0.14
+Windyridge Road,Early September,2024-09-20,1.59
+Windyridge Road,Late September,2024-09-26,1.24
+Windyridge Road,Early October,2024-09-30,1.08
+Windyridge Road,October 9th,2024-10-08,1.24
+Cox'S Meadow Storage Area,Early September,2024-09-23,0.75
+Cox'S Meadow Storage Area,Late September,2024-09-27,0.55
+Cox'S Meadow Storage Area,Early October,2024-09-30,0.23
+Cox'S Meadow Storage Area,October 9th,2024-10-08,0.02
+Moorend Road,Early September,2024-09-23,1.01
+Moorend Road,Late September,2024-09-27,0.91
+Moorend Road,Early October,2024-09-30,0.62
+Moorend Road,October 9th,2024-10-08,0.65
+Sandford Park,Early September,2024-09-23,1.53
+Sandford Park,Late September,2024-09-27,1.1
+Sandford Park,Early October,2024-09-30,0.63
+Sandford Park,October 9th,2024-10-08,0.62
+Brimscombe,Early September,2024-09-23,0.87
+Brimscombe,Late September,2024-09-29,1.01
+Brimscombe,Early October,2024-09-30,1.04
+Brimscombe,October 9th,2024-10-08,1.06
+Cambridge,Early September,2024-09-23,0.49
+Cambridge,Late September,2024-09-27,0.59
+Cambridge,Early October,2024-09-30,0.52
+Cambridge,October 9th,2024-10-08,1.04
+Chalford,Early September,2024-09-24,0.18
+Chalford,Late September,2024-09-29,0.3
+Chalford,Early October,2024-09-30,0.4
+Chalford,October 9th,2024-10-09,0.32
+Eastington,Early September,2024-09-23,1.24
+Eastington,Late September,2024-09-27,1.19
+Eastington,Early October,2024-09-30,1.18
+Eastington,October 9th,2024-10-08,1.38
+Ebley Mill,Early September,2024-09-23,0.62
+Ebley Mill,Late September,2024-09-27,0.66
+Ebley Mill,Early October,2024-09-30,0.64
+Ebley Mill,October 9th,2024-10-08,0.68
+Egypt Mill,Early September,2024-09-23,0.48
+Egypt Mill,Late September,2024-09-26,0.56
+Egypt Mill,Early October,2024-09-30,0.56
+Egypt Mill,October 9th,2024-10-08,0.56
+Slad Road,Early September,2024-09-23,0.41
+Slad Road,Late September,2024-09-27,0.27
+Slad Road,Early October,2024-09-30,0.25
+Slad Road,October 9th,2024-10-08,0.3
+Slad Steanbridge Lane,Early September,2024-09-23,0.45
+Slad Steanbridge Lane,Late September,2024-09-27,0.38
+Slad Steanbridge Lane,Early October,2024-09-30,0.35
+Slad Steanbridge Lane,October 9th,2024-10-08,0.37
+Abbeymead Avenue,Early September,2024-09-20,0.63
+Abbeymead Avenue,Late September,2024-09-27,0.57
+Abbeymead Avenue,Early October,2024-09-30,0.22
+Abbeymead Avenue,October 9th,2024-10-08,0.29
+Armscroft Place,Early September,2024-09-23,1.0
+Armscroft Place,Late September,2024-09-27,0.87
+Armscroft Place,Early October,2024-09-30,0.35
+Armscroft Place,October 9th,2024-10-08,0.92
+Bodiam Avenue,Early September,2024-09-23,0.53
+Bodiam Avenue,Late September,2024-09-27,0.63
+Bodiam Avenue,Early October,2024-09-30,0.31
+Bodiam Avenue,October 9th,2024-10-08,0.81
+Bondend Road,Early September,2024-09-23,0.67
+Bondend Road,Late September,2024-09-27,0.77
+Bondend Road,Early October,2024-10-03,0.47
+Bondend Road,October 9th,2024-10-08,0.52
+Cheyney Close,Early September,2024-09-20,1.57
+Cheyney Close,Late September,2024-09-27,0.83
+Cheyney Close,Early October,2024-09-30,0.3
+Cheyney Close,October 9th,2024-10-08,0.82
+Clomoney Way,Early September,2024-09-23,1.83
+Clomoney Way,Late September,2024-09-27,1.33
+Clomoney Way,Early October,2024-09-30,0.89
+Clomoney Way,October 9th,2024-10-08,1.25
+Field Court Drive,Early September,2024-09-20,0.48
+Field Court Drive,Late September,2024-09-26,0.49
+Field Court Drive,Early October,2024-09-30,0.14
+Field Court Drive,October 9th,2024-10-08,0.52
+Hucclecote,Early September,2024-09-23,1.62
+Hucclecote,Late September,2024-09-27,0.9
+Hucclecote,Early October,2024-09-30,0.6
+Hucclecote,October 9th,2024-10-08,0.84
+India Road,Early September,2024-09-20,0.78
+India Road,Late September,2024-09-26,0.64
+India Road,Early October,2024-09-30,0.39
+India Road,October 9th,2024-10-08,0.64
+Kingscroft Road,Early September,2024-09-20,2.06
+Kingscroft Road,Late September,2024-09-26,1.21
+Kingscroft Road,Early October,2024-09-30,0.66
+Kingscroft Road,October 9th,2024-10-08,1.06
+Matson Place,Early September,2024-09-20,0.92
+Matson Place,Late September,2024-09-27,0.7
+Matson Place,Early October,2024-09-30,0.37
+Matson Place,October 9th,2024-10-08,0.7
+Saintbridge,Early September,2024-09-23,2.76
+Saintbridge,Late September,2024-09-27,2.48
+Saintbridge,Early October,2024-09-30,0.3
+Saintbridge,October 9th,2024-10-08,1.44
+Shepherd Road,Early September,2024-09-20,1.0
+Shepherd Road,Late September,2024-09-27,1.42
+Shepherd Road,Early October,2024-09-30,0.22
+Shepherd Road,October 9th,2024-10-08,0.69
+The Causeway,Early September,2024-09-23,1.47
+The Causeway,Late September,2024-09-26,1.43
+The Causeway,Early October,2024-09-30,0.79
+The Causeway,October 9th,2024-10-08,1.68
+Witcombe,Early September,2024-09-20,1.4
+Witcombe,Late September,2024-09-27,0.73
+Witcombe,Early October,2024-09-30,0.48
+Witcombe,October 9th,2024-10-08,0.66
+Zoons Court River Level,Early September,2024-09-23,2.54
+Zoons Court River Level,Late September,2024-09-27,1.5
+Zoons Court River Level,Early October,2024-09-30,0.8
+Zoons Court River Level,October 9th,2024-10-08,1.65
+Bosbury,Early September,2024-09-23,0.42
+Bosbury,Late September,2024-09-27,0.38
+Bosbury,Early October,2024-09-30,0.2
+Bosbury,October 9th,2024-10-08,0.32
+Lydney,Early September,2024-09-24,0.3
+Lydney,Late September,2024-09-26,0.46
+Lydney,Early October,2024-09-30,0.46
+Lydney,October 9th,2024-10-09,0.49
+Parkend,Early September,2024-09-23,0.18
+Parkend,Late September,2024-09-26,0.28
+Parkend,Early October,2024-09-30,0.39
+Parkend,October 9th,2024-10-09,0.39
+Wedderburn Bridge,Early September,2024-09-24,2.66
+Wedderburn Bridge,Late September,2024-09-27,2.43
+Wedderburn Bridge,Early October,2024-10-01,2.36
+Wedderburn Bridge,October 9th,2024-10-09,2.11
+Ashleworth,Early September,2024-09-25,1.63
+Ashleworth,Late September,2024-09-28,2.91
+Ashleworth,Early October,2024-10-02,2.92
+Ashleworth,October 9th,2024-10-05,2.2
+Gloucester,Early September,2024-09-20,2.49
+Gloucester,Late September,2024-09-28,2.21
+Gloucester,Early October,2024-10-03,2.76
+Gloucester,October 9th,2024-10-05,2.36
+Haw Bridge,Early September,2024-09-24,2.51
+Haw Bridge,Late September,2024-09-28,4.05
+Haw Bridge,Early October,2024-10-02,3.87
+Haw Bridge,October 9th,2024-10-05,3.1
+Mythe Bridge,Early September,2024-09-25,1.8
+Mythe Bridge,Late September,2024-09-28,3.55
+Mythe Bridge,Early October,2024-10-02,3.25
+Mythe Bridge,October 9th,2024-10-05,2.34
+Sandhurst,Early September,2024-09-23,2.56
+Sandhurst,Late September,2024-09-28,2.72
+Sandhurst,Early October,2024-10-02,3.0
+Sandhurst,October 9th,2024-10-05,2.53
+Sandhurst Hatherley Brook,Early September,2024-09-24,2.64
+Sandhurst Hatherley Brook,Late September,2024-09-28,2.82
+Sandhurst Hatherley Brook,Early October,2024-10-03,2.68
+Sandhurst Hatherley Brook,October 9th,2024-10-05,2.18
+Upper Pound,Early September,2024-09-24,2.97
+Upper Pound,Late September,2024-09-28,3.48
+Upper Pound,Early October,2024-09-30,3.38
+Upper Pound,October 9th,2024-10-05,2.79
+Epney,Early September,2024-09-20,6.16
+Epney,Late September,2024-09-26,3.1
+Epney,Early October,2024-10-03,4.85
+Epney,October 9th,2024-10-05,4.63
+Minsterworth,Early September,2024-09-20,4.99
+Minsterworth,Late September,2024-09-29,2.7
+Minsterworth,Early October,2024-10-03,4.19
+Minsterworth,October 9th,2024-10-05,3.88
+Shelley Close,Early September,2024-09-23,1.26
+Shelley Close,Late September,2024-09-27,1.3
+Shelley Close,Early October,2024-09-30,1.33
+Shelley Close,October 9th,2024-10-08,1.28
+Bewdley,Early September,2024-09-24,1.18
+Bewdley,Late September,2024-09-28,2.09
+Bewdley,Early October,2024-10-02,2.63
+Bewdley,October 9th,2024-10-05,1.64
+Diglis,Early September,2024-09-24,0.82
+Diglis,Late September,2024-09-28,2.29
+Diglis,Early October,2024-10-02,2.2
+Diglis,October 9th,2024-10-05,0.95
+Kempsey Yacht Club,Early September,2024-09-24,2.02
+Kempsey Yacht Club,Late September,2024-09-28,4.48
+Kempsey Yacht Club,Early October,2024-10-02,4.32
+Kempsey Yacht Club,October 9th,2024-10-05,2.83
+Saxons Lode,Early September,2024-09-24,1.56
+Saxons Lode,Late September,2024-09-28,3.5
+Saxons Lode,Early October,2024-10-03,3.23
+Saxons Lode,October 9th,2024-10-05,2.17
+Worcester,Early September,2024-09-24,1.45
+Worcester,Late September,2024-09-28,2.52
+Worcester,Early October,2024-10-02,2.61
+Worcester,October 9th,2024-10-05,1.31
+Bromsgrove Burcot Avenue,Early September,2024-09-22,0.32
+Bromsgrove Burcot Avenue,Late September,2024-09-26,0.46
+Bromsgrove Burcot Avenue,Early October,2024-09-30,0.33
+Bromsgrove Burcot Avenue,October 9th,2024-10-07,0.31
+Bromsgrove Factory Lane,Early September,2024-09-22,0.94
+Bromsgrove Factory Lane,Late September,2024-09-26,1.18
+Bromsgrove Factory Lane,Early October,2024-09-30,0.81
+Bromsgrove Factory Lane,October 9th,2024-10-07,1.07
+Harford Hill,Early September,2024-09-23,0.87
+Harford Hill,Late September,2024-09-27,2.12
+Harford Hill,Early October,2024-09-30,0.96
+Harford Hill,October 9th,2024-10-09,0.91
+Puxton,Early September,2024-09-23,1.9
+Puxton,Late September,2024-09-27,2.23
+Puxton,Early October,2024-09-30,1.78
+Puxton,October 9th,2024-10-09,1.11
+Stoke Prior,Early September,2024-09-22,0.91
+Stoke Prior,Late September,2024-09-26,1.37
+Stoke Prior,Early October,2024-09-30,0.66
+Stoke Prior,October 9th,2024-10-08,0.66
+Stoke Prior Hanbury Lane,Early September,2024-09-23,0.25
+Stoke Prior Hanbury Lane,Late September,2024-09-27,0.5
+Stoke Prior Hanbury Lane,Early October,2024-09-30,0.37
+Stoke Prior Hanbury Lane,October 9th,2024-10-08,0.47
+Stourton,Early September,2024-09-23,1.66
+Stourton,Late September,2024-09-27,1.75
+Stourton,Early October,2024-09-30,1.33
+Stourton,October 9th,2024-10-09,0.57
+Marlbrook,Early September,2024-09-23,0.24
+Marlbrook,Late September,2024-09-27,1.21
+Marlbrook,Early October,2024-09-30,0.96
+Marlbrook,October 9th,2024-10-09,0.25
+Oak Cottage,Early September,2024-09-23,0.19
+Oak Cottage,Late September,2024-09-27,1.28
+Oak Cottage,Early October,2024-09-30,0.54
+Oak Cottage,October 9th,2024-10-08,0.33
+Burcote,Early September,2024-09-23,0.35
+Burcote,Late September,2024-09-28,0.42
+Burcote,Early October,2024-10-02,0.5
+Burcote,October 9th,2024-10-07,0.31
+Church Stretton,Early September,2024-09-23,0.16
+Church Stretton,Late September,2024-09-26,0.42
+Church Stretton,Early October,2024-09-30,0.26
+Church Stretton,October 9th,2024-10-06,0.16
+Farley bridge,Early September,2024-09-23,0.85
+Farley bridge,Late September,2024-09-27,2.22
+Farley bridge,Early October,2024-09-30,1.53
+Farley bridge,October 9th,2024-10-08,1.42
+Hookagate,Early September,2024-09-23,0.71
+Hookagate,Late September,2024-09-27,1.55
+Hookagate,Early October,2024-09-30,1.13
+Hookagate,October 9th,2024-10-08,0.86
+Shifnal,Early September,2024-09-21,0.31
+Shifnal,Late September,2024-09-27,0.34
+Shifnal,Early October,2024-09-30,0.5
+Shifnal,October 9th,2024-10-06,0.31
+Bridgnorth,Early September,2024-09-24,1.12
+Bridgnorth,Late September,2024-09-28,1.96
+Bridgnorth,Early October,2024-10-02,2.57
+Bridgnorth,October 9th,2024-10-05,1.48
+Buildwas,Early September,2024-09-24,1.44
+Buildwas,Late September,2024-09-28,2.61
+Buildwas,Early October,2024-10-01,3.29
+Buildwas,October 9th,2024-10-05,1.95
+Cae Howel - New Cut,Early September,2024-09-24,1.35
+Cae Howel - New Cut,Late September,2024-09-28,3.18
+Cae Howel - New Cut,Early October,2024-10-01,3.73
+Cae Howel - New Cut,October 9th,2024-10-09,2.23
+Cae Howel (Severn),Early September,2024-09-24,1.33
+Cae Howel (Severn),Late September,2024-09-28,3.21
+Cae Howel (Severn),Early October,2024-10-01,4.21
+Cae Howel (Severn),October 9th,2024-10-09,2.24
+Crew Green,Early September,2024-09-24,1.74
+Crew Green,Late September,2024-09-27,3.67
+Crew Green,Early October,2024-10-01,4.68
+Crew Green,October 9th,2024-10-09,2.69
+Maesbrook,Early September,2024-09-24,0.06
+Maesbrook,Late September,2024-09-26,0.06
+Maesbrook,Early October,2024-09-30,1.11
+Maesbrook,October 9th,2024-10-08,0.38
+Montford,Early September,2024-09-24,1.74
+Montford,Late September,2024-09-28,3.13
+Montford,Early October,2024-10-01,3.93
+Montford,October 9th,2024-10-09,2.36
+Welsh Bridge,Early September,2024-09-24,1.05
+Welsh Bridge,Late September,2024-09-28,1.72
+Welsh Bridge,Early October,2024-10-01,2.1
+Welsh Bridge,October 9th,2024-10-09,1.3
+Llanyblodwel,Early September,2024-09-23,0.54
+Llanyblodwel,Late September,2024-09-27,0.59
+Llanyblodwel,Early October,2024-09-30,1.46
+Llanyblodwel,October 9th,2024-10-08,0.72
+Rodington,Early September,2024-09-25,0.78
+Rodington,Late September,2024-09-27,1.14
+Rodington,Early October,2024-10-01,1.52
+Rodington,October 9th,2024-10-05,1.27
+Walcot,Early September,2024-09-24,1.65
+Walcot,Late September,2024-09-27,2.04
+Walcot,Early October,2024-10-02,2.39
+Walcot,October 9th,2024-10-05,1.8
+Yeaton,Early September,2024-09-24,0.3
+Yeaton,Late September,2024-09-28,0.28
+Yeaton,Early October,2024-10-01,0.57
+Yeaton,October 9th,2024-10-05,0.36
+Hints,Early September,2024-09-23,1.77
+Hints,Late September,2024-09-27,1.66
+Hints,Early October,2024-09-30,1.73
+Hints,October 9th,2024-10-09,1.39
+Hopwas Bridge,Early September,2024-09-23,2.0
+Hopwas Bridge,Late September,2024-09-28,2.35
+Hopwas Bridge,Early October,2024-10-02,2.21
+Hopwas Bridge,October 9th,2024-10-05,1.22
+Lea Marston Lakes,Early September,2024-09-22,1.1
+Lea Marston Lakes,Late September,2024-09-27,1.41
+Lea Marston Lakes,Early October,2024-09-30,1.28
+Lea Marston Lakes,October 9th,2024-10-08,0.93
+Tamworth,Early September,2024-09-23,1.58
+Tamworth,Late September,2024-09-28,1.98
+Tamworth,Early October,2024-10-02,1.78
+Tamworth,October 9th,2024-10-05,1.17
+Water Orton,Early September,2024-09-21,1.79
+Water Orton,Late September,2024-09-26,2.45
+Water Orton,Early October,2024-09-30,2.06
+Water Orton,October 9th,2024-10-08,1.11
+Mancetter,Early September,2024-09-22,2.03
+Mancetter,Late September,2024-09-27,2.13
+Mancetter,Early October,2024-10-02,2.04
+Mancetter,October 9th,2024-10-09,1.94
+Nuneaton,Early September,2024-09-22,1.6
+Nuneaton,Late September,2024-09-27,1.8
+Nuneaton,Early October,2024-09-30,1.44
+Nuneaton,October 9th,2024-10-08,1.23
+Polesworth,Early September,2024-09-24,1.27
+Polesworth,Late September,2024-09-28,1.53
+Polesworth,Early October,2024-10-02,1.8
+Polesworth,October 9th,2024-10-05,0.93
+Temple Mill,Early September,2024-09-23,0.96
+Temple Mill,Late September,2024-09-27,1.21
+Temple Mill,Early October,2024-10-02,1.56
+Temple Mill,October 9th,2024-10-09,1.52
+Castle Farm,Early September,2024-09-24,1.04
+Castle Farm,Late September,2024-09-28,1.74
+Castle Farm,Early October,2024-10-01,1.67
+Castle Farm,October 9th,2024-10-09,1.08
+Cheswick Green,Early September,2024-09-23,0.61
+Cheswick Green,Late September,2024-09-27,1.05
+Cheswick Green,Early October,2024-09-30,1.3
+Cheswick Green,October 9th,2024-10-09,1.07
+Coleshill,Early September,2024-09-22,0.78
+Coleshill,Late September,2024-09-27,1.32
+Coleshill,Early October,2024-10-01,0.65
+Coleshill,October 9th,2024-10-09,0.36
+Solihull Lodge,Early September,2024-09-22,0.52
+Solihull Lodge,Late September,2024-09-27,1.16
+Solihull Lodge,Early October,2024-09-30,1.06
+Solihull Lodge,October 9th,2024-10-08,0.81
+Swans Barn,Early September,2024-09-22,1.85
+Swans Barn,Late September,2024-09-27,2.74
+Swans Barn,Early October,2024-09-30,2.19
+Swans Barn,October 9th,2024-10-08,2.02
+Bournville Woodbrooke Road,Early September,2024-09-22,0.74
+Bournville Woodbrooke Road,Late September,2024-09-26,1.85
+Bournville Woodbrooke Road,Early October,2024-09-30,0.94
+Bournville Woodbrooke Road,October 9th,2024-10-08,0.73
+Calthorpe Park,Early September,2024-09-22,0.9
+Calthorpe Park,Late September,2024-09-26,1.78
+Calthorpe Park,Early October,2024-09-30,1.09
+Calthorpe Park,October 9th,2024-10-08,0.84
+Lodge Hill Elford Road,Early September,2024-09-21,0.66
+Lodge Hill Elford Road,Late September,2024-09-26,1.57
+Lodge Hill Elford Road,Early October,2024-09-30,0.73
+Lodge Hill Elford Road,October 9th,2024-10-08,0.48
+Longbridge Bristol Street South,Early September,2024-09-22,1.16
+Longbridge Bristol Street South,Late September,2024-09-26,1.28
+Longbridge Bristol Street South,Early October,2024-09-30,1.23
+Longbridge Bristol Street South,October 9th,2024-10-08,1.11
+Selly Park,Early September,2024-09-22,0.7
+Selly Park,Late September,2024-09-26,1.85
+Selly Park,Early October,2024-09-30,0.93
+Selly Park,October 9th,2024-10-08,0.57
+Bescot,Early September,2024-09-21,3.05
+Bescot,Late September,2024-09-26,2.35
+Bescot,Early October,2024-09-30,2.62
+Bescot,October 9th,2024-10-08,1.58
+Birmingham Perry Beeches,Early September,2024-09-21,1.64
+Birmingham Perry Beeches,Late September,2024-09-26,0.81
+Birmingham Perry Beeches,Early October,2024-09-30,0.73
+Birmingham Perry Beeches,October 9th,2024-10-08,0.52
+Brookvale Road,Early September,2024-09-22,2.44
+Brookvale Road,Late September,2024-09-27,1.87
+Brookvale Road,Early October,2024-09-30,2.15
+Brookvale Road,October 9th,2024-10-08,1.09
+Park Hill,Early September,2024-09-21,1.56
+Park Hill,Late September,2024-09-26,1.11
+Park Hill,Early October,2024-09-30,1.47
+Park Hill,October 9th,2024-10-07,0.75
+Perry Park,Early September,2024-09-22,2.37
+Perry Park,Late September,2024-09-27,1.71
+Perry Park,Early October,2024-09-30,1.99
+Perry Park,October 9th,2024-10-08,0.97
+Clifton Road,Early September,2024-09-22,0.82
+Clifton Road,Late September,2024-09-27,1.34
+Clifton Road,Early October,2024-09-30,0.64
+Clifton Road,October 9th,2024-10-08,0.29
+Walsall,Early September,2024-09-21,1.31
+Walsall,Late September,2024-09-26,0.92
+Walsall,Early October,2024-09-30,0.9
+Walsall,October 9th,2024-10-08,0.34
+Millfield Avenue,Early September,2024-09-22,0.89
+Millfield Avenue,Late September,2024-09-27,0.7
+Millfield Avenue,Early October,2024-09-30,0.77
+Millfield Avenue,October 9th,2024-10-08,0.24
+Bransford,Early September,2024-09-24,0.91
+Bransford,Late September,2024-09-28,3.36
+Bransford,Early October,2024-10-01,2.56
+Bransford,October 9th,2024-10-09,1.25
+Dutlas,Early September,2024-09-22,0.56
+Dutlas,Late September,2024-09-27,1.18
+Dutlas,Early October,2024-09-30,0.64
+Dutlas,October 9th,2024-10-08,0.61
+Knightsford Bridge,Early September,2024-09-24,0.86
+Knightsford Bridge,Late September,2024-09-27,2.61
+Knightsford Bridge,Early October,2024-09-30,1.99
+Knightsford Bridge,October 9th,2024-10-09,1.15
+Leintwardine,Early September,2024-09-23,0.67
+Leintwardine,Late September,2024-09-27,1.2
+Leintwardine,Early October,2024-09-30,1.01
+Leintwardine,October 9th,2024-10-08,0.81
+Ludlow Teme,Early September,2024-09-23,1.34
+Ludlow Teme,Late September,2024-09-27,2.28
+Ludlow Teme,Early October,2024-09-30,1.94
+Ludlow Teme,October 9th,2024-10-09,1.66
+Ludlow Orleton Millbrook Way,Early September,2024-09-21,0.13
+Ludlow Orleton Millbrook Way,Late September,2024-09-27,0.13
+Ludlow Orleton Millbrook Way,Early October,2024-09-30,0.15
+Ludlow Orleton Millbrook Way,October 9th,2024-10-08,0.3
+Stanford Bridge,Early September,2024-09-24,0.6
+Stanford Bridge,Late September,2024-09-27,2.43
+Stanford Bridge,Early October,2024-09-30,1.86
+Stanford Bridge,October 9th,2024-10-09,0.99
+Burford Bridge,Early September,2024-09-23,0.61
+Burford Bridge,Late September,2024-09-27,0.9
+Burford Bridge,Early October,2024-09-30,0.84
+Burford Bridge,October 9th,2024-10-07,0.68
+CRAVEN ARMS BURNSIDE CLOSE,Early September,2024-09-23,0.29
+CRAVEN ARMS BURNSIDE CLOSE,Late September,2024-09-26,0.25
+CRAVEN ARMS BURNSIDE CLOSE,Early October,2024-09-30,0.38
+CRAVEN ARMS BURNSIDE CLOSE,October 9th,2024-10-08,0.32
+Ludlow - Corve,Early September,2024-09-24,1.04
+Ludlow - Corve,Late September,2024-09-27,1.92
+Ludlow - Corve,Early October,2024-10-01,2.03
+Ludlow - Corve,October 9th,2024-10-09,1.32
+Newnham Bridge,Early September,2024-09-23,0.61
+Newnham Bridge,Late September,2024-09-27,2.06
+Newnham Bridge,Early October,2024-09-30,1.29
+Newnham Bridge,October 9th,2024-10-09,0.68
+Onibury,Early September,2024-09-23,1.19
+Onibury,Late September,2024-09-27,2.29
+Onibury,Early October,2024-09-30,1.86
+Onibury,October 9th,2024-10-08,1.53
+Sutton Bridge,Early September,2024-09-23,0.55
+Sutton Bridge,Late September,2024-09-27,0.62
+Sutton Bridge,Early October,2024-09-30,0.63
+Sutton Bridge,October 9th,2024-10-08,0.61
+Tenbury,Early September,2024-09-24,0.9
+Tenbury,Late September,2024-09-27,2.2
+Tenbury,Early October,2024-09-30,1.64
+Tenbury,October 9th,2024-10-09,1.27
+Tenbury Kyre Brook,Early September,2024-09-23,0.15
+Tenbury Kyre Brook,Late September,2024-09-27,0.24
+Tenbury Kyre Brook,Early October,2024-09-30,0.25
+Tenbury Kyre Brook,October 9th,2024-10-08,0.23
+Croxall,Early September,2024-09-24,1.76
+Croxall,Late September,2024-09-29,1.78
+Croxall,Early October,2024-10-02,1.98
+Croxall,October 9th,2024-10-05,1.25
+Drakelow,Early September,2024-09-24,2.25
+Drakelow,Late September,2024-09-29,2.24
+Drakelow,Early October,2024-10-03,2.51
+Drakelow,October 9th,2024-10-05,1.96
+Yoxall,Early September,2024-09-23,1.7
+Yoxall,Late September,2024-09-26,1.24
+Yoxall,Early October,2024-10-01,1.68
+Yoxall,October 9th,2024-10-05,1.15
+Blythe Bridge,Early September,2024-09-21,1.52
+Blythe Bridge,Late September,2024-09-27,0.45
+Blythe Bridge,Early October,2024-09-30,0.67
+Blythe Bridge,October 9th,2024-10-07,0.52
+Cresswell,Early September,2024-09-22,1.12
+Cresswell,Late September,2024-09-27,0.37
+Cresswell,Early October,2024-09-30,0.58
+Cresswell,October 9th,2024-10-07,0.47
+Hamstall Ridware,Early September,2024-09-22,0.3
+Hamstall Ridware,Late September,2024-09-27,0.27
+Hamstall Ridware,Early October,2024-09-30,0.52
+Hamstall Ridware,October 9th,2024-10-09,0.16
+Hoar Cross,Early September,2024-09-22,0.44
+Hoar Cross,Late September,2024-09-27,0.55
+Hoar Cross,Early October,2024-09-30,0.89
+Hoar Cross,October 9th,2024-10-05,0.26
+Clifton Hall,Early September,2024-09-23,0.99
+Clifton Hall,Late September,2024-09-28,1.37
+Clifton Hall,Early October,2024-10-02,1.8
+Clifton Hall,October 9th,2024-10-05,0.6
+Packington,Early September,2024-09-22,0.9
+Packington,Late September,2024-09-27,1.13
+Packington,Early October,2024-10-01,1.25
+Packington,October 9th,2024-10-08,0.62
+Astonfields,Early September,2024-09-22,0.68
+Astonfields,Late September,2024-09-27,0.35
+Astonfields,Early October,2024-09-30,0.61
+Astonfields,October 9th,2024-10-07,0.45
+Bushbury Wychall Drive,Early September,2024-09-21,1.15
+Bushbury Wychall Drive,Late September,2024-09-27,0.52
+Bushbury Wychall Drive,Early October,2024-09-30,0.63
+Bushbury Wychall Drive,October 9th,2024-10-07,0.45
+Cannock,Early September,2024-09-22,1.14
+Cannock,Late September,2024-09-27,0.72
+Cannock,Early October,2024-09-30,0.97
+Cannock,October 9th,2024-10-07,0.61
+Churchbridge Hall Lane,Early September,2024-09-21,0.8
+Churchbridge Hall Lane,Late September,2024-09-27,0.4
+Churchbridge Hall Lane,Early October,2024-09-30,0.42
+Churchbridge Hall Lane,October 9th,2024-10-07,0.11
+Coven,Early September,2024-09-22,2.01
+Coven,Late September,2024-09-27,1.4
+Coven,Early October,2024-09-30,1.49
+Coven,October 9th,2024-10-08,1.06
+Deepmore Farm,Early September,2024-09-22,1.33
+Deepmore Farm,Late September,2024-09-27,1.15
+Deepmore Farm,Early October,2024-09-30,1.28
+Deepmore Farm,October 9th,2024-10-07,0.7
+Great Bridgford,Early September,2024-09-23,0.94
+Great Bridgford,Late September,2024-09-26,0.49
+Great Bridgford,Early October,2024-10-01,1.07
+Great Bridgford,October 9th,2024-10-08,0.52
+Milford,Early September,2024-09-24,1.91
+Milford,Late September,2024-09-26,1.58
+Milford,Early October,2024-10-02,1.77
+Milford,October 9th,2024-10-05,1.43
+Penkridge,Early September,2024-09-22,1.77
+Penkridge,Late September,2024-09-27,1.27
+Penkridge,Early October,2024-10-01,1.58
+Penkridge,October 9th,2024-10-08,0.74
+Shallowford,Early September,2024-09-23,0.64
+Shallowford,Late September,2024-09-27,0.32
+Shallowford,Early October,2024-10-01,0.8
+Shallowford,October 9th,2024-10-08,0.39
+Stafford,Early September,2024-09-21,0.9
+Stafford,Late September,2024-09-27,0.23
+Stafford,Early October,2024-09-30,0.45
+Stafford,October 9th,2024-10-07,0.5
+Halesowen,Early September,2024-09-23,0.95
+Halesowen,Late September,2024-09-27,1.08
+Halesowen,Early October,2024-09-30,1.08
+Halesowen,October 9th,2024-10-07,0.88
+Halesowen Dogkennel Lane,Early September,2024-09-23,0.31
+Halesowen Dogkennel Lane,Late September,2024-09-27,0.54
+Halesowen Dogkennel Lane,Early October,2024-09-30,0.51
+Halesowen Dogkennel Lane,October 9th,2024-10-08,0.23
+Halesowen Manor Way,Early September,2024-09-23,0.44
+Halesowen Manor Way,Late September,2024-09-26,0.89
+Halesowen Manor Way,Early October,2024-09-30,0.86
+Halesowen Manor Way,October 9th,2024-10-08,0.43
+Stourbridge,Early September,2024-09-23,1.07
+Stourbridge,Late September,2024-09-26,1.08
+Stourbridge,Early October,2024-09-30,1.04
+Stourbridge,October 9th,2024-10-07,0.57
+Swindon,Early September,2024-09-21,2.28
+Swindon,Late September,2024-09-27,2.04
+Swindon,Early October,2024-09-30,2.12
+Swindon,October 9th,2024-10-08,1.51
+Wightwick,Early September,2024-09-21,0.67
+Wightwick,Late September,2024-09-27,0.35
+Wightwick,Early October,2024-09-30,0.55
+Wightwick,October 9th,2024-10-06,0.26
+Wombourne,Early September,2024-09-21,1.24
+Wombourne,Late September,2024-09-26,0.86
+Wombourne,Early October,2024-09-30,0.66
+Wombourne,October 9th,2024-10-07,0.43
+Great Haywood,Early September,2024-09-22,2.31
+Great Haywood,Late September,2024-09-26,1.33
+Great Haywood,Early October,2024-10-01,2.05
+Great Haywood,October 9th,2024-10-08,1.35
+Brookhouse Farm,Early September,2024-09-22,0.5
+Brookhouse Farm,Late September,2024-09-27,0.4
+Brookhouse Farm,Early October,2024-09-30,0.8
+Brookhouse Farm,October 9th,2024-10-08,0.37
+Darlaston,Early September,2024-09-22,2.63
+Darlaston,Late September,2024-09-27,1.21
+Darlaston,Early October,2024-09-30,2.03
+Darlaston,October 9th,2024-10-07,1.42
+Hanford Bridge,Early September,2024-09-21,2.0
+Hanford Bridge,Late September,2024-09-27,0.69
+Hanford Bridge,Early October,2024-09-30,1.21
+Hanford Bridge,October 9th,2024-10-06,0.87
+Knypersley,Early September,2024-09-21,0.5
+Knypersley,Late September,2024-09-27,0.46
+Knypersley,Early October,2024-09-30,0.55
+Knypersley,October 9th,2024-10-06,0.53
+Liverpool Road,Early September,2024-09-21,1.81
+Liverpool Road,Late September,2024-09-27,0.41
+Liverpool Road,Early October,2024-09-30,0.86
+Liverpool Road,October 9th,2024-10-07,0.8
+Newcastle Under Lyme,Early September,2024-09-21,1.37
+Newcastle Under Lyme,Late September,2024-09-26,0.5
+Newcastle Under Lyme,Early October,2024-09-30,0.89
+Newcastle Under Lyme,October 9th,2024-10-06,0.6
+Stoke-On-Trent,Early September,2024-09-21,1.0
+Stoke-On-Trent,Late September,2024-09-27,0.2
+Stoke-On-Trent,Early October,2024-09-30,0.57
+Stoke-On-Trent,October 9th,2024-10-06,0.31
+Belmont,Early September,2024-09-23,1.96
+Belmont,Late September,2024-09-27,3.68
+Belmont,Early October,2024-10-02,1.87
+Belmont,October 9th,2024-10-09,1.77
+Bredwardine,Early September,2024-09-23,1.92
+Bredwardine,Late September,2024-09-27,3.63
+Bredwardine,Early October,2024-10-02,1.83
+Bredwardine,October 9th,2024-10-08,1.77
+Eywas Harold,Early September,2024-09-23,0.24
+Eywas Harold,Late September,2024-09-27,0.42
+Eywas Harold,Early October,2024-09-30,0.53
+Eywas Harold,October 9th,2024-10-08,0.71
+Lydbrook,Early September,2024-09-24,2.27
+Lydbrook,Late September,2024-09-28,3.61
+Lydbrook,Early October,2024-10-02,2.32
+Lydbrook,October 9th,2024-10-09,1.83
+Mordiford,Early September,2024-09-24,1.99
+Mordiford,Late September,2024-09-27,3.44
+Mordiford,Early October,2024-10-02,2.02
+Mordiford,October 9th,2024-10-09,1.79
+Hereford Bridge,Early September,2024-09-23,1.69
+Hereford Bridge,Late September,2024-09-27,3.29
+Hereford Bridge,Early October,2024-10-01,1.58
+Hereford Bridge,October 9th,2024-10-09,1.49
+Ross On Wye,Early September,2024-09-24,1.56
+Ross On Wye,Late September,2024-09-28,2.93
+Ross On Wye,Early October,2024-10-02,1.6
+Ross On Wye,October 9th,2024-10-09,1.14
+Sandford Bridge,Early September,2024-09-23,0.37
+Sandford Bridge,Late September,2024-09-27,0.35
+Sandford Bridge,Early October,2024-09-30,0.41
+Sandford Bridge,October 9th,2024-10-08,0.34
+Bishops Frome,Early September,2024-09-23,0.31
+Bishops Frome,Late September,2024-09-27,0.66
+Bishops Frome,Early October,2024-09-30,0.46
+Bishops Frome,October 9th,2024-10-09,0.49
+Bromyard,Early September,2024-09-23,0.36
+Bromyard,Late September,2024-09-26,1.18
+Bromyard,Early October,2024-09-30,0.72
+Bromyard,October 9th,2024-10-08,0.79
+Butts Bridge,Early September,2024-09-23,0.95
+Butts Bridge,Late September,2024-09-27,1.32
+Butts Bridge,Early October,2024-09-30,1.56
+Butts Bridge,October 9th,2024-10-09,1.26
+Byton,Early September,2024-09-23,0.57
+Byton,Late September,2024-09-27,0.81
+Byton,Early October,2024-09-30,0.96
+Byton,October 9th,2024-10-08,0.73
+Eardisland,Early September,2024-09-23,0.53
+Eardisland,Late September,2024-09-27,0.85
+Eardisland,Early October,2024-09-30,0.77
+Eardisland,October 9th,2024-10-08,0.56
+Ford Bridge,Early September,2024-09-24,0.81
+Ford Bridge,Late September,2024-09-27,1.16
+Ford Bridge,Early October,2024-09-30,1.33
+Ford Bridge,October 9th,2024-10-09,1.09
+Leominster Osborne Place,Early September,2024-09-23,0.76
+Leominster Osborne Place,Late September,2024-09-27,1.03
+Leominster Osborne Place,Early October,2024-10-01,1.09
+Leominster Osborne Place,October 9th,2024-10-08,0.99
+Leominster Upper Marsh,Early September,2024-09-23,0.59
+Leominster Upper Marsh,Late September,2024-09-27,0.75
+Leominster Upper Marsh,Early October,2024-09-30,0.85
+Leominster Upper Marsh,October 9th,2024-10-09,0.72
+Lugwardine,Early September,2024-09-24,1.86
+Lugwardine,Late September,2024-09-28,2.45
+Lugwardine,Early October,2024-10-02,2.58
+Lugwardine,October 9th,2024-10-05,2.06
+Peterchurch,Early September,2024-09-21,0.53
+Peterchurch,Late September,2024-09-27,0.94
+Peterchurch,Early October,2024-09-30,1.34
+Peterchurch,October 9th,2024-10-08,0.83
+Three Elms,Early September,2024-09-20,0.71
+Three Elms,Late September,2024-09-27,0.35
+Three Elms,Early October,2024-09-30,0.17
+Three Elms,October 9th,2024-10-08,0.2
+Titley Mill,Early September,2024-09-23,0.63
+Titley Mill,Late September,2024-09-27,1.1
+Titley Mill,Early October,2024-09-30,1.0
+Titley Mill,October 9th,2024-10-08,0.63
+Yarkhill,Early September,2024-09-20,1.06
+Yarkhill,Late September,2024-09-27,1.24
+Yarkhill,Early October,2024-09-30,0.7
+Yarkhill,October 9th,2024-10-09,0.83
