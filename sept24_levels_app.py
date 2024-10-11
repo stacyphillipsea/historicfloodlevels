@@ -82,8 +82,15 @@ def fetch_station_data(wiski_id):
         station = data['items'][0]
         label_field = station.get('label')
         name = str(label_field[1] if isinstance(label_field, list) else label_field)
+
+
+        # Extract river name and handle missing values
         river_name = station.get('riverName')
-        river_name = river_name[0] if isinstance(river_name, list) else river_name
+        if not river_name:
+            river_name = "No river name given"
+        else:
+            river_name = river_name[0] if isinstance(river_name, list) else river_name
+
         latitude = station.get('lat')
         longitude = station.get('long')
 
@@ -537,73 +544,73 @@ def gif_with_text(gif_src, text1, text2):
 #################################
 #################################
 
-from IPython.display import display
-from scipy.signal import find_peaks, find_peaks_cwt
-from ipywidgets import interact, FloatSlider, IntSlider, Button, VBox
-import ipywidgets as widgets
-from IPython.display import display
+# from IPython.display import display
+# from scipy.signal import find_peaks, find_peaks_cwt
+# from ipywidgets import interact, FloatSlider, IntSlider, Button, VBox
+# import ipywidgets as widgets
+# from IPython.display import display
 
 
-# Identify peaks using threshold and prominence of 2, distance 10
-def identify_peaks_for_site(site_data, site_name, thresholds_values):
-    # Set fixed parameters
-    prominence = 2
-    distance = 10
+# # Identify peaks using threshold and prominence of 2, distance 10
+# def identify_peaks_for_site(site_data, site_name, thresholds_values):
+#     # Set fixed parameters
+#     prominence = 2
+#     distance = 10
 
-    # Initial plot setup
-    fig = go.FigureWidget()
-    fig.add_trace(go.Scatter(x=site_data['dateTime'], y=site_data['value'], mode='lines', name='River levels'))
+#     # Initial plot setup
+#     fig = go.FigureWidget()
+#     fig.add_trace(go.Scatter(x=site_data['dateTime'], y=site_data['value'], mode='lines', name='River levels'))
 
-    # Add markers for the peaks
-    peak_scatter = fig.add_trace(go.Scatter(mode='markers', name='Peaks', marker=dict(color='red', size=8)))
+#     # Add markers for the peaks
+#     peak_scatter = fig.add_trace(go.Scatter(mode='markers', name='Peaks', marker=dict(color='red', size=8)))
 
-    # Update layout
-    fig.update_layout(
-        title=f'River Levels over time with peaks - {site_name}',
-        xaxis_title='Date',
-        yaxis_title='Level (m)'
-    )
+#     # Update layout
+#     fig.update_layout(
+#         title=f'River Levels over time with peaks - {site_name}',
+#         xaxis_title='Date',
+#         yaxis_title='Level (m)'
+#     )
 
-    # Retrieve the threshold value for the given site name
-    try:
-        threshold_value = thresholds_values.loc[thresholds_values['Gauge'] == site_name, 'Threshold'].values[0]
-    except IndexError:
-        print(f"No threshold found for {site_name}. Using default height value.")
-        threshold_value = 1.0
+#     # Retrieve the threshold value for the given site name
+#     try:
+#         threshold_value = thresholds_values.loc[thresholds_values['Gauge'] == site_name, 'Threshold'].values[0]
+#     except IndexError:
+#         print(f"No threshold found for {site_name}. Using default height value.")
+#         threshold_value = 1.0
 
-    # Find peaks with fixed parameters
-    peak_idx, _ = find_peaks(site_data['value'], prominence=prominence, height=threshold_value, distance=distance)
-    peak_dates = site_data['dateTime'].iloc[peak_idx]
-    peak_values = site_data['value'].iloc[peak_idx]
+#     # Find peaks with fixed parameters
+#     peak_idx, _ = find_peaks(site_data['value'], prominence=prominence, height=threshold_value, distance=distance)
+#     peak_dates = site_data['dateTime'].iloc[peak_idx]
+#     peak_values = site_data['value'].iloc[peak_idx]
 
-    # Update the plot with peak markers
-    fig.data[1].x = peak_dates
-    fig.data[1].y = peak_values
+#     # Update the plot with peak markers
+#     fig.data[1].x = peak_dates
+#     fig.data[1].y = peak_values
 
-    # Save peaks to DataFrame
-    peaks_df_name = f"peak_df_{site_name.replace(' ', '')}"
-    peak_df = pd.DataFrame({'Peak Date': peak_dates, 'Peak Value': peak_values})
-    print(f"Peaks for {site_name}:")
-    globals()[peaks_df_name] = peak_df
-    display(peak_df)
+#     # Save peaks to DataFrame
+#     peaks_df_name = f"peak_df_{site_name.replace(' ', '')}"
+#     peak_df = pd.DataFrame({'Peak Date': peak_dates, 'Peak Value': peak_values})
+#     print(f"Peaks for {site_name}:")
+#     globals()[peaks_df_name] = peak_df
+#     display(peak_df)
 
-    # Display the plot
-    display(fig)
+#     # Display the plot
+#     display(fig)
 
-    # Display the table
-    display(peak_df)
+#     # Display the table
+#     display(peak_df)
 
-    # Print number of peaks and time period
-    if not peak_df.empty:
-        min_peak_date = peak_df['Peak Date'].min().strftime('%d %B %Y') 
-        max_peak_date = peak_df['Peak Date'].max().strftime('%d %B %Y') 
-        num_peaks = len(peak_df)
-        print(f"At {site_name} there have been {num_peaks} peak levels above {threshold_value}m between {min_peak_date} and {max_peak_date}")
+#     # Print number of peaks and time period
+#     if not peak_df.empty:
+#         min_peak_date = peak_df['Peak Date'].min().strftime('%d %B %Y') 
+#         max_peak_date = peak_df['Peak Date'].max().strftime('%d %B %Y') 
+#         num_peaks = len(peak_df)
+#         print(f"At {site_name} there have been {num_peaks} peak levels above {threshold_value}m between {min_peak_date} and {max_peak_date}")
 
-# Choose site name
-site_name = 'Diglis'
-# Call the function to identify peaks for the selected site
-identify_peaks_for_site(data_dict[site_name]['date_values'], site_name, threshold_values)
+# # Choose site name
+# site_name = 'Diglis'
+# # Call the function to identify peaks for the selected site
+# identify_peaks_for_site(data_dict[site_name]['date_values'], site_name, threshold_values)
 
 
 
@@ -619,6 +626,13 @@ if data_dict:
     print("Data loaded successfully.")
 else:
     print("Error loading data.")
+
+#### Fix missing river names
+# Iterate through the nested dictionary to update river_name values
+for location, info in data_dict.items():
+    if info['river_name'] is None:  # Check if river_name is None
+        info['river_name'] = "No river name given"  # Update to the desired string
+
 
 
 # Find and store maximum values for all stations
