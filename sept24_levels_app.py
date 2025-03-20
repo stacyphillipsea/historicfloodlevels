@@ -26,14 +26,16 @@ from shapely.geometry import Point
 BASE_URL = "http://environment.data.gov.uk/hydrology/id"
 BASE_STATIONS_URL = "http://environment.data.gov.uk/hydrology/id/stations"
 MIN_DATE_STR = "2024-09-18"
-MAX_DATE_STR = "2024-10-10"
+MAX_DATE_STR = "2025-02-10"
 MIN_DATE = datetime.strptime(MIN_DATE_STR, '%Y-%m-%d')
 MAX_DATE = datetime.strptime(MAX_DATE_STR, '%Y-%m-%d')
 DATE_FILTERS = {
-    'Early September': ('2024-09-20', '2024-09-25', 'cornflowerblue'),
-    'Late September': ('2024-09-26', '2024-09-30', 'red'),
-    'October': ('2024-09-30', '2024-10-04', 'green'),
-    'October 8-9': ('2024-10-06', '2024-10-10', 'orange'),
+    'Late September': ('2024-09-20', '2024-09-25', 'green'),
+    'Mid October': ('2024-10-16', '2024-10-24', 'orange'),
+    'Storm Bert': ('2024-11-18', '2024-11-28', 'blue'),
+    'Storm Darragh': ('2024-12-05', '2024-12-10', 'pink'),
+    'Early January': ('2024-12-31', '2025-01-09', 'yellow'),
+    'Storm Eowyn': ('2025-01-23', '2025-01-30', 'brown'),
 }
 
 ## Load data
@@ -68,7 +70,43 @@ threshold_values.loc[:, 'Threshold'] = threshold_values['Threshold'].astype(floa
 threshold_dict = threshold_values.set_index('Gauge')['Threshold'].to_dict()
 
 ### MAKE YOUR FUNCTIONS
-# Fetch data for a single station
+
+# Fetch reading codes for a given station by WISKI ID
+def fetch_reading_codes(wiski_id):
+    try:
+        # Fetch station data using WISKI ID
+        url_endpoint = f"{BASE_STATIONS_URL}?wiskiID={wiski_id}"
+        response = requests.get(url_endpoint)
+        response.raise_for_status()
+        station_data = response.json()
+
+        if not station_data.get('items'):
+            print(f"No station found with WISKI ID {wiski_id}")
+            return None
+
+        station = station_data['items'][0]
+        station_label = station.get('label')
+        name = str(station_label[1] if isinstance(station_label, list) else station_label)
+
+        # Fetch available measures for this station
+        measures_url = f"{BASE_URL}/measures?station.wiskiID={wiski_id}"
+        response = requests.get(measures_url)
+        response.raise_for_status()
+        measures_data = response.json()
+
+        if not measures_data.get('items'):
+            print(f"No measures found for {name} (WISKI ID: {wiski_id})")
+            return None
+
+        # Extract measure codes
+        measure_codes = [measure['@id'] for measure in measures_data['items']]
+
+        return measure_codes  # Return list of reading codes for this station
+
+    except requests.exceptions.RequestException as e:
+        print(f"Error fetching reading codes for WISKI ID {wiski_id}: {e}")
+        return None
+
 def fetch_station_data(wiski_id):
     try:
         url_endpoint = f"{BASE_STATIONS_URL}?wiskiID={wiski_id}"
@@ -84,30 +122,24 @@ def fetch_station_data(wiski_id):
         label_field = station.get('label')
         name = str(label_field[1] if isinstance(label_field, list) else label_field)
 
-
         # Extract river name and handle missing values
-        river_name = station.get('riverName')
-        if not river_name:
-            river_name = "No river name given"
-        else:
-            river_name = river_name[0] if isinstance(river_name, list) else river_name
-
+        river_name = station.get('riverName', "No river name given")
         latitude = station.get('lat')
         longitude = station.get('long')
 
+        # Fetch measures
         measure_url = f"{BASE_URL}/measures?station.wiskiID={wiski_id}&observedProperty=waterLevel&periodName=15min"
         response = requests.get(measure_url)
         response.raise_for_status()
         measure = response.json()
 
-        # This is where we check if level measures exist
         if not measure.get('items'):
             print(f"No level measures found for {name} (WISKI ID: {wiski_id})")
-            return None  # Stop processing if no measures are found
+            return None
 
-        # If measures are found, continue processing
+        # Construct valid readings URL
         measure_id = measure['items'][0]['@id']
-        readings_url = f"{measure_id}/readings?mineq-date={MIN_DATE_STR}&maxeq-date={MAX_DATE_STR}"
+        readings_url = f"{BASE_URL}/measures/{measure_id.split('/')[-1]}/readings?mineq-date={MIN_DATE_STR}&maxeq-date={MAX_DATE_STR}"
         response = requests.get(readings_url)
         response.raise_for_status()
         readings = response.json()
@@ -117,8 +149,27 @@ def fetch_station_data(wiski_id):
             print(f"No readings found for {name} (WISKI ID: {wiski_id})")
             return None
 
-        df = pd.DataFrame.from_dict(readings_items)
-        df['dateTime'] = pd.to_datetime(df['dateTime'])
+        # ✅ Extract dateTime and value while handling missing fields
+        data_list = []
+        for item in readings_items:
+            date_time = item.get('dateTime')
+            value = item.get('value', None)  # Use None if 'value' is missing
+            data_list.append({'dateTime': date_time, 'value': value})
+
+        # ✅ Convert to DataFrame
+        df = pd.DataFrame(data_list)
+
+        # Handle missing dateTime field
+        if 'dateTime' not in df.columns:
+            print(f"Missing 'dateTime' field for {name} (WISKI ID: {wiski_id})")
+            return None
+
+        # Convert dateTime to datetime format
+        df['dateTime'] = pd.to_datetime(df['dateTime'], errors='coerce')
+
+        # Ensure value column exists even if some rows are missing it
+        if 'value' not in df.columns:
+            df['value'] = None
 
         return {
             'name': name,
@@ -127,44 +178,45 @@ def fetch_station_data(wiski_id):
             'lat': latitude,
             'long': longitude
         }
+
     except requests.exceptions.RequestException as e:
         print(f"Error fetching data for WISKI ID {wiski_id}: {e}")
         return None
 
 
+
+# Fetch data for all stations
 # Fetch data for all stations
 def fetch_all_station_data():
     data_dict = {}
-    processed_ids = {}
-    unprocessed_ids = {}
 
     for wiski_id in WISKI_IDS:
         station_data = fetch_station_data(wiski_id)
         if station_data:
+            # Use the station name as the key
             data_dict[station_data['name']] = station_data
-            processed_ids[wiski_id] = station_data['name']
         else:
-            unprocessed_ids[wiski_id] = 'No data found'  # Add an entry to track unprocessed IDs
+            print(f"No data found for station with WISKI ID {wiski_id}")
 
+    return data_dict  # Return only the data_dict with station names as keys
 
-    print(unprocessed_ids)
-    return data_dict, processed_ids, unprocessed_ids
 
 
 ### FUNCTION TO MAKE DICTIONARY OFFLINE AND THEN LOAD
 
 # def fetch_and_save_all_station_data():
-#     data_dict, _, _ = fetch_all_station_data()
+#     data_dict = fetch_all_station_data()  # Only retrieve the station data dictionary
 
 #     for station_data in data_dict.values():
 #         station_data['date_values'] = station_data['date_values'].to_json(orient='records')
 
-#     file_path = "C:\\Users\\SPHILLIPS03\\Documents\\repos\\levels_multipage_app_folder\\Sept_2024_nested_dict_extended.json"
+#     file_path = "C:\\Users\\SPHILLIPS03\\Documents\\repos\\sept24_levels_app_folder\\Winter_2425_nested_dict_extended.json"
 
 #     with open(file_path, "w") as json_file:
 #         json.dump(data_dict, json_file)
 
 #     print("JSON file saved successfully.")
+
 
 # fetch_and_save_all_station_data()
 
@@ -176,13 +228,20 @@ def find_max_values(df, filters):
         min_date, max_date, color = date_range
         condition = (df['dateTime'] >= min_date) & (df['dateTime'] <= max_date)
         filtered_df = df[condition]
-        #print(f"Filter: {filter_name}, Rows after filtering: {len(filtered_df)}")
+
         if not filtered_df.empty:
             filtered_df = filtered_df.dropna()  # Drop rows with NaN values
-            max_value_row = filtered_df.loc[filtered_df['value'].idxmax(), ['dateTime', 'value']]
-            max_value_row['value'] = round(max_value_row['value'], 2)  # Round the maximum value to 2 decimal places
-            max_values[filter_name] = max_value_row
+            if not filtered_df.empty:  # Check again after dropping NaN values
+                max_value_row = filtered_df.loc[filtered_df['value'].idxmax(), ['dateTime', 'value']]
+                max_value_row['value'] = round(max_value_row['value'], 2)  # Round the maximum value to 2 decimal places
+                max_values[filter_name] = max_value_row
+            else:
+                print(f"No valid data after dropping NaNs for filter: {filter_name}")
+        else:
+            print(f"No data found for filter: {filter_name}")
+
     return max_values
+
 
 
 # Find and store maximum values for all stations
@@ -270,6 +329,9 @@ def process_peak_table_all(max_values, sites_of_interest_merge):
 
 # Do the comparison to the gaugeboard data
 def gaugeboard_comparison(gaugeboard_data, df):
+    # Print the columns to check for 'Date' and other necessary columns
+    print(f"Columns in df: {df.columns}")
+
     # Format gaugeboard data datetimes
     gaugeboard_data['Date'] = pd.to_datetime(gaugeboard_data['Date'], format='%d/%m/%Y').dt.date
 
@@ -279,10 +341,16 @@ def gaugeboard_comparison(gaugeboard_data, df):
     # Add a new column 'Storm' filled with nulls in gaugeboard
     gaugeboard_data['Storm'] = None
 
-    # Change 'datetime' column to 'date' in df
-    df['DateTime'] = df['DateTime'].dt.date
+    # Check if 'Date' column exists in df, and if not, handle the error
+    if 'Date' not in df.columns:
+        raise KeyError("'Date' column not found in the df DataFrame")
+
+    # Convert the 'Date' column to datetime format if it's not already
+    df['Date'] = pd.to_datetime(df['Date'], errors='coerce')  # Ensure it is datetime
+
+    # Now we can safely use the .dt accessor
+    df['Date'] = df['Date'].dt.date  # Ensure it's in date format
     df.rename(columns={'Value': 'Level'}, inplace=True)
-    df.rename(columns={'DateTime': 'Date'}, inplace=True)
 
     comparison_concat = pd.concat([gaugeboard_data, df], ignore_index=True)
 
@@ -336,6 +404,7 @@ def gaugeboard_comparison(gaugeboard_data, df):
     top_ten['Date'] = top_ten['Date'].dt.strftime('%d-%b-%Y')
     
     return top_ten, filtered_df
+
 
 # Make a top 10 list for the station selected
 def station_top_ten(selected_station):
@@ -480,7 +549,7 @@ def create_map(data_dict, selected_station=None):
     river_names = [station_data.get('river_name') for station_data in data_dict.values()]
 
     # Remove None values
-    river_names = [name for name in river_names if name is not None]
+    river_names = [name if not isinstance(name, list) else name[0] for name in river_names if name is not None]
 
     # Create a set of unique river names
     unique_rivers = sorted(set(river_names))
@@ -494,6 +563,11 @@ def create_map(data_dict, selected_station=None):
         lat = station_data.get('lat', None)
         long = station_data.get('long', None)
         river_name = station_data.get('river_name', None)
+
+        # If river_name is a list, take the first value
+        if isinstance(river_name, list):
+            river_name = river_name[0]
+
         popup_content = f"<b>{station_name}</b><br>{river_name}"
         
         if lat is not None and long is not None:
@@ -522,6 +596,7 @@ def create_map(data_dict, selected_station=None):
     map_html = m.get_root().render()
 
     return map_html
+
 
 def gif_with_text(gif_src, text1, text2):
     return html.Div([
@@ -620,7 +695,7 @@ def gif_with_text(gif_src, text1, text2):
 
 ### CALL YOUR FUNCTIONS 
 # Load station data from JSON file
-file_path = "Sept_2024_nested_dict_extended.json"
+file_path = "Winter_2425_nested_dict_extended.json"
 data_dict = load_station_data_from_json(file_path)
 
 if data_dict:
@@ -651,7 +726,7 @@ percent_complete = len(complete_stations) / len(data_dict) * 100 if len(data_dic
 
 initial_map_html = create_map(data_dict)
 
-df.to_excel('Sept2024_Peaks.xlsx', index=False)
+df.to_excel('Winter_2425_Peaks.xlsx', index=False)
 
 # #### SAVING STUFF FOR POWERPOINT PRESENTATION
 # # Save all the charts for use in the Powerpoint

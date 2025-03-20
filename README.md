@@ -88,6 +88,16 @@ I have already done loads of work on this before using Git Hub, so earlier versi
 * Lengthened the period of time I was looking at. NEED TO DOUBLE CHECK THAT THE CODE IS SAVING THE JSON IN THE RIGHT PLACE, I DON'T THINK i KEPT THIUS WHEN I REVERTED THE CHANGES
 * Almost got last years data in there as a comparison but I broke it so I reverted the changes
 
+
+## Updates 20/03/2025
+* Fixed all the top part of the code to be able to get the data from September 24 to Feb 25
+* Used Harry's filters and general colours, haven't refined to the RGB colours he said
+* API seemed to change how you get the readings, and can no longer construict it from the WIKSI ID
+* Figured out how to fix the URL and it is now able to go and get the readings and creat a data_dict in the same way as before
+* All the functions above the app appear to work and do not cause errors
+* Haven't tried running it to the app yet!
+
+
 ## Things to remember to run in VSCODE
 * rsconnect deploy dash . -n LevelsApp --entrypoint levels_app:app 
 * pip freeze > requirements.txt
