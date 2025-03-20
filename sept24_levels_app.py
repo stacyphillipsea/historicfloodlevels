@@ -574,6 +574,9 @@ def create_map(data_dict, selected_station=None):
             # Ensure river_name is a string
             river_name = str(river_name)
             
+            # Ensure river_name is a string
+            river_name = str(river_name)
+            
             # Select marker color based on river name
             marker_color = river_color_mapping.get(river_name, 'gray')  # Default to gray if river name not found
             # Add marker for station with selected color
@@ -966,6 +969,8 @@ app.layout = dbc.Container([
                 clearable=False,
                 value="River Avon",  # Default value for the river dropdown
                 options=[
+                        {'label': river_name, 'value': river_name} for river_name in sorted(set([v['river_name'] for v in data_dict.values() if v.get('river_name') is not None]))
+                        ],
                         {'label': river_name, 'value': river_name} for river_name in sorted(set([v['river_name'] for v in data_dict.values() if v.get('river_name') is not None]))
                         ],
                 style={'font-size': '16px'}
