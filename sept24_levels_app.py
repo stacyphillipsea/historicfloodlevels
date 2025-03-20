@@ -341,16 +341,15 @@ def gaugeboard_comparison(gaugeboard_data, df):
     # Add a new column 'Storm' filled with nulls in gaugeboard
     gaugeboard_data['Storm'] = None
 
-    # Check if 'Date' column exists in df, and if not, handle the error
-    if 'Date' not in df.columns:
-        raise KeyError("'Date' column not found in the df DataFrame")
+    # Add a new column 'Storm' filled with nulls in gaugeboard
+    gaugeboard_data['Storm'] = None
 
-    # Convert the 'Date' column to datetime format if it's not already
-    df['Date'] = pd.to_datetime(df['Date'], errors='coerce')  # Ensure it is datetime
-
-    # Now we can safely use the .dt accessor
-    df['Date'] = df['Date'].dt.date  # Ensure it's in date format
+    # Change 'datetime' column to 'date' in df
+    df['DateTime'] = df['DateTime'].dt.date
     df.rename(columns={'Value': 'Level'}, inplace=True)
+    df.rename(columns={'DateTime': 'Date'}, inplace=True)
+
+    comparison_concat = pd.concat([gaugeboard_data, df], ignore_index=True)
 
     comparison_concat = pd.concat([gaugeboard_data, df], ignore_index=True)
 
@@ -969,9 +968,8 @@ app.layout = dbc.Container([
                 clearable=False,
                 value="River Avon",  # Default value for the river dropdown
                 options=[
-                        {'label': river_name, 'value': river_name} for river_name in sorted(set([v['river_name'] for v in data_dict.values() if v.get('river_name') is not None]))
-                        ],
-                        {'label': river_name, 'value': river_name} for river_name in sorted(set([v['river_name'] for v in data_dict.values() if v.get('river_name') is not None]))
+                        {'label': river_name, 'value': river_name} for river_name in sorted(set([v['river_name'][0] if isinstance(v['river_name'], list) else v['river_name'] 
+                             for v in data_dict.values() if v.get('river_name') is not None]))
                         ],
                 style={'font-size': '16px'}
             ),

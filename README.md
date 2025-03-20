@@ -95,7 +95,8 @@ I have already done loads of work on this before using Git Hub, so earlier versi
 * API seemed to change how you get the readings, and can no longer construict it from the WIKSI ID
 * Figured out how to fix the URL and it is now able to go and get the readings and creat a data_dict in the same way as before
 * All the functions above the app appear to work and do not cause errors
-* Haven't tried running it to the app yet!
+* Deals in 2 places with the river list returning multiple rivers (takes the first one)
+* Works running it to the app!
 
 
 ## Things to remember to run in VSCODE
