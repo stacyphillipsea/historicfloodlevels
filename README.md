@@ -96,6 +96,8 @@ I have already done loads of work on this before using Git Hub, so earlier versi
 * Figured out how to fix the URL and it is now able to go and get the readings and creat a data_dict in the same way as before
 * All the functions above the app appear to work and do not cause errors
 * Deals in 2 places with the river list returning multiple rivers (takes the first one)
+* Copied in the peaks from last year to the gaugeboard data csv and looks to be working properly in the comparison.
+* Top ten values is not working anymore
 * Works running it to the app!
 
 

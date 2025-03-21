@@ -43,7 +43,7 @@ DATE_FILTERS = {
 sites_of_interest_merge = pd.read_csv('sites_of_interest_merge.csv')
 
 # Historic records
-gaugeboard_data = pd.read_csv('gaugeboard_data.csv')
+gaugeboard_data = pd.read_csv('gaugeboard_data_w2324.csv')
 
 # Adding to use all WMD Gauges from Harry's list
 wmd_gauges = pd.read_csv('All_WMD_gauges_FETA.csv')
@@ -938,7 +938,7 @@ app.layout = dbc.Container([
         ]),
         dbc.Row([
             dbc.Col(
-                html.H6("!!! This is a relatively rough copy of  FETA from last year. Historic records from 23/24 are not included here !!!", 
+                html.H6("!!! This is a relatively rough copy of  FETA from last year. Historic records from 23/24 are now included here. Top 10 table no longer works !!!", 
                         style={"textAlign":"center", "color": "red", "fontStyle": "italic", "fontWeight": "bold"}),
             )
         ]),
@@ -1156,7 +1156,7 @@ app.layout = dbc.Container([
 )
 
 def func(n_clicks):
-    return dcc.send_data_frame(peak_table_all.to_csv, "Winter2324_PeakLevels.csv")
+    return dcc.send_data_frame(peak_table_all.to_csv, "Winter2425_PeakLevels.csv")
  
 def update_station_options(selected_river):
     if selected_river:
