@@ -91,7 +91,7 @@ I have already done loads of work on this before using Git Hub, so earlier versi
 
 ## Updates 20/03/2025
 * Fixed all the top part of the code to be able to get the data from September 24 to Feb 25
-* Used Harry's filters and general colours, haven't refined to the RGB colours he said
+* Used Harry's filters and used Hex codes to change the colours to what he wants.
 * API seemed to change how you get the readings, and can no longer construict it from the WIKSI ID
 * Figured out how to fix the URL and it is now able to go and get the readings and creat a data_dict in the same way as before
 * All the functions above the app appear to work and do not cause errors

@@ -30,12 +30,12 @@ MAX_DATE_STR = "2025-02-10"
 MIN_DATE = datetime.strptime(MIN_DATE_STR, '%Y-%m-%d')
 MAX_DATE = datetime.strptime(MAX_DATE_STR, '%Y-%m-%d')
 DATE_FILTERS = {
-    'Late September': ('2024-09-20', '2024-09-25', 'green'),
-    'Mid October': ('2024-10-16', '2024-10-24', 'orange'),
-    'Storm Bert': ('2024-11-18', '2024-11-28', 'blue'),
-    'Storm Darragh': ('2024-12-05', '2024-12-10', 'pink'),
-    'Early January': ('2024-12-31', '2025-01-09', 'yellow'),
-    'Storm Eowyn': ('2025-01-23', '2025-01-30', 'brown'),
+    'Late Sep 24': ('2024-09-20', '2024-10-04', '#92D850'),    # Green
+    'Mid Oct 24': ('2024-10-16', '2024-10-24', '#E97132'),     # Orange
+    'Storm Bert Nov 24': ('2024-11-18', '2024-11-28', '#00B0F0'),        # Blue
+    'Storm Darragh Dec 24': ('2024-12-05', '2024-12-10', '#FF99FF'), # Pink
+    'Early Jan 25': ('2024-12-31', '2025-01-09', '#EBE600'),    # Yellow
+    'Storm Eowyn and Herminia Jan 25': ('2025-01-23', '2025-01-30', '#996600'),     # Brown
 }
 
 ## Load data
@@ -886,7 +886,7 @@ app.layout = dbc.Container([
     NAVBAR,
     # Titles
     html.H1("Welcome to the Flood Event Telemetry Analyser (FETA)! v2.0", style={"textAlign":"center", }, id="top"),  # title
-    html.H5(["This app allows you to explore river level data for the SEPTEMBER 2024 flood event",
+    html.H5(["This app allows you to explore river level data for the Winter 2024-2025 flood events",
             html.Br(),
             "for sites across the West Midlands"],
             style={"textAlign":"center"}), 
@@ -938,7 +938,7 @@ app.layout = dbc.Container([
         ]),
         dbc.Row([
             dbc.Col(
-                html.H6("!!! I have copied this from last year's FETA and am still working things out !!!", 
+                html.H6("!!! This is a relatively rough copy of  FETA from last year. Historic records from 23/24 are not included here !!!", 
                         style={"textAlign":"center", "color": "red", "fontStyle": "italic", "fontWeight": "bold"}),
             )
         ]),
@@ -1207,7 +1207,7 @@ def update_graph_peak_table_top_ten(selected_river, selected_station):
                         'y': [max_value], 
                         'mode': 'markers',
                         'marker': {'color': DATE_FILTERS[filter_name][2], 'size': 10},
-                        'name': f'Storm {filter_name} peak'})
+                        'name': f'{filter_name} peak'})
                     max_datetime = max_value_info['dateTime'].strftime('%d-%b-%Y %H:%M')  # Format datetime here,after the figure plot,and not at the data entry otherwise peaks don't plot
                     color = DATE_FILTERS[filter_name][2] # get color info
 
