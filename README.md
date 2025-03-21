@@ -28,7 +28,14 @@ I have already done loads of work on this before using Git Hub, so earlier versi
 * Data sources section updated
 * Link at bottom to send back to top
 * Import libraries tidied
+* Import libraries tidied
 * App log warnings fixed
+* Table widths fixed and headers fixed
+* Added hyperlink for full screen image
+* External hyperlinks now are forced to open in new tab
+* Used "app.get_asset_url()" to get correct path for local images so they are pulled in correctly, instead of having them as urls
+* y-axis chart labels go across two lines
+* Cambridge Spark logo addeds
 * Table widths fixed and headers fixed
 * Added hyperlink for full screen image
 * External hyperlinks now are forced to open in new tab
@@ -38,6 +45,7 @@ I have already done loads of work on this before using Git Hub, so earlier versi
 
 ## Things that could be improved
 * Would like to colour code storms in the top 10 table
+* Cannot get the download button for the Powerpoint to work. Created separate branch (Powerpoint-Download-Attempt). Tried again using the new source url path and it just wouldn't work!! 
 * Cannot get the download button for the Powerpoint to work. Created separate branch (Powerpoint-Download-Attempt). Tried again using the new source url path and it just wouldn't work!! 
 * Navbar is not pulling the images from the project folder, had to give it urls instead
 * Attempted to tidy up the callback and update functions but didn't work (didn't save)
